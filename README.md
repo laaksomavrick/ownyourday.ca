@@ -1,24 +1,6 @@
-# README
+# ownyourday.ca
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## Project dependencies
+* `ruby` 3.1.2
+* `node` 18 (local development only)
+* `pnpm` to install javascript toolchain dev dependencies (local development only)

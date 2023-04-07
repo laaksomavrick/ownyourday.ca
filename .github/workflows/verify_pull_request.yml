@@ -1,0 +1,71 @@
+name: Verify pull request
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  verify:
+    name: Build
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:11
+        env:
+          POSTGRES_USER: rails_github_actions
+          POSTGRES_DB: rails_github_actions_test
+          POSTGRES_PASSWORD: postgres
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v1
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+      - name: Install ruby dependencies
+        run: |
+          gem install bundler
+          bundle install --jobs 4 --retry 3
+      - name: Install javascript dependencies
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.1.1
+          run_install: |
+            - recursive: true
+              args: [--frozen-lockfile, --strict-peer-dependencies]
+      - name: Setup assets
+        run: bundler exec rails assets:clean assets:precompile
+      - name: Check ruby formatting
+        run: bundler exec rubocop --fail-level=warning
+      - name: Check js formatting
+        run: pnpm run format:check
+      - name: Check js lint
+        run: pnpm run lint
+      - name: Run js tests
+        run: pnpm run test
+      - name: Setup test database
+        env:
+          RAILS_ENV: test
+          PGHOST: localhost
+          POSTGRES_DB: rails_github_actions_test
+          POSTGRES_USER: rails_github_actions
+          POSTGRES_PASSWORD: postgres
+        run: |
+          cp config/database.ci.yml config/database.yml
+          rake db:create db:schema:load
+      - name: Run ruby tests
+        env:
+          RAILS_ENV: test
+          PGHOST: localhost
+          POSTGRES_DB: rails_github_actions_test
+          POSTGRES_USER: rails_github_actions
+          POSTGRES_PASSWORD: postgres
+          PGPORT: ${{ job.services.postgres.ports[5432] }}
+        run: rspec

@@ -4,7 +4,7 @@ up:
 
 .PHONY: serve
 serve:
-	@bundler exec rails s
+	@bin/dev
 
 .PHONY: migrate
 migrate:
@@ -20,7 +20,7 @@ test:
 
 .PHONY: format
 format:
-	@bundler exec rubocop -A
+	@bundler exec rubocop -A && pnpm run format && pnpm run lint
 
 .PHONY: check-format
 check-format:
