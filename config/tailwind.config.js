@@ -6,7 +6,18 @@ module.exports = {
     './app/helpers/**/*.rb',
     './app/javascript/**/*.js',
     './app/views/**/*.{erb,haml,html,slim}',
-    './app/components/**/*'
+    './app/components/**/*.{erb,haml,html,slim}'
+  ],
+  safelist: [
+    {
+      pattern: /bg-/,
+    },
+    {
+      pattern: /text-/,
+    },
+    {
+      pattern: /border-/,
+    },
   ],
   theme: {
     extend: {

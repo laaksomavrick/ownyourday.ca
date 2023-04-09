@@ -3,7 +3,7 @@
 module Alerts
   class NoticeComponent < BaseComponent
     def color
-      'teal'
+      'blue'
     end
   end
 end
