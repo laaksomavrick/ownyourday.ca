@@ -13,7 +13,9 @@
 
 <body class="h-screen bg-slate-50">
 <main class="container mx-auto px-5 h-full">
-  <%= render 'layouts/navigation' %>
+  <% if current_user %>
+    <%= render 'layouts/navigation' %>
+  <% end %>
   <%= render 'layouts/alerts' %>
   <%= yield %>
 </main>

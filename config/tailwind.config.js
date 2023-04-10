@@ -18,6 +18,15 @@ module.exports = {
     {
       pattern: /border-/,
     },
+    {
+      pattern: /flex-/,
+    },
+    {
+      pattern: /space-/,
+    },
+    {
+      pattern: /rounded-/,
+    },
   ],
   theme: {
     extend: {

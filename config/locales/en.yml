@@ -30,5 +30,6 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
+  ownyourday: "ownyourday"
   today: "Today"
   goals: "Goals"

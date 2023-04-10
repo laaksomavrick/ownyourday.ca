@@ -2,13 +2,15 @@
 
 module Navigation
   class NavigationItemComponent < ViewComponent::Base
+    include ApplicationHelper
+
     def initialize(path:, title:)
       @path = path
       @title = title
     end
 
     def text_color
-      is_active? ? 'teal-500' : 'teal-300'
+      is_active? ? "#{brand_color}-500" : "#{brand_color}-300"
     end
 
     private
