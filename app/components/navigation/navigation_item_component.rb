@@ -5,17 +5,18 @@ module Navigation
     include ApplicationHelper
 
     def initialize(path:, title:)
+      super
       @path = path
       @title = title
     end
 
     def text_color
-      is_active? ? "#{brand_color}-500" : "#{brand_color}-300"
+      active? ? "#{brand_color}-500" : "#{brand_color}-300"
     end
 
     private
 
-    def is_active?
+    def active?
       current_page?(@path) || request.path.starts_with?(@path)
     end
   end

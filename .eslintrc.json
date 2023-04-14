@@ -6,7 +6,8 @@
     "browser": true
   },
   "parserOptions": {
-    "sourceType": "module"
+    "sourceType": "module",
+    "ecmaVersion": "latest"
   },
   "extends": [
     "eslint:recommended",

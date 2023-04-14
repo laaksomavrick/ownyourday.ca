@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --config jest.config.js --passWithNoTests",
-    "format": "prettier --write \"app/**/*.{js,html,erb}\"",
-    "format:check": "prettier -c \"app/**/*.{js,html,erb}\"",
+    "format": "prettier --write \"app/**/*.js\"",
+    "format:check": "prettier -c \"app/**/*.js\"",
     "lint": "eslint \"app/**/*.js\" --fix --max-warnings=0"
   },
   "keywords": [],
