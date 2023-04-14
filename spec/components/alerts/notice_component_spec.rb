@@ -3,13 +3,13 @@
 require 'rails_helper'
 
 RSpec.describe Alerts::NoticeComponent, type: :component do
-  pending "add some examples to (or delete) #{__FILE__}"
+  let(:message) { 'Hello, world!' }
+  let(:subject) do
+    described_class.new(message:)
+  end
 
-  # it "renders something useful" do
-  #   expect(
-  #     render_inline(described_class.new(attr: "value")) { "Hello, components!" }.css("p").to_html
-  #   ).to include(
-  #     "Hello, components!"
-  #   )
-  # end
+  it 'renders component' do
+    render_inline(subject)
+    expect(page).to have_text message
+  end
 end
