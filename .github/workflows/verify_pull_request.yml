@@ -40,8 +40,6 @@ jobs:
           run_install: |
             - recursive: true
               args: [--frozen-lockfile, --strict-peer-dependencies]
-      - name: Set up Chrome
-        uses: browser-actions/setup-chrome@v1
       - name: Setup assets
         run: bundler exec rails assets:clean assets:precompile
       - name: Check ruby formatting
@@ -54,6 +52,7 @@ jobs:
         run: pnpm run test
       - name: Setup test database
         env:
+          IS_CI: true
           RAILS_ENV: test
           PGHOST: localhost
           POSTGRES_DB: rails_github_actions_test
