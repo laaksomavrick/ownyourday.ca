@@ -6,7 +6,7 @@ on:
 
 jobs:
   verify:
-    name: Build
+    name: Verify pull request
     runs-on: ubuntu-latest
 
     services:
@@ -40,6 +40,8 @@ jobs:
           run_install: |
             - recursive: true
               args: [--frozen-lockfile, --strict-peer-dependencies]
+      - name: Set up Chrome
+        uses: browser-actions/setup-chrome@v1
       - name: Setup assets
         run: bundler exec rails assets:clean assets:precompile
       - name: Check ruby formatting
