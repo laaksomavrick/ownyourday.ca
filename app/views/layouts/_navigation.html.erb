@@ -1,0 +1,5 @@
+<nav class="flex items-center w-full space-x-4">
+  <%= render Navigation::NavigationItemComponent.new(path: today_index_path,
+  title: t("today")) %> <%= render Navigation::NavigationItemComponent.new(path:
+  goals_path, title: t("goals")) %>
+</nav>

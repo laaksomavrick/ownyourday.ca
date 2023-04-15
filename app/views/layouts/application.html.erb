@@ -11,17 +11,12 @@
   <%= javascript_importmap_tags %>
 </head>
 
-<body>
-<main class="container mx-auto mt-28 px-5 flex">
-  <% # TODO! ViewComponent + extract %>
-  <div class="alerts">
-    <% if notice %>
-      <p class="notice"><%= notice %></p>
-    <% end %>
-    <% if alert %>
-      <p class="alert"><%= alert %></p>
-    <% end %>
-  </div>
+<body class="h-screen bg-slate-50">
+<main class="container mx-auto px-5 h-full">
+  <% if current_user %>
+    <%= render 'layouts/navigation' %>
+  <% end %>
+  <%= render 'layouts/alerts' %>
   <%= yield %>
 </main>
 </body>

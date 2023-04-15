@@ -1,0 +1,3 @@
+<% if notice %> <%= render Alerts::NoticeComponent.new(message: notice) %> <%
+end %> <% if alert %> <%= render Alerts::DangerComponent.new(message: alert) %>
+<% end %>

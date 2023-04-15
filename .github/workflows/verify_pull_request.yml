@@ -6,7 +6,7 @@ on:
 
 jobs:
   verify:
-    name: Build
+    name: Verify pull request
     runs-on: ubuntu-latest
 
     services:
@@ -62,6 +62,7 @@ jobs:
           rake db:create db:schema:load
       - name: Run ruby tests
         env:
+          IS_CI: true
           RAILS_ENV: test
           PGHOST: localhost
           POSTGRES_DB: rails_github_actions_test
