@@ -5,6 +5,8 @@ class User < ApplicationRecord
          :rememberable,
          :trackable, :omniauthable, omniauth_providers: [:google_oauth2]
 
+  has_many :goals, dependent: :destroy
+
   def self.from_omniauth(auth)
     # TODO: if we ever want multiple oauth providers, this logic will have to change to support same email
     # across multiple providers
