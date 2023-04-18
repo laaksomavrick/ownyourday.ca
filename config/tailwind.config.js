@@ -13,19 +13,7 @@ module.exports = {
       pattern: /bg-/,
     },
     {
-      pattern: /text-/,
-    },
-    {
-      pattern: /border-/,
-    },
-    {
-      pattern: /flex-/,
-    },
-    {
-      pattern: /space-/,
-    },
-    {
-      pattern: /rounded-/,
+      pattern: /text-teal/, // TODO: change this if brand_color is ever changed
     },
   ],
   theme: {
