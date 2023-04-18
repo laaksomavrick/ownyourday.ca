@@ -2,6 +2,6 @@
 
 class GoalsController < ApplicationController
   def index
-    @goals = current_user.goals
+    @goals = policy_scope(Goal)
   end
 end
