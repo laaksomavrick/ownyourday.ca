@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
-#   Character.create(name: "Luke", movie: movies.first)
+require 'factory_bot'
+# rubocop:disable Style/MixinUsage
+include FactoryBot::Syntax::Methods
+# rubocop:enable Style/MixinUsage
 
-User.create(email: 'dev@example.com', password: 'Qweqwe1!')
+# Create dev user
+user = User.create(email: 'dev@example.com', password: 'Qweqwe1!')
+
+# Create list of goals for user
+create_list(:goal, 5, user:)

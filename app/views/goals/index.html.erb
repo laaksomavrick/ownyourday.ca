@@ -1,1 +1,7 @@
-goals
+<%= render 'layouts/page_header', header: t('goals.header') %>
+
+<div class="space-y-4">
+  <% @goals.each do |goal| %>
+    <%= render 'layouts/goals/list_item', goal: goal %>
+  <% end %>
+</div>
