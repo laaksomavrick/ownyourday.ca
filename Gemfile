@@ -68,7 +68,6 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'faker'
   gem 'rspec-rails', '~> 6.0.0'
-  gem 'bullet'
 end
 
 group :development do
@@ -76,7 +75,11 @@ group :development do
   gem 'web-console'
 
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
-  # gem "rack-mini-profiler"
+  # TODO: implement this in production behind an is_admin? or similar
+  gem 'flamegraph'
+  gem 'memory_profiler'
+  gem 'rack-mini-profiler'
+  gem 'stackprof'
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
