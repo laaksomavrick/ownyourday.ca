@@ -74,6 +74,9 @@ GEM
     bootsnap (1.16.0)
       msgpack (~> 1.2)
     builder (3.2.4)
+    bullet (7.0.7)
+      activesupport (>= 3.0.0)
+      uniform_notifier (~> 1.11)
     capybara (3.39.0)
       addressable
       matrix
@@ -151,6 +154,8 @@ GEM
       net-protocol
     nio4r (2.5.9)
     nokogiri (1.14.2-arm64-darwin)
+      racc (~> 1.4)
+    nokogiri (1.14.2-x86_64-darwin)
       racc (~> 1.4)
     oauth2 (1.4.11)
       faraday (>= 0.17.3, < 3.0)
@@ -277,6 +282,8 @@ GEM
       railties (>= 6.0.0)
     tailwindcss-rails (2.0.27-arm64-darwin)
       railties (>= 6.0.0)
+    tailwindcss-rails (2.0.27-x86_64-darwin)
+      railties (>= 6.0.0)
     thor (1.2.1)
     timeout (0.3.2)
     turbo-rails (1.4.0)
@@ -286,6 +293,7 @@ GEM
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.4.2)
+    uniform_notifier (1.16.0)
     view_component (2.82.0)
       activesupport (>= 5.2.0, < 8.0)
       concurrent-ruby (~> 1.0)
@@ -311,9 +319,11 @@ GEM
 
 PLATFORMS
   arm64-darwin-22
+  x86_64-darwin-21
 
 DEPENDENCIES
   bootsnap
+  bullet
   capybara
   debug
   devise
