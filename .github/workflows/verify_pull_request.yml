@@ -4,6 +4,7 @@ on:
   pull_request:
     branches: [ main ]
 
+# TODO: clean up env variables
 jobs:
   verify:
     name: Verify pull request
@@ -30,6 +31,8 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
       - name: Install ruby dependencies
+        env:
+          RAILS_ENV: test
         run: |
           gem install bundler
           bundle install --jobs 4 --retry 3
