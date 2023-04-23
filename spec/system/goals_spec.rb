@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Goals' do
   let!(:user) { create(:user) }
-  let!(:goals) { create_list(:goal, 2, user:) }
+  let!(:goals) { create_list(:daily_goal, 2, user:) }
 
   describe 'index page' do
     it 'redirects non-authenticated users' do
@@ -22,7 +22,7 @@ RSpec.describe 'Goals' do
   end
 
   describe 'show page' do
-    let!(:goal) { create(:goal, user:) }
+    let!(:goal) { create(:daily_goal, user:) }
 
     it 'redirects non-authenticated users' do
       visit goal_path(goal.id)
