@@ -7,7 +7,8 @@ module Goals
     private
 
     def validate_metadata
-      metadata == '{}'
+      is_valid = metadata == '{}'
+      errors.add(:metadata, 'is invalid') unless is_valid
     end
   end
 end

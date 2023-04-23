@@ -7,7 +7,7 @@ module Goals
     belongs_to :user
 
     # TODO: better way to do this?
-    GOAL_TYPES = %w[Daily TimesPerWeek DaysOfWeek].freeze
+    GOAL_TYPES = %w[Goals::Daily Goals::TimesPerWeek Goals::DaysOfWeek].freeze
 
     validates :name, presence: true
     validates :type, inclusion: GOAL_TYPES

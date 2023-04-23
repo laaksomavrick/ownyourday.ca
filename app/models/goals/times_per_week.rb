@@ -10,11 +10,8 @@ module Goals
     def validate_metadata
       times_per_week = metadata['times_per_week'].to_i
 
-      return false unless times_per_week.positive? && times_per_week <= 6
-
-      return false unless times_per_week <= 6
-
-      true
+      errors.add(:times_per_week, 'must be greater than 0') unless times_per_week.positive?
+      errors.add(:times_per_week, 'must be less than 7') unless times_per_week <= 6
     end
   end
 end

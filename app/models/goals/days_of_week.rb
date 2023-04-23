@@ -11,12 +11,13 @@ module Goals
       days_of_week = metadata['days_of_week'].to_a
       has_days_of_week_integers = days_of_week.all? { |x| x >= 0 && x <= 6 }
       has_no_duplicates = days_of_week.length == days_of_week.uniq.length
+      has_entries = !days_of_week.empty?
 
-      return false unless has_days_of_week_integers
+      errors.add(:days_of_week, 'has invalid days') unless has_days_of_week_integers
 
-      return false unless has_no_duplicates
+      errors.add(:days_of_week, 'has duplicate days') unless has_no_duplicates
 
-      true
+      errors.add(:days_of_week, 'has no days specified') unless has_entries
     end
   end
 end
