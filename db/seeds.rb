@@ -9,4 +9,6 @@ include FactoryBot::Syntax::Methods
 user = User.create(email: 'dev@example.com', password: 'Qweqwe1!')
 
 # Create list of goals for user
-create_list(:goal, 5, user:)
+create(:daily_goal, user:)
+create(:days_of_week_goal, user:)
+create(:times_per_week_goal, user:)
