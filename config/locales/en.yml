@@ -6,3 +6,9 @@ en:
     header: "My Goals"
   goal:
     header: "Goal Details"
+    schedule_label: "Schedule"
+    name_label: "Name"
+    schedule:
+      daily_label: "Daily"
+      times_per_week_label: "Times per week"
+      days_of_week_label: "Particular days"

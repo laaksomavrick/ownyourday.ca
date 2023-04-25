@@ -16,6 +16,10 @@ module Goals
       def policy_class
         GoalPolicy
       end
+
+      def goal_types
+        GOAL_TYPES
+      end
     end
   end
 end

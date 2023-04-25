@@ -1,0 +1,15 @@
+<div>
+  <% goal_type_radios.each do |goal_type| %>
+    <%= radio_button :type, goal_type[:value], checked: false %>
+  <% end %>
+</div>
+
+<div>
+  <%= f.radio_button :type, Goals::Daily.name %> <%= t('goal.schedule.daily_label') %> <br />
+  <%= f.radio_button :type, Goals::TimesPerWeek.name %> <%= t('goal.schedule.times_per_week_label') %> <br />
+  <%= f.radio_button :type, Goals::DaysOfWeek.name %> <%= t('goal.schedule.days_of_week_label') %> <br />
+</div>
+
+<% if is_daily? %>
+  <p>is daily</p>
+<% end %>
