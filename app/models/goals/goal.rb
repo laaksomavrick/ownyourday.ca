@@ -12,6 +12,18 @@ module Goals
     validates :name, presence: true
     validates :type, inclusion: GOAL_TYPES
 
+    def is_daily?
+      type == Goals::Daily.name
+    end
+
+    def is_times_per_week?
+      type == Goals::TimesPerWeek.name
+    end
+
+    def is_days_of_week?
+      type == Goals::DaysOfWeek.name
+    end
+
     class << self
       def policy_class
         GoalPolicy

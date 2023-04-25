@@ -1,6 +1,14 @@
 en:
   ownyourday: "ownyourday"
   today: "Today"
+  days_of_week:
+    monday: "Monday"
+    tuesday: "Tuesday"
+    wednesday: "Wednesday"
+    thursday: "Thursday"
+    friday: "Friday"
+    saturday: "Saturday"
+    sunday: "Sunday"
   goals:
     navigation: "Goals"
     header: "My Goals"
@@ -12,3 +20,6 @@ en:
       daily_label: "Daily"
       times_per_week_label: "Times per week"
       days_of_week_label: "Particular days"
+      daily_summary: "Your goal will be scheduled every day"
+      times_per_week_summary: "Your goal will be scheduled %{times} times per week"
+      day_of_week_summary: "Your goal will be scheduled %{days}"
