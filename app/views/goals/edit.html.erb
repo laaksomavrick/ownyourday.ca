@@ -11,7 +11,14 @@
     <%= f.label :name, t('goal.schedule_label'), class: "text-2xl font-medium pb-4 select-none" %>
 
     <div data-controller="goal-schedule" class="flex flex-col	border p-4 rounded-md border-gray-200">
-      <button formmethod="get" formaction="<%= edit_goal_path(@goal.id) %>" hidden data-goal-schedule-target="changeGoalSchedule"></button>
+      <button
+        formmethod="get"
+        formaction="<%= edit_goal_path(@goal.id) %>"
+        hidden
+        data-goal-schedule-target="changeGoalSchedule"
+        data-turbo-frame="<%= f.field_id(:type, :turbo_frame) %>"
+      >
+      </button>
       <div class="flex justify-start space-x-4">
         <div class="flex items-center">
           <%= f.radio_button :type, Goals::Daily.name, class: "mr-2", data: { action: "click->goal-schedule#changeGoalSchedule"} %>
@@ -27,6 +34,7 @@
         </div>
       </div>
 
+      <turbo-frame id="<%= f.field_id(:type, :turbo_frame) %>">
       <% if @goal.is_daily? %>
         <div class="text-gray-400 mt-6">
           <%= t('goal.schedule.daily_summary') %>
@@ -34,7 +42,7 @@
       <% end %>
 
       <% if @goal.is_times_per_week? %>
-        <%= f.select :times_per_week, options_for_select(1..6, selected: @goal.times_per_week), {}, class: "mt-6 p-2 px-4 rounded-md border-gray-200" %>
+        <%= f.select :times_per_week, options_for_select(1..6, selected: @goal.times_per_week), {}, class: "mt-6 p-2 px-4 w-full rounded-md border-gray-200" %>
         <div class="text-gray-400 mt-6">
           <%= times_per_week_schedule_message(@goal.times_per_week) %>
         </div>
@@ -44,31 +52,31 @@
         <div class="flex flex-col mt-6">
           <div class="flex space-x-2">
             <div class="flex flex-col items-center">
-              <%= f.check_box :monday, { checked: @goal.days_of_week.include?(0) }, class: "mr-2 border-gray-200" %>
+              <%= f.check_box :monday, { checked: @goal.days_of_week.include?(0), class: "mr-2" } %>
               <div class="text-md"><%= t('days_of_week.monday') %></div>
             </div>
             <div class="flex flex-col items-center">
-              <%= f.check_box :tuesday, { checked: @goal.days_of_week.include?(1) }, class: "mr-2 border-gray-200" %>
+              <%= f.check_box :tuesday, { checked: @goal.days_of_week.include?(1), class: "mr-2" } %>
               <div class="text-md"><%= t('days_of_week.tuesday') %></div>
             </div>
             <div class="flex flex-col items-center">
-              <%= f.check_box :tuesday, { checked: @goal.days_of_week.include?(2) }, class: "mr-2 border-gray-200" %>
+              <%= f.check_box :wednesday, { checked: @goal.days_of_week.include?(2), class: "mr-2" } %>
               <div class="text-md"><%= t('days_of_week.wednesday') %></div>
             </div>
             <div class="flex flex-col items-center">
-              <%= f.check_box :tuesday, { checked: @goal.days_of_week.include?(3) }, class: "mr-2 border-gray-200" %>
+              <%= f.check_box :thursday, { checked: @goal.days_of_week.include?(3), class: "mr-2" } %>
               <div class="text-md"><%= t('days_of_week.thursday') %></div>
             </div>
             <div class="flex flex-col items-center">
-              <%= f.check_box :tuesday, { checked: @goal.days_of_week.include?(4) }, class: "mr-2 border-gray-200" %>
+              <%= f.check_box :friday, { checked: @goal.days_of_week.include?(4), class: "mr-2" } %>
               <div class="text-md"><%= t('days_of_week.friday') %></div>
             </div>
             <div class="flex flex-col items-center">
-              <%= f.check_box :tuesday, { checked: @goal.days_of_week.include?(5) }, class: "mr-2 border-gray-200" %>
+              <%= f.check_box :saturday, { checked: @goal.days_of_week.include?(5), class: "mr-2" } %>
               <div class="text-md"><%= t('days_of_week.saturday') %></div>
             </div>
             <div class="flex flex-col items-center">
-              <%= f.check_box :tuesday, { checked: @goal.days_of_week.include?(6) }, class: "mr-2" %>
+              <%= f.check_box :sunday, { checked: @goal.days_of_week.include?(6), class: "mr-2" } %>
               <div class="text-md"><%= t('days_of_week.sunday') %></div>
             </div>
           </div>
@@ -78,6 +86,7 @@
         </div>
       <% end %>
 
+      </turbo-frame>
     </div>
 
 
