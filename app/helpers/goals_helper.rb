@@ -12,7 +12,7 @@ module GoalsHelper
   }.freeze
 
   def times_per_week_schedule_message(times = 1)
-    unit = times == 1 ? I18n.t('common.time') : I18n.t('commmon.times')
+    unit = times == 1 ? I18n.t('common.time') : I18n.t('common.times')
     I18n.t('goal.schedule.times_per_week_summary', times:, unit:)
   end
 

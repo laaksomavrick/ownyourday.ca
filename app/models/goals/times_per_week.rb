@@ -6,7 +6,11 @@ module Goals
     validate :metadata, :validate_metadata
 
     def times_per_week
-      metadata['times_per_week'].to_i
+      data = metadata['times_per_week']
+
+      return 1 if data.nil?
+
+      data.to_i
     end
 
     private

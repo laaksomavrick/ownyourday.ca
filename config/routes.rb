@@ -5,7 +5,7 @@ Rails.application.routes.draw do
              controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
 
   resources :today, only: [:index]
-  resources :goals, only: %i[index show]
+  resources :goals, only: %i[index edit]
 
   root to: redirect('/today')
 end
