@@ -42,7 +42,11 @@
         <% end %>
 
         <% if @goal.is_times_per_week? %>
-          <%= f.select :times_per_week, options_for_select(1..6, selected: @goal.times_per_week), {}, class: "mt-6 p-2 px-4 w-full rounded-md border-gray-200", data: { action: "change->goal-schedule#changeGoalSchedule" } %>
+          <%= f.select :times_per_week,
+                       options_for_select(1..6, selected: @goal.times_per_week),
+                       {},
+                       class: "mt-6 p-2 px-4 w-full rounded-md border-gray-200",
+                       data: { action: "change->goal-schedule#changeGoalSchedule" } %>
           <div class="text-gray-400 mt-6">
             <%= times_per_week_schedule_message(@goal.times_per_week) %>
           </div>
@@ -52,34 +56,17 @@
           <%= f.fields_for :days_of_week do |dow_form| %>
             <div class="flex flex-col mt-6">
               <div class="flex space-x-2">
-                <div class="flex flex-col items-center">
-                  <%= dow_form.check_box 0, { checked: @goal.days_of_week.include?(0), class: "mr-2", data: { action: "change->goal-schedule#changeGoalSchedule" } } %>
-                  <div class="text-md"><%= t('days_of_week.monday') %></div>
-                </div>
-                <div class="flex flex-col items-center">
-                  <%= dow_form.check_box 1, { checked: @goal.days_of_week.include?(1), class: "mr-2", data: { action: "change->goal-schedule#changeGoalSchedule" } } %>
-                  <div class="text-md"><%= t('days_of_week.tuesday') %></div>
-                </div>
-                <div class="flex flex-col items-center">
-                  <%= dow_form.check_box 2, { checked: @goal.days_of_week.include?(2), class: "mr-2", data: { action: "change->goal-schedule#changeGoalSchedule" } } %>
-                  <div class="text-md"><%= t('days_of_week.wednesday') %></div>
-                </div>
-                <div class="flex flex-col items-center">
-                  <%= dow_form.check_box 3, { checked: @goal.days_of_week.include?(3), class: "mr-2", data: { action: "change->goal-schedule#changeGoalSchedule" } } %>
-                  <div class="text-md"><%= t('days_of_week.thursday') %></div>
-                </div>
-                <div class="flex flex-col items-center">
-                  <%= dow_form.check_box 4, { checked: @goal.days_of_week.include?(4), class: "mr-2", data: { action: "change->goal-schedule#changeGoalSchedule" } } %>
-                  <div class="text-md"><%= t('days_of_week.friday') %></div>
-                </div>
-                <div class="flex flex-col items-center">
-                  <%= dow_form.check_box 5, { checked: @goal.days_of_week.include?(5), class: "mr-2", data: { action: "change->goal-schedule#changeGoalSchedule" } } %>
-                  <div class="text-md"><%= t('days_of_week.saturday') %></div>
-                </div>
-                <div class="flex flex-col items-center">
-                  <%= dow_form.check_box 6, { checked: @goal.days_of_week.include?(6), class: "mr-2", data: { action: "change->goal-schedule#changeGoalSchedule" } } %>
-                  <div class="text-md"><%= t('days_of_week.sunday') %></div>
-                </div>
+                <% GoalsHelper::DAY_OF_WEEK_WORD_MAPPING.each do |key, value| %>
+                  <div class="flex flex-col items-center">
+                    <%= dow_form.check_box key,
+                                           {
+                                             checked: @goal.days_of_week.include?(key),
+                                             class: "mr-2",
+                                             data: { action: "change->goal-schedule#changeGoalSchedule" }
+                                           } %>
+                    <div class="text-md"><%= value %></div>
+                  </div>
+                <% end %>
               </div>
           <% end %>
           <div class="text-gray-400 mt-6">
@@ -94,5 +81,3 @@
 
   </div>
 <% end %>
-
-<%#= render Goals::ScheduleComponent.new(goal: @goal) %>

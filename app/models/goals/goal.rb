@@ -12,6 +12,7 @@ module Goals
     validates :name, presence: true
     validates :type, inclusion: GOAL_TYPES
 
+    # rubocop:disable Naming/PredicateName
     def is_daily?
       type == Goals::Daily.name
     end
@@ -23,6 +24,7 @@ module Goals
     def is_days_of_week?
       type == Goals::DaysOfWeek.name
     end
+    # rubocop:enable Naming/PredicateName
 
     class << self
       def policy_class

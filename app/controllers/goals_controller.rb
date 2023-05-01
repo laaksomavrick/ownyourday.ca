@@ -14,10 +14,12 @@ class GoalsController < ApplicationController
       @goal.id = goal_id
     end
 
-    @goal.times_per_week = goal_params[:times_per_week] if goal_params[:times_per_week]
+    if goal_params[:times_per_week] && @goal.is_times_per_week?
+      times_per_week = goal_params[:times_per_week]
+      @goal.times_per_week = times_per_week
+    end
 
-    # Why isn't this working?!
-    if goal_params[:days_of_week]
+    if goal_params[:days_of_week] && @goal.is_days_of_week?
       days_of_week_keys = goal_params[:days_of_week].keys.map(&:to_s)
       days_of_week = days_of_week_keys.filter { |day| goal_params[:days_of_week][day] == '1' }
       @goal.days_of_week = days_of_week
