@@ -5,11 +5,22 @@ module Goals
     store_accessor :metadata, :times_per_week
     validate :metadata, :validate_metadata
 
+    def times_per_week
+      data = metadata['times_per_week']
+
+      return 1 if data.nil?
+
+      data.to_i
+    end
+
+    def times_per_week=(value)
+      times_per_week = value.to_i
+      self.metadata = { times_per_week: }
+    end
+
     private
 
     def validate_metadata
-      times_per_week = metadata['times_per_week'].to_i
-
       errors.add(:times_per_week, 'must be greater than 0') unless times_per_week.positive?
       errors.add(:times_per_week, 'must be less than 7') unless times_per_week <= 6
     end
