@@ -14,7 +14,7 @@ module Goals
     end
 
     def times_per_week=(value)
-      times_per_week  = value.to_i
+      times_per_week = value.to_i
       self.metadata = { times_per_week: }
     end
 

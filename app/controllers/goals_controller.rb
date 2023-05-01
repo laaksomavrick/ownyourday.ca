@@ -14,8 +14,13 @@ class GoalsController < ApplicationController
       @goal.id = goal_id
     end
 
-    if goal_params[:times_per_week]
-      @goal.times_per_week = goal_params[:times_per_week]
+    @goal.times_per_week = goal_params[:times_per_week] if goal_params[:times_per_week]
+
+    # Why isn't this working?!
+    if goal_params[:days_of_week]
+      days_of_week_keys = goal_params[:days_of_week].keys.map(&:to_s)
+      days_of_week = days_of_week_keys.filter { |day| goal_params[:days_of_week][day] == '1' }
+      @goal.days_of_week = days_of_week
     end
 
     @goal
@@ -27,7 +32,8 @@ class GoalsController < ApplicationController
     params.fetch(:goal, {}).permit(
       :name,
       :type,
-      :times_per_week
+      :times_per_week,
+      days_of_week: %w[0 1 2 3 4 5 6]
     )
   end
 end

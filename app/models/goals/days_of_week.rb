@@ -13,6 +13,11 @@ module Goals
       data.to_a
     end
 
+    def days_of_week=(value)
+      days_of_week  = value.map(&:to_i)
+      self.metadata = { days_of_week: }
+    end
+
     private
 
     def validate_metadata

@@ -18,6 +18,9 @@ module GoalsHelper
 
   def days_of_week_schedule_message(days = [])
     day_words = days.map { |day| DAY_OF_WEEK_WORD_MAPPING[day] }
+
+    return t('goal.schedule.day_of_week_none_summary') if day_words.empty?
+
     day_sentence = case day_words.length
                    when 1
                      day_words.first

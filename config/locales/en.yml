@@ -27,3 +27,4 @@ en:
       daily_summary: "Your goal will be scheduled every day"
       times_per_week_summary: "Your goal will be scheduled %{times} %{unit} per week"
       day_of_week_summary: "Your goal will be scheduled %{days}"
+      day_of_week_none_summary: "Your goal will not be scheduled"
