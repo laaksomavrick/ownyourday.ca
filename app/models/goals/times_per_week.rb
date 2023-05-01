@@ -13,6 +13,11 @@ module Goals
       data.to_i
     end
 
+    def times_per_week=(value)
+      times_per_week  = value.to_i
+      self.metadata = { times_per_week: }
+    end
+
     private
 
     def validate_metadata

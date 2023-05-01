@@ -10,8 +10,12 @@ class GoalsController < ApplicationController
     @goal = authorize Goals::Goal.find_by(id: goal_id)
 
     if goal_params[:type]
-      @goal = Goals::Goal.new(goal_params)
+      @goal = Goals::Goal.new(goal_params.slice(:id, :name, :type))
       @goal.id = goal_id
+    end
+
+    if goal_params[:times_per_week]
+      @goal.times_per_week = goal_params[:times_per_week]
     end
 
     @goal
@@ -22,7 +26,8 @@ class GoalsController < ApplicationController
   def goal_params
     params.fetch(:goal, {}).permit(
       :name,
-      :type
+      :type,
+      :times_per_week
     )
   end
 end
