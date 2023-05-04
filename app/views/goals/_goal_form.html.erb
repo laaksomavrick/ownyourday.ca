@@ -1,0 +1,79 @@
+<%= form_with model: model, url: url, scope: :goal do |f| %>
+
+  <div class="flex flex-col pb-4">
+    <%= f.label :name, t('goal.name_label'), class: "text-2xl font-medium pb-4 select-none" %>
+    <%= f.text_field :name, class: "text-2xl p-4 rounded-md border-gray-200" %>
+  </div>
+
+  <div class="flex flex-col pb-4">
+    <%= f.label :name, t('goal.schedule_label'), class: "text-2xl font-medium pb-4 select-none" %>
+
+    <div data-controller="goal-schedule" class="flex flex-col	border p-4 rounded-md border-gray-200">
+      <button
+        formmethod="get"
+        formaction="<%= url %>"
+        hidden
+        data-goal-schedule-target="changeGoalSchedule"
+        data-turbo-frame="<%= f.field_id(:type, :turbo_frame) %>"
+      >
+      </button>
+      <div class="flex justify-start space-x-4">
+        <div class="flex items-center">
+          <%= f.radio_button :type, Goals::Daily.name, class: "mr-2", data: { action: "click->goal-schedule#changeGoalSchedule" } %>
+          <div class="text-xl"><%= t('goal.schedule.daily_label') %> </div>
+        </div>
+        <div class="flex items-center">
+          <%= f.radio_button :type, Goals::TimesPerWeek.name, class: "mr-2", data: { action: "click->goal-schedule#changeGoalSchedule" } %>
+          <div class="text-xl"><%= t('goal.schedule.times_per_week_label') %> </div>
+        </div>
+        <div class="flex items-center">
+          <%= f.radio_button :type, Goals::DaysOfWeek.name, class: "mr-2", data: { action: "click->goal-schedule#changeGoalSchedule" } %>
+          <div class="text-xl"><%= t('goal.schedule.days_of_week_label') %></div>
+        </div>
+      </div>
+
+      <turbo-frame id="<%= f.field_id(:type, :turbo_frame) %>">
+        <% if @goal.is_daily? %>
+          <div class="text-gray-400 mt-6">
+            <%= t('goal.schedule.daily_summary') %>
+          </div>
+        <% end %>
+
+        <% if @goal.is_times_per_week? %>
+          <%= f.select :times_per_week,
+                       options_for_select(1..6, selected: @goal.times_per_week),
+                       {},
+                       class: "mt-6 p-2 px-4 w-full rounded-md border-gray-200",
+                       data: { action: "change->goal-schedule#changeGoalSchedule" } %>
+          <div class="text-gray-400 mt-6">
+            <%= times_per_week_schedule_message(@goal.times_per_week) %>
+          </div>
+        <% end %>
+
+        <% if @goal.is_days_of_week? %>
+          <%= f.fields_for :days_of_week do |dow_form| %>
+            <div class="flex flex-col mt-6">
+              <div class="flex space-x-2">
+                <% GoalsHelper::DAY_OF_WEEK_WORD_MAPPING.each do |key, value| %>
+                  <div class="flex flex-col items-center">
+                    <%= dow_form.check_box key,
+                                           {
+                                             checked: @goal.days_of_week.include?(key),
+                                             class: "mr-2",
+                                             data: { action: "change->goal-schedule#changeGoalSchedule" }
+                                           } %>
+                    <div class="text-md"><%= value %></div>
+                  </div>
+                <% end %>
+              </div>
+          <% end %>
+          <div class="text-gray-400 mt-6">
+            <%= days_of_week_schedule_message(@goal.days_of_week) %>
+          </div>
+          </div>
+        <% end %>
+
+      </turbo-frame>
+    </div>
+  </div>
+<% end %>

@@ -23,4 +23,8 @@ class GoalPolicy < ApplicationPolicy
   def edit?
     user.id == record.user_id
   end
+
+  def new?
+    true
+  end
 end

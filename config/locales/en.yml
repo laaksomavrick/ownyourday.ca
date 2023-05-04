@@ -16,6 +16,7 @@ en:
   goals:
     navigation: "Goals"
     header: "My Goals"
+    new_button: "New"
   goal:
     header: "Goal Details"
     schedule_label: "Schedule"
