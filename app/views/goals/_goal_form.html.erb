@@ -12,7 +12,7 @@
     <div data-controller="goal-schedule" class="flex flex-col	border p-4 rounded-md border-gray-200">
       <button
         formmethod="get"
-        formaction="<%= url %>"
+        formaction="<%= current_page_path %>"
         hidden
         data-goal-schedule-target="changeGoalSchedule"
         data-turbo-frame="<%= f.field_id(:type, :turbo_frame) %>"
@@ -82,6 +82,6 @@
   </div>
 
   <div class="flex w-100">
-    <%= f.submit nil, class: primary_button("ml-auto")  %>
+    <%= f.submit nil, class: primary_button("ml-auto") %>
   </div>
 <% end %>

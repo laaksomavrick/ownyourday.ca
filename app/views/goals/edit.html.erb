@@ -1,2 +1,2 @@
 <%= render 'layouts/page_header', header: t('goal.header') %>
-<%= render 'goal_form', model: @goal, url: edit_goal_path(@goal.id) %>
+<%= render 'goal_form', model: @goal, current_page_path: edit_goal_path(@goal.id) %>

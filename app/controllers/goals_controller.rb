@@ -22,9 +22,6 @@ class GoalsController < ApplicationController
     @goal.user = current_user
     @goal.save
 
-    # TODO: validate if type = days_of_week that cannot be empty
-    # TODO: validate if type = times_per_week that cannot be < 0 or > 6
-
     if @goal.errors.empty? == false
       render 'new', status: :unprocessable_entity
       return
@@ -36,6 +33,7 @@ class GoalsController < ApplicationController
 
   private
 
+  # TODO: extract this into an action e.g. UpsertGoal(params, { persistence: true })
   def update_goal_from_form(goal, goal_id = nil)
     if goal_params[:type]
       goal = Goals::Goal.new(goal_params.slice(:id, :name, :type))
