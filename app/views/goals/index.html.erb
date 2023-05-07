@@ -1,9 +1,9 @@
 <div class="flex justify-between">
   <%= render 'layouts/page_header', header: t('goals.header') %>
-  <%= link_to t('goals.new_button'), new_goal_path, class: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded cursor-pointer h-fit"  %>
+  <%= link_to t('goals.new_button'), new_goal_path, class: primary_button  %>
 </div>
 
-<div class="space-y-4">
+<div class="space-y-4 pb-4">
   <% @goals.each do |goal| %>
     <%= render 'layouts/goals/list_item', goal: goal %>
   <% end %>

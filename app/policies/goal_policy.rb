@@ -24,7 +24,7 @@ class GoalPolicy < ApplicationPolicy
     user.id == record.user_id
   end
 
-  def new?
+  def create?
     true
   end
 end

@@ -7,18 +7,36 @@ class GoalsController < ApplicationController
 
   def new
     @goal = authorize Goals::Daily.new
-    @goal = goal_for_view(@goal)
+    @goal = update_goal_from_form(@goal)
   end
 
   def edit
     goal_id = params[:id].to_i
     @goal = authorize Goals::Goal.find_by(id: goal_id)
-    @goal = goal_for_view(@goal, goal_id)
+    @goal = update_goal_from_form(@goal, goal_id)
+  end
+
+  def create
+    @goal = authorize Goals::Goal.new
+    @goal = update_goal_from_form(@goal)
+    @goal.user = current_user
+    @goal.save
+
+    # TODO: validate if type = days_of_week that cannot be empty
+    # TODO: validate if type = times_per_week that cannot be < 0 or > 6
+
+    if @goal.errors.empty? == false
+      render 'new', status: :unprocessable_entity
+      return
+    end
+
+    flash[:notice] = t('helpers.alert.create_successful', name: @goal.name)
+    redirect_to edit_goal_path(@goal.id)
   end
 
   private
 
-  def goal_for_view(goal, goal_id = nil)
+  def update_goal_from_form(goal, goal_id = nil)
     if goal_params[:type]
       goal = Goals::Goal.new(goal_params.slice(:id, :name, :type))
       goal.id = goal_id if goal_id

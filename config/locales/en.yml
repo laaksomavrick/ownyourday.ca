@@ -1,4 +1,10 @@
 en:
+  helpers:
+    submit:
+      create: "Create"
+      update: "Update"
+    alert:
+      create_successful: 'Successfully created %{name}'
   ownyourday: "ownyourday"
   today: "Today"
   common:

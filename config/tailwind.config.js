@@ -15,6 +15,9 @@ module.exports = {
     {
       pattern: /text-teal/, // TODO: change this if brand_color is ever changed
     },
+    {
+      pattern: /border-blue/, // TODO: change this if brand_color is ever changed
+    },
 
   ],
   theme: {

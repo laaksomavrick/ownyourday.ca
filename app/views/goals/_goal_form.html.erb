@@ -1,8 +1,9 @@
-<%= form_with model: model, url: url, scope: :goal do |f| %>
+<%= form_with model: model, url: goals_path, scope: :goal do |f| %>
 
   <div class="flex flex-col pb-4">
     <%= f.label :name, t('goal.name_label'), class: "text-2xl font-medium pb-4 select-none" %>
     <%= f.text_field :name, class: "text-2xl p-4 rounded-md border-gray-200" %>
+    <%= render 'layouts/forms/input_error', model: @goal, field: :name %>
   </div>
 
   <div class="flex flex-col pb-4">
@@ -75,5 +76,12 @@
 
       </turbo-frame>
     </div>
+
+    <%= render 'layouts/forms/input_error', model: @goal, field: :times_per_week %>
+    <%= render 'layouts/forms/input_error', model: @goal, field: :days_of_week %>
+  </div>
+
+  <div class="flex w-100">
+    <%= f.submit nil, class: primary_button("ml-auto")  %>
   </div>
 <% end %>
