@@ -1,0 +1,7 @@
+<% if model.errors[field.to_sym].empty? == false %>
+  <div class="flex flex-col">
+    <% model.errors.full_messages_for(field.to_sym).each do |error| %>
+      <span class="text-sm text-red-600 mt-2"><%= error %></span>
+    <% end %>
+  </div>
+<% end %>

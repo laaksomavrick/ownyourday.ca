@@ -1,4 +1,10 @@
 en:
+  helpers:
+    submit:
+      create: "Create"
+      update: "Update"
+    alert:
+      create_successful: 'Successfully created %{name}'
   ownyourday: "ownyourday"
   today: "Today"
   common:
@@ -16,6 +22,7 @@ en:
   goals:
     navigation: "Goals"
     header: "My Goals"
+    new_button: "New"
   goal:
     header: "Goal Details"
     schedule_label: "Schedule"
@@ -28,3 +35,5 @@ en:
       times_per_week_summary: "Your goal will be scheduled %{times} %{unit} per week"
       day_of_week_summary: "Your goal will be scheduled %{days}"
       day_of_week_none_summary: "Your goal will not be scheduled"
+    create:
+      header: 'Create Goal'
