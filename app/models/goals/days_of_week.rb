@@ -5,10 +5,12 @@ module Goals
     store_accessor :metadata, :days_of_week
     validate :metadata, :validate_metadata
 
+    DEFAULT_SCHEDULE = [0].freeze
+
     def days_of_week
       data = metadata['days_of_week']
 
-      return [0] if data.nil?
+      return DEFAULT_SCHEDULE if data.nil?
 
       data.to_a
     end

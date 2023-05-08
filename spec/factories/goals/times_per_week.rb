@@ -5,6 +5,6 @@ FactoryBot.define do
     user factory: :user
     name { Faker::Lorem.word }
     type { Goals::TimesPerWeek.name }
-    metadata { { 'times_per_week' => 1 } }
+    metadata { { 'times_per_week' => Goals::TimesPerWeek::DEFAULT_SCHEDULE } }
   end
 end
