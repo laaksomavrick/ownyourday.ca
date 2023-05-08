@@ -5,10 +5,12 @@ module Goals
     store_accessor :metadata, :times_per_week
     validate :metadata, :validate_metadata
 
+    DEFAULT_SCHEDULE = 1
+
     def times_per_week
       data = metadata['times_per_week']
 
-      return 1 if data.nil?
+      return DEFAULT_SCHEDULE if data.nil?
 
       data.to_i
     end

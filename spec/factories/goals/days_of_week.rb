@@ -5,6 +5,6 @@ FactoryBot.define do
     user factory: :user
     name { Faker::Lorem.word }
     type { Goals::DaysOfWeek.name }
-    metadata { { 'days_of_week' => [0] } }
+    metadata { { 'days_of_week' => Goals::DaysOfWeek::DEFAULT_SCHEDULE } }
   end
 end

@@ -6,7 +6,7 @@ class UpdateGoalAction
   end
 
   def call(updates = {}, opts = {})
-    persist = opts[:persist] || false
+    persist = opts[:persist] || false # TODO: opts.try(:persist, false)
 
     should_update_type = updates[:type].present?
 
@@ -34,11 +34,11 @@ class UpdateGoalAction
     goal.type = type
     case goal.type
     when Goals::Daily.name
-      goal.metadata = '{}'
+      goal.metadata = Goals::Daily::DEFAULT_SCHEDULE
     when Goals::TimesPerWeek.name
-      goal.times_per_week = 1
+      goal.times_per_week = Goals::TimesPerWeek::DEFAULT_SCHEDULE
     when Goals::DaysOfWeek.name
-      goal.days_of_week = [0]
+      goal.days_of_week = Goals::DaysOfWeek::DEFAULT_SCHEDULE
     else
       raise "Unknown type when updating goal type=#{goal.type}"
     end
