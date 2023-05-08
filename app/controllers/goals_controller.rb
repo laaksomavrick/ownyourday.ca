@@ -13,7 +13,7 @@ class GoalsController < ApplicationController
   def edit
     goal_id = params[:id].to_i
     @goal = authorize Goals::Goal.find_by(id: goal_id)
-    @goal = update_goal_from_form(@goal, goal_id)
+    @goal = update_goal_from_form(@goal)
   end
 
   def create
@@ -31,14 +31,44 @@ class GoalsController < ApplicationController
     redirect_to edit_goal_path(@goal.id)
   end
 
+  def update
+    goal_id = params[:id].to_i
+    @goal = authorize Goals::Goal.find_by(id: goal_id)
+    @goal = update_goal_from_form(@goal)
+    @goal.save
+
+    if @goal.errors.empty? == false
+      render 'edit', status: :unprocessable_entity
+      return
+    end
+
+    flash[:notice] = t('helpers.alert.update_successful', name: @goal.name)
+    redirect_to edit_goal_path(@goal.id)
+  end
+
   private
 
   # TODO: extract this into an action e.g. UpsertGoal(params, { persistence: true })
-  def update_goal_from_form(goal, goal_id = nil)
+  def update_goal_from_form(goal)
     if goal_params[:type]
-      goal = Goals::Goal.new(goal_params.slice(:id, :name, :type))
-      goal.id = goal_id if goal_id
+      type = goal_params[:type].constantize
+      goal = goal.becomes(type)
+      goal.type = type
+      case goal.type
+      when Goals::Daily.name
+        goal.metadata = '{}'
+      when Goals::TimesPerWeek.name
+        goal.times_per_week = 1
+      when Goals::DaysOfWeek.name
+        goal.days_of_week = [0]
+      else
+        raise "Unknown type when updating goal type=#{goal.type}"
+      end
     end
+
+    goal.name = goal_params[:name] if goal_params[:name]
+
+    # goal.user = user if user
 
     if goal_params[:times_per_week] && goal.is_times_per_week?
       times_per_week = goal_params[:times_per_week]
