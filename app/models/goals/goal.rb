@@ -25,6 +25,18 @@ module Goals
       type == Goals::DaysOfWeek.name
     end
     # rubocop:enable Naming/PredicateName
+    #
+
+    # def type=(new_type)
+    #   case new_type
+    #   when Goals::Daily.name
+    #     self.metadata = '{}'
+    #   when Goals::TimesPerWeek
+    #     self.metadata = { times_per_week: 1 }
+    #   when Goals::DaysOfWeek
+    #     self.metadata = { days_of_week: [0]}
+    #   end
+    # end
 
     class << self
       def policy_class

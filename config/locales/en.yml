@@ -5,6 +5,7 @@ en:
       update: "Update"
     alert:
       create_successful: 'Successfully created %{name}'
+      update_successful: 'Successfully updated %{name}'
   ownyourday: "ownyourday"
   today: "Today"
   common:

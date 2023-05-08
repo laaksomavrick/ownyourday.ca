@@ -1,4 +1,10 @@
-<%= form_with model: model, url: goals_path, scope: :goal do |f| %>
+<% model ||= nil %>
+<% action_path ||= nil %>
+<% view_path ||= nil %>
+
+<%= form_with model: model, url: action_path, scope: :goal do |f| %>
+
+  <%= f.hidden_field :user_id, :value => current_user.id %>
 
   <div class="flex flex-col pb-4">
     <%= f.label :name, t('goal.name_label'), class: "text-2xl font-medium pb-4 select-none" %>
@@ -12,7 +18,7 @@
     <div data-controller="goal-schedule" class="flex flex-col	border p-4 rounded-md border-gray-200">
       <button
         formmethod="get"
-        formaction="<%= current_page_path %>"
+        formaction="<%= view_path %>"
         hidden
         data-goal-schedule-target="changeGoalSchedule"
         data-turbo-frame="<%= f.field_id(:type, :turbo_frame) %>"

@@ -16,15 +16,19 @@ class GoalPolicy < ApplicationPolicy
     attr_reader :user, :scope
   end
 
-  def show?
-    user.id == record.user_id
-  end
-
-  def edit?
+  def update?
     user.id == record.user_id
   end
 
   def create?
     true
+  end
+
+  def destroy?
+    user.id == record.user_id
+  end
+
+  def show?
+    user.id == record.user_id
   end
 end

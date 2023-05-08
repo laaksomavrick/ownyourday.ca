@@ -35,6 +35,78 @@ RSpec.describe 'Goals' do
       expect(page).to have_content(I18n.t('goal.header'))
     end
 
+    context 'when updating a goal' do
+      before do
+        sign_in user
+        visit edit_goal_path(goal.id)
+      end
+
+      it 'updates a daily goal' do
+        submit_button = find('input[name="commit"]')
+        submit_button.click
+
+        expect(page).to have_content(I18n.t('helpers.alert.update_successful', name: goal.name))
+        expect(find_field('Name').value).to eq goal.name
+        expect(find_by_id('goal_type_goalsdaily')).to be_checked
+      end
+
+      it 'updates a times_per_week goal' do
+        select_option = 2.to_s
+
+        choose option: Goals::TimesPerWeek.name
+        select select_option, from: 'goal_times_per_week'
+        submit_button = find('input[name="commit"]')
+        submit_button.click
+
+        expect(page).to have_content(I18n.t('helpers.alert.update_successful', name: goal.name))
+        expect(find_field('Name').value).to eq goal.name
+        expect(find_by_id('goal_times_per_week').value).to eq select_option
+      end
+
+      it 'updates a days_of_week goal' do
+        choose option: Goals::DaysOfWeek.name
+        check 'goal[days_of_week][0]'
+        check 'goal[days_of_week][1]'
+        submit_button = find('input[name="commit"]')
+        submit_button.click
+
+        expect(page).to have_content(I18n.t('helpers.alert.update_successful', name: goal.name))
+        expect(find_field('Name').value).to eq goal.name
+        expect(find_by_id('goal_days_of_week_0')).to be_checked
+        expect(find_by_id('goal_days_of_week_1')).to be_checked
+        expect(find_by_id('goal_days_of_week_2')).not_to be_checked
+      end
+    end
+
+    context 'when validating inputs' do
+      before do
+        sign_in user
+        visit edit_goal_path(goal.id)
+      end
+
+      it 'shows an error when name is empty' do
+        fill_in 'Name', with: ''
+        submit_button = find('input[name="commit"]')
+        submit_button.click
+
+        expect(page).not_to have_content(I18n.t('helpers.alert.update_successful', name: ''))
+        expect(page).to have_content("Name can't be blank")
+      end
+
+      it 'shows an error when days_per_week is empty' do
+        goal_name = 'goal name'
+
+        fill_in 'Name', with: goal_name
+        choose option: Goals::DaysOfWeek.name
+        uncheck 'goal[days_of_week][0]'
+        submit_button = find('input[name="commit"]')
+        submit_button.click
+
+        expect(page).not_to have_content(I18n.t('helpers.alert.update_successful', name: goal_name))
+        expect(page).to have_content('Days of week has no days specified')
+      end
+    end
+
     context 'when using scheduling' do
       before do
         sign_in user
