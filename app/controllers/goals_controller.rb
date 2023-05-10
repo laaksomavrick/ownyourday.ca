@@ -49,6 +49,16 @@ class GoalsController < ApplicationController
     redirect_to edit_goal_path(@goal.id)
   end
 
+  def destroy
+    goal_id = params[:id].to_i
+
+    @goal = authorize Goals::Goal.find_by(id: goal_id)
+    @goal.destroy
+
+    flash[:notice] = t('goal.destroy.success', name: @goal.name)
+    redirect_to(goals_path)
+  end
+
   private
 
   def goal_params
