@@ -1,2 +1,4 @@
-<%= render 'layouts/page_header', header: t('goal.header') %>
+<%= render 'layouts/page_header', header: t('goal.header') do %>
+  <%= button_to 'Delete', goal_path(@goal), method: :delete, form: { data: { turbo_confirm: t('goal.destroy.confirmation', name: @goal.name) } }, class: destroy_button("ml-auto") %>
+<% end %>
 <%= render 'goal_form', model: @goal, view_path: edit_goal_path(@goal.id), action_path: goal_path(@goal.id) %>

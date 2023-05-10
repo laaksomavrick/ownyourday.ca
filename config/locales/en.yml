@@ -38,3 +38,6 @@ en:
       day_of_week_none_summary: "Your goal will not be scheduled"
     create:
       header: 'Create Goal'
+    destroy:
+      confirmation: 'Are you sure you want to delete %{name}?'
+      success: 'Successfully deleted %{name}'
