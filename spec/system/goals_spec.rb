@@ -107,6 +107,21 @@ RSpec.describe 'Goals' do
       end
     end
 
+    context 'when deleting' do
+      let!(:to_delete_goal) { create(:daily_goal, user:) }
+
+      it 'can delete a goal' do
+        sign_in user
+        visit edit_goal_path(to_delete_goal.id)
+
+        accept_confirm do
+          click_button 'Delete'
+        end
+
+        expect(page).to have_content(I18n.t('goal.destroy.success', name: to_delete_goal.name))
+      end
+    end
+
     context 'when using scheduling' do
       before do
         sign_in user
