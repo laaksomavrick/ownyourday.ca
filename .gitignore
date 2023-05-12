@@ -34,3 +34,11 @@
 !/app/assets/builds/.keep
 
 node_modules
+
+# Devenv
+.devenv*
+devenv.local.nix
+
+# Direnv
+.direnv*
+
