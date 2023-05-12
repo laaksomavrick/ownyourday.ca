@@ -29,7 +29,7 @@ direnv allow
 
 Upon subsequently entering the directory a `nix-shell` should be present with the required project dependencies.
 
-### Without devenv and Nix
+### Without direnv and Nix
 
 The old fashioned way. Up to you to install the relevant dependencies using your preferred method of choice.
 
