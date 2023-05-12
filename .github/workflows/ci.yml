@@ -26,7 +26,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - name: Cache nix binaries
+      - name: Cache Nix binaries
         id: cache-nix
         uses: actions/cache@v3
         env:
@@ -36,50 +36,62 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/shell.nix') }}
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
 
-      - if: ${{ steps.cache-nix-store.outputs.cache-hit != 'true' }}
-        name: List the state of the nix store
-        continue-on-error: true
-        run: ls -l /nix/store
+      - name: Cache Ruby gems
+        id: cache-ruby
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-ruby-store
+        with:
+          path: ~/.gem/ruby/3.1.0/gems
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
 
-      # TODO: cache Ruby deps
-      # TODO: cache Js deps
+      - name: Cache JavaScript packages
+        id: cache-js
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-js-store
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
 
       - uses: cachix/install-nix-action@v20
         with:
           nix_path: nixpkgs=channel:nixos-unstable
 
-      - name: Install nix binaries
+      - name: Install Nix binaries
         run: nix-shell
 
       - uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install ruby dependencies
+      - name: Install Ruby dependencies
         env:
           RAILS_ENV: test
         run: nix-shell --run 'bundler'
 
-      - name: Install javascript dependencies
+      - name: Install JavaScript dependencies
         run: |
           nix-shell --run 'pnpm install --recursive --frozen-lockfile --strict-peer-dependencies'
 
       - name: Setup assets
         run: nix-shell --run 'bundler exec rails assets:clean assets:precompile'
 
-      - name: Check ruby formatting
+      - name: Check Ruby formatting
         run: nix-shell --run 'bundler exec rubocop --fail-level=warning'
 
-      - name: Check js formatting
+      - name: Check JavaScript formatting
         run: nix-shell --run 'pnpm run format:check'
 
-      - name: Check js lint
+      - name: Check JavaScript lint
         run: nix-shell --run 'pnpm run lint'
 
-      - name: Run js tests
+      - name: Run JavaScript tests
         run: nix-shell --run 'pnpm run test'
 
       - name: Setup test database
@@ -93,7 +105,7 @@ jobs:
           cp config/database.ci.yml config/database.yml
           nix-shell --run 'rake db:create db:schema:load'
 
-      - name: Run ruby tests
+      - name: Run Ruby tests
         env:
           IS_CI: true
           RAILS_ENV: test
