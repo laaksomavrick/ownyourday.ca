@@ -3,6 +3,7 @@
 pkgs.mkShell {
   packages = [
     pkgs.openssl
+    pkgs.postgresql_11
     pkgs.gnumake
     pkgs.docker
     pkgs.ruby_3_1
