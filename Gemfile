@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.1.4'
+ruby '~> 3.1.4'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem 'rails', '~> 7.0.4', '>= 7.0.4.3'
@@ -67,6 +67,7 @@ group :development, :test do
   gem 'debug', platforms: %i[mri mingw x64_mingw], require: false
   gem 'factory_bot_rails'
   gem 'faker'
+  gem 'rspec', '~> 3.12.0'
   gem 'rspec-rails', '~> 6.0.0'
 end
 

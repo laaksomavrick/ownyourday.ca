@@ -115,4 +115,4 @@ jobs:
           POSTGRES_USER: rails_github_actions
           POSTGRES_PASSWORD: postgres
           PGPORT: ${{ job.services.postgres.ports[5432] }}
-        run: nix-shell --run 'rspec'
+        run: nix-shell --run 'bundler exec rspec'
