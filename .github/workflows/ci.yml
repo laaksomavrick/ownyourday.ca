@@ -44,11 +44,14 @@ jobs:
         continue-on-error: true
         run: ls -l /nix/store
 
+      # TODO: cache Ruby deps
+      # TODO: cache Js deps
+
       - uses: cachix/install-nix-action@v20
         with:
           nix_path: nixpkgs=channel:nixos-unstable
 
-      - name: Enter nix shell
+      - name: Install nix binaries
         run: nix-shell
 
       - uses: gitleaks/gitleaks-action@v2
@@ -58,30 +61,26 @@ jobs:
       - name: Install ruby dependencies
         env:
           RAILS_ENV: test
-        run: bundler install
+        run: nix-shell --run 'bundler'
 
       - name: Install javascript dependencies
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8.1.1
-          run_install: |
-            - recursive: true
-              args: [--frozen-lockfile, --strict-peer-dependencies]
+        run: |
+          nix-shell --run 'pnpm install --recursive --frozen-lockfile --strict-peer-dependencies'
 
       - name: Setup assets
-        run: bundler exec rails assets:clean assets:precompile
+        run: nix-shell --run 'bundler exec rails assets:clean assets:precompile'
 
       - name: Check ruby formatting
-        run: bundler exec rubocop --fail-level=warning
+        run: nix-shell --run 'bundler exec rubocop --fail-level=warning'
 
       - name: Check js formatting
-        run: pnpm run format:check
+        run: nix-shell --run 'pnpm run format:check'
 
       - name: Check js lint
-        run: pnpm run lint
+        run: nix-shell --run 'pnpm run lint'
 
       - name: Run js tests
-        run: pnpm run test
+        run: nix-shell --run 'pnpm run test'
 
       - name: Setup test database
         env:
@@ -92,7 +91,7 @@ jobs:
           POSTGRES_PASSWORD: postgres
         run: |
           cp config/database.ci.yml config/database.yml
-          rake db:create db:schema:load
+          nix-shell --run 'rake db:create db:schema:load'
 
       - name: Run ruby tests
         env:
@@ -103,4 +102,4 @@ jobs:
           POSTGRES_USER: rails_github_actions
           POSTGRES_PASSWORD: postgres
           PGPORT: ${{ job.services.postgres.ports[5432] }}
-        run: rspec
+        run: nix-shell --run 'rspec'
