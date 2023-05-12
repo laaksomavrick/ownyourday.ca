@@ -2,7 +2,6 @@
 
 pkgs.mkShell {
   packages = [
-    pkgs.openssl
     pkgs.postgresql_11
     pkgs.gnumake
     pkgs.docker
