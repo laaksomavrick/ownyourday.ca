@@ -5,9 +5,13 @@ on:
     branches: [ main ]
 
 env:
-  nix_store_path: ~/nix
+  NIX_STORE_PATH: ~/nix
+  PGHOST: localhost
+  POSTGRES_DB: rails_github_actions_test
+  POSTGRES_PASSWORD: postgres
+  POSTGRES_USER: rails_github_actions
+  RAILS_ENV: test
 
-# TODO: clean up env variables
 jobs:
   verify:
     name: Verify pull request
@@ -15,11 +19,11 @@ jobs:
 
     services:
       postgres:
-        image: postgres:11
         env:
-          POSTGRES_USER: rails_github_actions
-          POSTGRES_DB: rails_github_actions_test
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: ${{ env.POSTGRES_USER }}
+          POSTGRES_DB: ${{ env.POSTGRES_DB }}
+          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
+        image: postgres:11
         ports: ["5432:5432"]
         options: >-
           --health-cmd pg_isready
@@ -42,7 +46,7 @@ jobs:
           # So, set this to somewhere else (e.g. ~/nix) that the runner user can write
           # And specify this location in subsequent nix commands
           # See https://github.com/actions/cache/issues/749#issuecomment-1465302692
-          path: ${{ env.nix_store_path }}
+          path: ${{ env.NIX_STORE_PATH }}
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/flake.lock') }}
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
@@ -53,7 +57,7 @@ jobs:
         env:
           cache-name: cache-ruby-store
         with:
-          path: vendor/bundle
+          path: ./vendor/bundle
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/Gemfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
@@ -64,68 +68,69 @@ jobs:
         env:
           cache-name: cache-js-store
         with:
-          path: node_modules
+          path: ./node_modules
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
 
       - name: Install Nix binaries
-        run: nix --store ${{ env.nix_store_path }} develop .
+        run: nix --store ${{ env.NIX_STORE_PATH }} develop .
 
       # Required for pg gem dependencies - we don't want to use /usr/bin/pg_config but the nix binary instead
       # For the next step (Install Ruby dependencies)
       - name: Set pg_config path for installing pg gem
-        run: echo "PG_CONFIG_PATH=$(nix --store ${{ env.nix_store_path }} develop . --command which pg_config)" >> $GITHUB_ENV
+        id: pg-config-path
+        run: echo "PG_CONFIG_PATH=$(nix --store ${{ env.NIX_STORE_PATH }} develop . --command which pg_config)" >> $GITHUB_OUTPUT
 
       - name: Install Ruby dependencies
-        env:
-          RAILS_ENV: test
         run: |
-          nix --store ${{ env.nix_store_path }} develop . --command bundle config build.pg --with-pg-config=${{ env.PG_CONFIG_PATH }} && \
-          nix --store ${{ env.nix_store_path }} develop . --command bundle config path vendor/bundle && \
-          nix --store ${{ env.nix_store_path }} develop . --command bundle install --jobs 4 --retry 3
+          nix --store ${{ env.NIX_STORE_PATH }} develop . --command bundle config build.pg --with-pg-config=${{ steps.pg-config-path.outputs.PG_CONFIG_PATH }} && \
+          nix --store ${{ env.NIX_STORE_PATH }} develop . --command bundle config path vendor/bundle && \
+          nix --store ${{ env.NIX_STORE_PATH }} develop . --command bundle install --jobs 4 --retry 3
 
       - name: Install JavaScript dependencies
         run: |
-          nix --store ${{ env.nix_store_path }} develop . --command pnpm install --recursive --frozen-lockfile --strict-peer-dependencies
+          ls -la && \
+          cat pnpm-lock.yaml && \
+          nix --store ${{ env.NIX_STORE_PATH }} develop . --command pnpm install --recursive --frozen-lockfile --strict-peer-dependencies
 
       - name: Setup assets
-        run: nix --store ${{ env.nix_store_path }} develop . --command bundler exec rails assets:clean assets:precompile
+        run: nix --store ${{ env.NIX_STORE_PATH }} develop . --command bundler exec rails assets:clean assets:precompile
 
       - uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Check Ruby formatting
-        run: nix --store ${{ env.nix_store_path }} develop . --command bundler exec rubocop --fail-level=warning
+        run: nix --store ${{ env.NIX_STORE_PATH }} develop . --command bundler exec rubocop --fail-level=warning
 
       - name: Check JavaScript formatting
-        run: nix --store ${{ env.nix_store_path }} develop . --command pnpm run format:check
+        run: nix --store ${{ env.NIX_STORE_PATH }} develop . --command pnpm run format:check
 
       - name: Check JavaScript lint
-        run: nix --store ${{ env.nix_store_path }} develop . --command pnpm run lint
+        run: nix --store ${{ env.NIX_STORE_PATH }} develop . --command pnpm run lint
 
       - name: Run JavaScript tests
-        run: nix --store ${{ env.nix_store_path }} develop . --command pnpm run test
+        run: nix --store ${{ env.NIX_STORE_PATH }} develop . --command pnpm run test
 
       - name: Setup test database
         env:
-          RAILS_ENV: test
-          PGHOST: localhost
-          POSTGRES_DB: rails_github_actions_test
-          POSTGRES_USER: rails_github_actions
-          POSTGRES_PASSWORD: postgres
+          RAILS_ENV: ${{ env.RAILS_ENV }}
+          PGHOST: ${{ env.PGHOST }}
+          POSTGRES_USER: ${{ env.POSTGRES_USER }}
+          POSTGRES_DB: ${{ env.POSTGRES_DB }}
+          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
         run: |
           cp config/database.ci.yml config/database.yml
-          nix --store ${{ env.nix_store_path }} develop . --command rake db:create db:schema:load
+          nix --store ${{ env.NIX_STORE_PATH }} develop . --command rake db:create db:schema:load
 
       - name: Run Ruby tests
         env:
           IS_CI: true
-          RAILS_ENV: test
-          PGHOST: localhost
-          POSTGRES_DB: rails_github_actions_test
-          POSTGRES_USER: rails_github_actions
-          POSTGRES_PASSWORD: postgres
+          RAILS_ENV: ${{ env.RAILS_ENV }}
+          PGHOST: ${{ env.PGHOST }}
+          POSTGRES_USER: ${{ env.POSTGRES_USER }}
+          POSTGRES_DB: ${{ env.POSTGRES_DB }}
+          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
           PGPORT: ${{ job.services.postgres.ports[5432] }}
-        run: nix --store ${{ env.nix_store_path }} develop . --command bundler exec rspec
+        run: nix --store ${{ env.NIX_STORE_PATH }} develop . --command bundler exec rspec
