@@ -67,6 +67,7 @@ group :development, :test do
   gem 'debug', platforms: %i[mri mingw x64_mingw], require: false
   gem 'factory_bot_rails'
   gem 'faker'
+  gem 'rspec', '~> 3.12.0'
   gem 'rspec-rails', '~> 6.0.0'
 end
 
@@ -85,6 +86,7 @@ group :development do
   # gem "spring"
   gem 'rubocop-rails', require: false
   gem 'rubocop-rspec', require: false
+  gem 'foreman'
 end
 
 group :test do
