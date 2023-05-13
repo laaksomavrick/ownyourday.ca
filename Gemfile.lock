@@ -109,6 +109,7 @@ GEM
       ruby2_keywords (>= 0.0.4)
     faraday-net_http (3.0.2)
     flamegraph (0.9.5)
+    foreman (0.87.2)
     globalid (1.1.0)
       activesupport (>= 5.0)
     hashie (5.0.0)
@@ -334,6 +335,7 @@ DEPENDENCIES
   factory_bot_rails
   faker
   flamegraph
+  foreman
   importmap-rails
   jbuilder
   memory_profiler
@@ -361,7 +363,7 @@ DEPENDENCIES
   webdrivers
 
 RUBY VERSION
-   ruby 3.1.4p223
+   ruby 3.1.2p20
 
 BUNDLED WITH
    2.3.7
