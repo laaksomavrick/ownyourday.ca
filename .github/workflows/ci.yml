@@ -47,7 +47,7 @@ jobs:
           # And specify this location in subsequent nix commands
           # See https://github.com/actions/cache/issues/749#issuecomment-1465302692
           path: ${{ env.NIX_STORE_PATH }}
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/flake.lock') }}
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('flake.lock') }}
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
 
@@ -58,7 +58,7 @@ jobs:
           cache-name: cache-ruby-store
         with:
           path: ./vendor/bundle
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/Gemfile.lock') }}
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('Gemfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
 
@@ -68,8 +68,8 @@ jobs:
         env:
           cache-name: cache-js-store
         with:
-          path: ./node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          path: ~/.local/share/pnpm/store
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
 
@@ -90,9 +90,7 @@ jobs:
 
       - name: Install JavaScript dependencies
         run: |
-          ls -la && \
-          cat pnpm-lock.yaml && \
-          nix --store ${{ env.NIX_STORE_PATH }} develop . --command pnpm install --recursive --frozen-lockfile --strict-peer-dependencies
+          nix --store ${{ env.NIX_STORE_PATH }} develop . --command pnpm install --frozen-lockfile --strict-peer-dependencies
 
       - name: Setup assets
         run: nix --store ${{ env.NIX_STORE_PATH }} develop . --command bundler exec rails assets:clean assets:precompile
