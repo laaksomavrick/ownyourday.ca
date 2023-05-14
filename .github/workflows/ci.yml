@@ -5,6 +5,7 @@ on:
     branches: [ main ]
 
 env:
+  IS_CI: true
   NIX_STORE_PATH: ~/nix
   PGHOST: localhost
   POSTGRES_DB: rails_github_actions_test
@@ -112,23 +113,9 @@ jobs:
         run: nix --store ${{ env.NIX_STORE_PATH }} develop . --command pnpm run test
 
       - name: Setup test database
-        env:
-          RAILS_ENV: ${{ env.RAILS_ENV }}
-          PGHOST: ${{ env.PGHOST }}
-          POSTGRES_USER: ${{ env.POSTGRES_USER }}
-          POSTGRES_DB: ${{ env.POSTGRES_DB }}
-          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
         run: |
           cp config/database.ci.yml config/database.yml
           nix --store ${{ env.NIX_STORE_PATH }} develop . --command rake db:create db:schema:load
 
       - name: Run Ruby tests
-        env:
-          IS_CI: true
-          RAILS_ENV: ${{ env.RAILS_ENV }}
-          PGHOST: ${{ env.PGHOST }}
-          POSTGRES_USER: ${{ env.POSTGRES_USER }}
-          POSTGRES_DB: ${{ env.POSTGRES_DB }}
-          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
-          PGPORT: ${{ job.services.postgres.ports[5432] }}
         run: nix --store ${{ env.NIX_STORE_PATH }} develop . --command bundler exec rspec
