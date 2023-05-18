@@ -3,15 +3,11 @@
 class TodayController < ApplicationController
   def index
     # TODO: authorization
-    # Confirm we're storing all dates in UTC - convert to user localized TZ when doing calcs for scheduling
 
-    # If "todays tasks" exists for NOW localized to USER TZ
-    # return todays tasks
-    # otherwise, create "todays tasks"
-    # For each goal
-    # Determine whether the goal should be scheduled for today
-    # If true, create a "task" record for the goal
+    @task_list = RetrieveTodaysTaskListAction.new(user: current_user).call
 
-    # daily_tasks = current_user.daily_goals
+    return unless @task_list.nil?
+
+    @task_list = GenerateTodaysTaskListAction.new(user: current_user).call
   end
 end

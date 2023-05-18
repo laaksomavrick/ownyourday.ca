@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:postgresql://localhost:5432/ownyourday_development</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="ownyourday_test@localhost" uuid="c5bee61e-30ba-4bb6-a2f5-d11f69aafe5c">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5432/ownyourday_test</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
