@@ -2,6 +2,7 @@
 
 class User < ApplicationRecord
   devise :database_authenticatable,
+         :registerable,
          :rememberable,
          :trackable, :omniauthable, omniauth_providers: [:google_oauth2]
 

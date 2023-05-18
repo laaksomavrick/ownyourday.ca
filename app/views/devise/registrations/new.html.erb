@@ -1,7 +1,6 @@
 <h2>Sign up</h2>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name))
-do |f| %> <%= render "devise/shared/error_messages", resource: resource %>
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %> <%= render "devise/shared/error_messages", resource: resource %>
 
 <div class="field">
   <%= f.label :email %><br />
@@ -20,5 +19,18 @@ do |f| %> <%= render "devise/shared/error_messages", resource: resource %>
   <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
 </div>
 
+<%= f.hidden_field(:time_zone, value: nil) %>
+
 <div class="actions"><%= f.submit "Sign up" %></div>
-<% end %> <%= render "devise/shared/links" %>
+<% end %>
+
+<%= render "devise/shared/links" %>
+
+<script type="text/javascript">
+  // TODO: refactor this into an actual js view
+  const onLoad = () => {
+    document.getElementById('user_time_zone').value = Intl.DateTimeFormat().resolvedOptions().timeZone
+  }
+  document.addEventListener("load", onLoad)
+  document.addEventListener("turbo:load", onLoad)
+</script>

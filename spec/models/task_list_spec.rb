@@ -10,7 +10,7 @@ RSpec.describe TaskList do
 
   it 'must have a date that is the start of the day' do
     expect do
-      create(:task_list, date: DateTime.now.end_of_day)
+      create(:task_list, date: DateTime.current.end_of_day)
     end.to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: Date must be the start of the day')
   end
 end
