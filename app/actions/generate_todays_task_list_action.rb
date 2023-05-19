@@ -2,18 +2,30 @@
 
 class GenerateTodaysTaskListAction
   def initialize(user:)
-    super
     @user = user
   end
 
   def call(today: DateTime.current.utc)
-    # in a transaction
-    # create a task list for today
-    # create tasks for the task list based on user goals
-    # For each goal
-    # Determine whether the goal should be scheduled for today
-    # If true, create a "task" record for the goal
+    TaskList.transaction do
+      task_list_date = today.beginning_of_day
+      task_list = TaskList.create(user: @user, date: task_list_date)
 
-    user_start_of_day = @user.beginning_of_today
+      daily_tasks = daily_goals_to_schedule(task_list:)
+
+      tasks = daily_tasks
+
+      Task.create!(tasks)
+
+      task_list
+    end
+  end
+
+  private
+
+  def daily_goals_to_schedule(task_list:)
+    daily_goals = @user.daily_goals
+    daily_goals.map do |daily_goal|
+      { user: @user, goal: daily_goal, task_list: }
+    end
   end
 end

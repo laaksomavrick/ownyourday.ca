@@ -14,4 +14,10 @@ class TaskList < ApplicationRecord
 
     errors.add(:date, 'must be the start of the day') unless is_valid
   end
+
+  class << self
+    def policy_class
+      TaskListPolicy
+    end
+  end
 end
