@@ -7,11 +7,11 @@ class GenerateTodaysTaskListAction
 
   def call(today: DateTime.current.utc)
     TaskList.transaction do
-      # TODO: We need to account for user tz here
-      # e.g. to_user_timezone and then to date and then UTC+00
-      # e.g. 2am UTC but 10pm in -0400 - we would create duplicate
-      # e.g. 10pm UTC but 2am in +0400 - we would create duplicate
-      task_list_date = today.beginning_of_day
+      user_timezone = @user.time_zone
+      user_today = today.in_time_zone(user_timezone)
+      normalized_user_today = user_today.asctime.in_time_zone('UTC')
+      task_list_date = normalized_user_today.beginning_of_day
+
       task_list = TaskList.create(user: @user, date: task_list_date)
 
       daily_tasks = daily_goals_to_schedule(task_list:)
