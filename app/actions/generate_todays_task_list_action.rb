@@ -8,6 +8,7 @@ class GenerateTodaysTaskListAction
   def call(today: DateTime.current.utc)
     TaskList.transaction do
       # TODO: We need to account for user tz here
+      # e.g. to_user_timezone and then to date and then UTC+00
       # e.g. 2am UTC but 10pm in -0400 - we would create duplicate
       # e.g. 10pm UTC but 2am in +0400 - we would create duplicate
       task_list_date = today.beginning_of_day
@@ -15,8 +16,9 @@ class GenerateTodaysTaskListAction
 
       daily_tasks = daily_goals_to_schedule(task_list:)
       day_of_week_tasks = days_of_week_goals_to_schedule(task_list:, today:)
+      times_per_week_tasks = times_per_week_goals_to_schedule(task_list:, today:)
 
-      tasks = daily_tasks + day_of_week_tasks
+      tasks = daily_tasks + day_of_week_tasks + times_per_week_tasks
 
       Task.create!(tasks)
 
@@ -39,5 +41,28 @@ class GenerateTodaysTaskListAction
     days_of_week_goals
       .filter { |day_of_week_goal| day_of_week_goal.days_of_week.include?(current_day_of_week) }
       .map { |day_of_week_goal| { user: @user, goal: day_of_week_goal, task_list: } }
+  end
+
+  def times_per_week_goals_to_schedule(task_list:, today:)
+    start_of_week = today.beginning_of_week
+    end_of_week = today.end_of_week.beginning_of_day
+
+    times_per_week_goals = @user.times_per_week_goals
+    times_per_week_goal_ids = times_per_week_goals.select(:id)
+
+    completed_tasks = Task.joins(:task_list)
+                          .where('task_lists.date >= ?', start_of_week)
+                          .where('task_lists.date <= ?', end_of_week)
+                          .where(goal_id: times_per_week_goal_ids)
+                          .where(completed: true)
+                          .all
+
+    # rubocop:disable Style/MultilineBlockChain
+    times_per_week_goals
+      .filter do |times_per_week_goal|
+        completed_tasks.where(goal_id: times_per_week_goal.id).count < times_per_week_goal.times_per_week
+      end
+      .map { |times_per_week_goal| { user: @user, goal: times_per_week_goal, task_list: } }
+    # rubocop:enable Style/MultilineBlockChain
   end
 end
