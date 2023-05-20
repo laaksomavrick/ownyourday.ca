@@ -16,7 +16,7 @@ class TaskListPolicy < ApplicationPolicy
     attr_reader :user, :scope
   end
 
-  def show?
+  def index?
     user.id == record.user_id
   end
 end

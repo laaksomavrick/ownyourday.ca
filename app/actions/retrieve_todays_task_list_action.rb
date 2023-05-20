@@ -10,6 +10,8 @@ class RetrieveTodaysTaskListAction
     user_today = today.in_time_zone(user_timezone)
     user_date = user_today.to_date
 
-    @user.task_lists.where('DATE(date) = ?', user_date).first
+    @user.task_lists
+         .includes(tasks: :goal)
+         .where('DATE(date) = ?', user_date).first
   end
 end

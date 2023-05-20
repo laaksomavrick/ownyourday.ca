@@ -10,6 +10,19 @@ RSpec.describe GenerateTodaysTaskListAction do
     expect(task_list).to be_present
   end
 
+  context 'when user has all goal types' do
+    it 'creates a task list with tasks' do
+      create(:daily_goal, user:)
+      create(:days_of_week_goal, user:, metadata: { 'days_of_week' => [0] })
+      create(:times_per_week_goal, user:, metadata: { 'times_per_week' => 2 })
+      today = DateTime.current.utc.beginning_of_week
+
+      task_list = described_class.new(user:).call(today:)
+
+      expect(task_list.tasks.count).to be 3
+    end
+  end
+
   context 'when user has a daily goal' do
     let!(:daily_goal) { create(:daily_goal, user:) }
 
