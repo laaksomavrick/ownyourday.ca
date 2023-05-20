@@ -7,9 +7,7 @@ class GenerateTodaysTaskListAction
 
   def call(today: DateTime.current.utc)
     TaskList.transaction do
-      user_timezone = @user.time_zone
-      user_today = today.in_time_zone(user_timezone)
-      user_date = user_today.beginning_of_day.utc
+      user_date = @user.beginning_of_day(today:)
 
       task_list = TaskList.create(user: @user, date: user_date)
 

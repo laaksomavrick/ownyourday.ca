@@ -11,8 +11,7 @@ class TaskList < ApplicationRecord
   private
 
   def validate_date
-    user_timezone = user.time_zone
-    start_of_day = date.utc.in_time_zone(user_timezone).beginning_of_day.utc
+    start_of_day = user.beginning_of_day(today: date)
 
     is_valid = start_of_day == date
 
@@ -20,8 +19,7 @@ class TaskList < ApplicationRecord
   end
 
   def default_values
-    date = self.date || DateTime.current
-    self.date = date.utc.in_time_zone(user.time_zone).beginning_of_day.utc
+    self.date = user.beginning_of_day(today: date)
   end
 
   class << self
