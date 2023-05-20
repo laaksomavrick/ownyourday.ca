@@ -2,10 +2,20 @@
 
 class User < ApplicationRecord
   devise :database_authenticatable,
+         :registerable,
          :rememberable,
          :trackable, :omniauthable, omniauth_providers: [:google_oauth2]
 
-  has_many :goals, dependent: :destroy
+  has_many :daily_goals, class_name: 'Goals::Daily', dependent: :destroy
+  has_many :days_of_week_goals, class_name: 'Goals::DaysOfWeek', dependent: :destroy
+  has_many :times_per_week_goals, class_name: 'Goals::TimesPerWeek', dependent: :destroy
+  has_many :task_lists, dependent: :destroy
+  has_many :tasks, dependent: :destroy
+
+  def beginning_of_day(today: DateTime.current.utc)
+    user_today = today.in_time_zone(time_zone)
+    user_today.beginning_of_day.utc
+  end
 
   def self.from_omniauth(auth)
     # TODO: if we ever want multiple oauth providers, this logic will have to change to support same email

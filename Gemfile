@@ -84,9 +84,9 @@ group :development do
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
+  gem 'foreman'
   gem 'rubocop-rails', require: false
   gem 'rubocop-rspec', require: false
-  gem 'foreman'
 end
 
 group :test do
