@@ -19,4 +19,8 @@ class TaskListPolicy < ApplicationPolicy
   def index?
     user.id == record.user_id
   end
+
+  def show?
+    user.id == record.user_id
+  end
 end

@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
-class TodayController < ApplicationController
+class TasksController < ApplicationController
   def index
-    # TODO: rethink route (e.g. /tasks?date=...)
-
     # TODO: support choosing date
     # TODO: support ad-hoc goal
     # TODO: support goal completion

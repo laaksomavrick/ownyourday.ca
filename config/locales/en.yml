@@ -7,7 +7,6 @@ en:
       create_successful: 'Successfully created %{name}'
       update_successful: 'Successfully updated %{name}'
   ownyourday: "ownyourday"
-  today: "Today"
   common:
     time: "time"
     times: "times"
@@ -20,6 +19,8 @@ en:
     friday: "Friday"
     saturday: "Saturday"
     sunday: "Sunday"
+  tasks:
+    navigation: "Tasks"
   goals:
     navigation: "Goals"
     header: "My Goals"
