@@ -12,7 +12,7 @@ RSpec.describe 'Goals' do
       expect(page).to have_current_path('/users/sign_in')
     end
 
-    it 'shows a user\'s exercises' do
+    it 'shows a user\'s goals' do
       sign_in user
       visit goals_path
       expect(page).to have_content(goals.first.name)

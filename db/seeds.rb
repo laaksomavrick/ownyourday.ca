@@ -12,3 +12,6 @@ user = User.create(email: 'dev@example.com', password: 'Qweqwe1!', time_zone: 'A
 create(:daily_goal, user:)
 create(:times_per_week_goal, user:)
 create(:days_of_week_goal, user:)
+
+# Create a task list and task for user
+GenerateTodaysTaskListAction.new(user:).call
