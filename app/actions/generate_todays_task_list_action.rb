@@ -9,10 +9,9 @@ class GenerateTodaysTaskListAction
     TaskList.transaction do
       user_timezone = @user.time_zone
       user_today = today.in_time_zone(user_timezone)
-      normalized_user_today = user_today.asctime.in_time_zone('UTC')
-      task_list_date = normalized_user_today.beginning_of_day
+      user_date = user_today.beginning_of_day.utc
 
-      task_list = TaskList.create(user: @user, date: task_list_date)
+      task_list = TaskList.create(user: @user, date: user_date)
 
       daily_tasks = daily_goals_to_schedule(task_list:)
       day_of_week_tasks = days_of_week_goals_to_schedule(task_list:, today:)
