@@ -1,4 +1,15 @@
 <div class="flex flex-col space-y-4">
+  <%= form_with path: tasks_path, scope: :task_list do |f| %>
+    <%= f.date_select :date, { default: @date } %>
+    <button
+      formmethod="get"
+      formaction="<%= tasks_path %>"
+      data-goal-schedule-target="changeGoalSchedule"
+      data-turbo-frame="<%= f.field_id(:type, :turbo_frame) %>"
+    >
+      Select
+    </button>
+<% end %>
   <% @task_list.tasks.each do |task| %>
      <%= render 'tasks/task', task: task %>
   <% end %>
