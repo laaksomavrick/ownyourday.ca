@@ -35,6 +35,8 @@ RSpec.describe 'Tasks' do
         sign_in user
         visit tasks_path
 
+        click_button user.beginning_of_day.strftime('%B %d, %Y')
+
         select monday.day.to_s, from: 'task_list[date(3i)]'
         click_button I18n.t('tasks.date.button')
 

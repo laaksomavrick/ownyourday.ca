@@ -18,4 +18,8 @@ module ApplicationHelper
     "bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-gray-300 hover:border-transparent rounded #{css}"
   end
   # rubocop:enable Layout/LineLength
+
+  def human_date_string(datetime: DateTime.current.utc)
+    datetime.strftime('%B %d, %Y')
+  end
 end
