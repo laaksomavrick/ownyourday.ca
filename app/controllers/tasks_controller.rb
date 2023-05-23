@@ -2,10 +2,9 @@
 
 class TasksController < ApplicationController
   def index
+    # TODO: ad-hoc goal
+    # TODO: goal completion
     @date = date_from_params || current_user.beginning_of_day
-    # TODO: support choosing date
-    # TODO: support ad-hoc goal
-    # TODO: support goal completion
     @task_list = RetrieveTodaysTaskListAction.new(user: current_user).call(today: @date)
     @task_list ||= GenerateTodaysTaskListAction.new(user: current_user).call(today: @date)
     authorize @task_list
