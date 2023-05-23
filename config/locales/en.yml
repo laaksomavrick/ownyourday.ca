@@ -21,6 +21,9 @@ en:
     sunday: "Sunday"
   tasks:
     navigation: "Tasks"
+    date:
+      label: 'Select a date'
+      button: "Select"
   goals:
     navigation: "Goals"
     header: "My Goals"
