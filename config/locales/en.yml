@@ -24,6 +24,8 @@ en:
     date:
       label: 'Select a date'
       button: "Select"
+    adhoc:
+      new: 'Add'
   goals:
     navigation: "Goals"
     header: "My Goals"

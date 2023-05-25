@@ -2,8 +2,9 @@
 
 class TasksController < ApplicationController
   def index
-    # TODO: ad-hoc goal
+    # TODO: ad-hoc task
     # TODO: goal completion
+    # TODO: goal ordering
     @date = date_from_params || current_user.beginning_of_day
     @task_list = RetrieveTodaysTaskListAction.new(user: current_user).call(today: @date)
     @task_list ||= GenerateTodaysTaskListAction.new(user: current_user).call(today: @date)

@@ -6,6 +6,7 @@ Rails.application.routes.draw do
                             registrations: 'users/registrations' }
 
   resources :tasks, only: [:index]
+  resources :adhoc_tasks, only: %i[new create]
   resources :goals, only: %i[index edit new create update destroy]
 
   root to: redirect('/tasks')
