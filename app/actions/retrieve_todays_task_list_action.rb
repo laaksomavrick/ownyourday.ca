@@ -10,6 +10,7 @@ class RetrieveTodaysTaskListAction
 
     @user.task_lists
          .includes(tasks: :goal)
+         .includes(:adhoc_tasks)
          .where(date: user_date)
          .first
   end

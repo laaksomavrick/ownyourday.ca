@@ -3,6 +3,7 @@
 class TaskList < ApplicationRecord
   belongs_to :user
   has_many :tasks, dependent: :nullify
+  has_many :adhoc_tasks, dependent: :nullify
 
   validate :date, :validate_date
 

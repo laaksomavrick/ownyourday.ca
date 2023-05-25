@@ -26,6 +26,8 @@ en:
       button: "Select"
     adhoc:
       new: 'Add'
+    create:
+      header: 'Adhoc Task'
   goals:
     navigation: "Goals"
     header: "My Goals"
