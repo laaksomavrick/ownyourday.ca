@@ -2,21 +2,13 @@
 
 class AdhocTasksController < ApplicationController
   def new
+    # TODO: authorize
     @adhoc_task = AdhocTask.new
   end
 
   def create
-    # TODO: get task list id from query param if possible
-    # e.g. go to tomorrow to create a TODO - i do this sometimes
-
-    # An ad hoc goal is always created for today's task list
-    # So, retrieve that - if one does not exist, generate it
-    # Usually it will exist since the button to hit 'new' is on the tasks index
-    date = current_user.beginning_of_day
-    task_list = RetrieveTodaysTaskListAction.new(user: current_user).call(today: date)
-    task_list ||= GenerateTodaysTaskListAction.new(user: current_user).call(today: date)
-
-    @adhoc_task = AdhocTask.create(adhoc_task_params.merge(task_list:))
+    # TODO: authorize
+    @adhoc_task = AdhocTask.create(adhoc_task_params)
 
     if @adhoc_task.errors.empty? == false
       render 'new', status: :unprocessable_entity
@@ -24,7 +16,7 @@ class AdhocTasksController < ApplicationController
     end
 
     flash[:notice] = t('helpers.alert.create_successful', name: @adhoc_task.name)
-    redirect_to tasks_path
+    redirect_to tasks_path(task_list_id: @adhoc_task.task_list_id)
   end
 
   private
@@ -32,7 +24,8 @@ class AdhocTasksController < ApplicationController
   def adhoc_task_params
     params.fetch(:adhoc_task, {}).permit(
       :user_id,
-      :name
+      :name,
+      :task_list_id
     )
   end
 end
