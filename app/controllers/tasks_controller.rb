@@ -5,30 +5,43 @@ class TasksController < ApplicationController
     # TODO: goal completion
     # TODO: goal ordering
 
-    if params[:task_list_id].nil?
-      @date = date_from_params || current_user.beginning_of_day
-      task_list = task_list_from_date(date: @date)
-    else
-      task_list = task_list_from_id(id: params[:task_list_id])
+    hash = task_list_and_date_from_params
+    task_list = hash[:task_list]
+    date = hash[:date]
 
-      if task_list.nil?
-        redirect_to tasks_path
-        return
-      end
-
-      @date = task_list.date
+    if task_list.nil?
+      redirect_to tasks_path
+      return
     end
 
     authorize task_list
 
     @task_list = TaskListPresenter.new(task_list:)
+    @date = date
   end
 
   private
 
+  def task_list_and_date_from_params
+    hash = {}
+
+    if params[:task_list_id].nil?
+      date = date_from_params || current_user.beginning_of_day
+      hash[:task_list] = task_list_from_date(date:)
+      hash[:date] = date
+    else
+      task_list = task_list_from_id(id: params[:task_list_id])
+
+      hash[:task_list] = task_list
+      hash[:date] = task_list.date if task_list
+    end
+
+    hash
+  end
+
   def task_list_from_date(date:)
-    task_list = RetrieveTodaysTaskListAction.new(user: current_user).call(today: :date)
-    task_list ||= GenerateTodaysTaskListAction.new(user: current_user).call(today: :date)
+    task_list = RetrieveTodaysTaskListAction.new(user: current_user).call(today: date)
+    task_list ||= GenerateTodaysTaskListAction.new(user: current_user).call(today: date)
     task_list
   end
 
