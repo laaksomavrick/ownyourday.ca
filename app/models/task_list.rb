@@ -3,10 +3,15 @@
 class TaskList < ApplicationRecord
   belongs_to :user
   has_many :tasks, dependent: :nullify
+  has_many :adhoc_tasks, dependent: :nullify
 
   validate :date, :validate_date
 
   before_validation :default_values
+
+  scope :with_tasks, lambda {
+    includes(tasks: :goal).includes(:adhoc_tasks)
+  }
 
   private
 

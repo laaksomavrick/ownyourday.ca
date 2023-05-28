@@ -1,11 +1,16 @@
 <div class="flex flex-col space-y-4">
   <div data-controller="date-select-picker" data-date-select-picker-hidden-class="hidden">
-    <button
-      id=date-select-picker-button
-      data-action="click->date-select-picker#toggle"
-      class="text-3xl font-semibold cursor-pointer select-none pb-2">
-      <%= human_date_string(datetime: @date) %>
-    </button>
+    <div class="flex items-center pb-2">
+      <button
+        id=date-select-picker-button
+        data-action="click->date-select-picker#toggle"
+        class="text-3xl font-semibold cursor-pointer select-none">
+        <%= human_date_string(datetime: @date) %>
+      </button>
+      <%= link_to new_adhoc_task_path(task_list_id: @task_list.id), class: 'ml-auto' do %>
+        <button class="<%= primary_button %>"><%= t('tasks.adhoc.new') %></button>
+      <% end %>
+    </div>
     <div id="date_select_picker" data-date-select-picker-target="dateSelectPicker" class="hidden">
       <%= form_with path: tasks_path, scope: :task_list do |f| %>
         <%= f.label :date, t('tasks.date.label'), class: "block mb-4 text-md font-medium text-gray-900 dark:text-white" %>

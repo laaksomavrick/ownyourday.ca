@@ -11,6 +11,7 @@ class User < ApplicationRecord
   has_many :times_per_week_goals, class_name: 'Goals::TimesPerWeek', dependent: :destroy
   has_many :task_lists, dependent: :destroy
   has_many :tasks, dependent: :destroy
+  has_many :adhoc_tasks, dependent: :destroy
 
   def beginning_of_day(today: DateTime.current.utc)
     user_today = today.in_time_zone(time_zone)
