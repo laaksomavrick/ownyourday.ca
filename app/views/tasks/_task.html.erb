@@ -1,13 +1,12 @@
-<div data-controller="task" data-action="click->task#toggleGoalCompletion" class="flex items-center border rounded border-gray-300 p-4 cursor-pointer select-none">
+<div
+  data-controller="task"
+  data-action="click->task#toggleGoalCompletion"
+  data-task-target="listItem"
+  class="flex items-center border rounded border-gray-300 p-4 cursor-pointer select-none <%= task.completed ? "opacity-50" : nil %>">
   <div class="max-w-sm mr-2 mr-4">
     <%= form_with model: task, url: task_path(task), method: "patch" do |f| %>
       <%= f.check_box :completed, { checked: task.completed, data: { task_target: "checkbox" } } %>
-      <button
-        formmethod="patch"
-        formaction="<%= task_path(task) %>"
-        hidden
-        data-task-target="submit"
-      ></button>
+      <%= f.submit nil, { hidden: true, data: { task_target: "submit"} } %>
     <% end %>
   </div>
   <div class="w-full">

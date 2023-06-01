@@ -29,7 +29,7 @@ class TasksController < ApplicationController
     @task.save
 
     if @task.errors.empty? == false
-      flash[:alert] = t('helpers.alert.update_failed', name: @task.name)
+      flash.now[:alert] = t('helpers.alert.update_failed', name: @task.name)
       render 'index', status: :unprocessable_entity
       return
     end

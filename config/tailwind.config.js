@@ -18,12 +18,6 @@ module.exports = {
     {
       pattern: /border-blue/, // TODO: change this if brand_color is ever changed
     },
-    {
-      pattern: /ml-/, // TODO: change this if brand_color is ever changed
-    },
-    {
-      pattern: /mr-/, // TODO: change this if brand_color is ever changed
-    },
   ],
   theme: {
     extend: {
