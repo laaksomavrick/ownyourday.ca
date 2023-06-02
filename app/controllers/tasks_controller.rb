@@ -2,7 +2,6 @@
 
 class TasksController < ApplicationController
   def index
-    # TODO: goal completion
     # TODO: goal ordering
 
     hash = task_list_and_date_from_params
@@ -20,7 +19,29 @@ class TasksController < ApplicationController
     @date = date
   end
 
+  def update
+    id = params[:id]
+    completed = task_update_params[:completed]
+
+    @task = authorize Task.find_by(id:)
+    @task.completed = completed
+
+    @task.save
+
+    if @task.errors.empty? == false
+      flash.now[:alert] = t('helpers.alert.update_failed', name: @task.name)
+      render 'index', status: :unprocessable_entity
+      return
+    end
+
+    redirect_to tasks_path
+  end
+
   private
+
+  def task_update_params
+    params.fetch(:task, {}).permit(:completed)
+  end
 
   def task_list_and_date_from_params
     hash = {}

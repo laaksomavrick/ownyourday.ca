@@ -6,6 +6,7 @@ en:
     alert:
       create_successful: 'Successfully created %{name}'
       update_successful: 'Successfully updated %{name}'
+      update_failed: 'Oops! Something went wrong updating %{name}'
   ownyourday: "ownyourday"
   common:
     time: "time"
