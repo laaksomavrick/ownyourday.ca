@@ -34,7 +34,6 @@ class TasksController < ApplicationController
       return
     end
 
-    # flash[:notice] = t('helpers.alert.update_successful', name: @task.name)
     redirect_to tasks_path
   end
 

@@ -10,7 +10,9 @@ export default class extends Controller {
       return;
     }
 
-    this.checkboxTarget.checked = !this.checkboxTarget.checked;
+    if (target !== 'checkbox') {
+      this.checkboxTarget.checked = !this.checkboxTarget.checked;
+    }
 
     if (this.checkboxTarget.checked) {
       this.listItemTarget.classList.add('opacity-50');
