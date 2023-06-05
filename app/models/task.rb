@@ -7,6 +7,10 @@ class Task < ApplicationRecord
 
   delegate :name, to: :goal
 
+  acts_as_list top_of_list: 0
+
+  default_scope { order(position: :asc) }
+
   class << self
     def policy_class
       TaskPolicy

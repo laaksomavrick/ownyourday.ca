@@ -6,6 +6,8 @@ class AdhocTask < ApplicationRecord
 
   validates :name, presence: true
 
+  acts_as_list top_of_list: 0
+
   class << self
     def policy_class
       AdhocTaskPolicy

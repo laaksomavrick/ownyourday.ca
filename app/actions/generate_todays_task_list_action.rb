@@ -16,6 +16,13 @@ class GenerateTodaysTaskListAction
       times_per_week_tasks = times_per_week_goals_to_schedule(task_list:, today:)
 
       tasks = daily_tasks + day_of_week_tasks + times_per_week_tasks
+      tasks = tasks.map.with_index do |task, index|
+        task[:position] = index
+        task
+      end
+
+      # tasks.sort_by!(&:goal.created_at)
+      # TODO: order by goal position
 
       Task.create!(tasks)
 

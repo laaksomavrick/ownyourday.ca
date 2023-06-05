@@ -3,6 +3,7 @@
 class TasksController < ApplicationController
   def index
     # TODO: goal ordering
+    # https://www.stimulus-components.com/docs/stimulus-sortable/
 
     hash = task_list_and_date_from_params
     task_list = hash[:task_list]
@@ -22,9 +23,12 @@ class TasksController < ApplicationController
   def update
     id = params[:id]
     completed = task_update_params[:completed]
+    position = task_update_params[:position]
 
     @task = authorize Task.find_by(id:)
-    @task.completed = completed
+
+    @task.completed = completed if completed
+    @task.insert_at(position) if position
 
     @task.save
 
@@ -34,13 +38,17 @@ class TasksController < ApplicationController
       return
     end
 
-    redirect_to tasks_path
+    if request.xhr?
+      head :no_content
+    else
+      redirect_to tasks_path
+    end
   end
 
   private
 
   def task_update_params
-    params.fetch(:task, {}).permit(:completed)
+    params.fetch(:task, {}).permit(:completed, :position)
   end
 
   def task_list_and_date_from_params

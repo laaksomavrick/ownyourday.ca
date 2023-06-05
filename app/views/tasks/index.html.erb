@@ -28,9 +28,5 @@
         </div>
       <% end %>
       </div>
-  <%= turbo_frame_tag "task-type-turbo-frame", class: "space-y-4" do %>
-    <% @task_list.tasks.each do |task| %>
-      <%= render 'tasks/task', task: task %>
-    <% end %>
-  <% end %>
+  <%= render 'tasks/task_list' %>
 </div>

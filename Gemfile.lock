@@ -66,6 +66,8 @@ GEM
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
+    acts_as_list (1.1.0)
+      activerecord (>= 4.2)
     addressable (2.8.3)
       public_suffix (>= 2.0.2, < 6.0)
     ast (2.4.2)
@@ -330,6 +332,7 @@ PLATFORMS
   x86_64-darwin-22
 
 DEPENDENCIES
+  acts_as_list
   bootsnap
   capybara
   debug
