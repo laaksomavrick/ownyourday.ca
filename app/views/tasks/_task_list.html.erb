@@ -2,11 +2,12 @@
   <div class="space-y-4" data-controller="task-list">
     <% @task_list.tasks.each do |task| %>
       <div
-        data-sortable-update-url="<%= task_path(task) %>"
+        data-sortable-update-url="<%= task_position_path(task) %>"
         data-controller="task"
         data-action="click->task#toggleGoalCompletion"
         data-task-target="listItem"
         data-task-position="<%= task.position %>"
+        data-task-type="<%= task.class.name %>"
         id="task-item-<%= task.id %>"
         class="flex items-center border rounded border-gray-300 p-4 cursor-pointer select-none <%= task.completed ? "opacity-50" : nil %>">
         <div class="max-w-sm mr-2 mr-4">

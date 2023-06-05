@@ -20,12 +20,9 @@ class TasksController < ApplicationController
   def update
     id = params[:id]
     completed = task_update_params[:completed]
-    position = task_update_params[:position]
 
     @task = authorize Task.find_by(id:)
-
     @task.completed = completed if completed
-    @task.insert_at(position) if position
 
     @task.save
 
@@ -35,17 +32,13 @@ class TasksController < ApplicationController
       return
     end
 
-    if request.xhr?
-      head :no_content
-    else
-      redirect_to tasks_path
-    end
+    redirect_to tasks_path
   end
 
   private
 
   def task_update_params
-    params.fetch(:task, {}).permit(:completed, :position)
+    params.fetch(:task, {}).permit(:completed)
   end
 
   def task_list_and_date_from_params
