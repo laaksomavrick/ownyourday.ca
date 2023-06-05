@@ -2,9 +2,6 @@
 
 class TasksController < ApplicationController
   def index
-    # TODO: goal ordering
-    # https://www.stimulus-components.com/docs/stimulus-sortable/
-
     hash = task_list_and_date_from_params
     task_list = hash[:task_list]
     date = hash[:date]

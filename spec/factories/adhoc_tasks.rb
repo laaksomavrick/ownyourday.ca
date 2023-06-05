@@ -5,5 +5,6 @@ FactoryBot.define do
     user factory: :user
     task_list factory: :task_list
     name { Faker::Lorem.word }
+    position { 0 }
   end
 end

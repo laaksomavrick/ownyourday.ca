@@ -10,7 +10,8 @@ class TaskList < ApplicationRecord
   before_validation :default_values
 
   scope :with_tasks, lambda {
-    includes(tasks: :goal).includes(:adhoc_tasks)
+    includes(tasks: :goal)
+      .includes(:adhoc_tasks)
   }
 
   private
