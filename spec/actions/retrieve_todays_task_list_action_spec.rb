@@ -17,15 +17,15 @@ RSpec.describe RetrieveTodaysTaskListAction do
 
       task_list = described_class.new(user:).call
 
-      expect(task_list.tasks.length).to be(3)
+      expect(task_list.goal_tasks.length).to be(3)
       expect(task_list.adhoc_tasks.length).to be(1)
+      expect(task_list.tasks.length).to be(4)
 
       expect(task_list.tasks.first.position).to be(0)
       expect(task_list.tasks.second.position).to be(1)
       expect(task_list.tasks.third.position).to be(2)
-
-      expect(task_list.adhoc_tasks.first.id).to be(adhoc_task.id)
-      expect(task_list.adhoc_tasks.first.position).to be(3)
+      expect(task_list.tasks.fourth.position).to be(3)
+      expect(task_list.tasks.fourth.id).to be(adhoc_task.id)
     end
   end
 

@@ -42,9 +42,15 @@ RSpec.describe 'Tasks' do
           task_id = task.id
 
           task_check_box = find("input[data-task-id='#{task_id}']")
+          task_check_box.click
+
+          visit tasks_path
+          task_check_box = find("input[data-task-id='#{task_id}']")
 
           task_check_box.click
-          task_check_box.click
+
+          visit tasks_path
+          task_check_box = find("input[data-task-id='#{task_id}']")
 
           expect(task_check_box).not_to be_checked
         end
@@ -53,9 +59,10 @@ RSpec.describe 'Tasks' do
       describe 'task list selection' do
         let!(:today) { user.beginning_of_day }
         let!(:yesterday) { today.yesterday }
-        let!(:task_list) { create(:task_list, user:, date: yesterday) }
 
         context 'when using a task_list_id param' do
+          let!(:task_list) { create(:task_list, user:, date: yesterday) }
+
           it 'redirects to default date (today) when task list not found' do
             not_found_task_list_id = task_list.id + 1
 

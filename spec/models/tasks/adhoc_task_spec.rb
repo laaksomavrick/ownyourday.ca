@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe AdhocTask do
+RSpec.describe Tasks::AdhocTask do
   it 'can create a task' do
     adhoc_task = create(:adhoc_task)
     expect(adhoc_task.valid?).to be(true)

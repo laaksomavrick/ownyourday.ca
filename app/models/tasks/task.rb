@@ -9,6 +9,8 @@ module Tasks
 
     acts_as_list scope: :task_list, top_of_list: 0
 
+    validates :position, presence: true
+
     class << self
       def policy_class
         TaskPolicy

@@ -11,7 +11,7 @@
         id="task-item-<%= task.id %>"
         class="flex items-center border rounded border-gray-300 p-4 cursor-pointer select-none <%= task.completed ? "opacity-50" : nil %>">
         <div class="max-w-sm mr-2 mr-4">
-          <%= form_with model: task, url: task_path(task), method: "patch" do |f| %>
+          <%= form_with model: task, url: task_path(task), method: "patch", scope: :task do |f| %>
             <%= f.check_box :completed, { checked: task.completed, data: { task_target: "checkbox", task_id: task.id } } %>
             <%= f.submit nil, { hidden: true, data: { task_target: "submit" } } %>
           <% end %>
