@@ -5,7 +5,7 @@ module Goals
     self.table_name = 'goals'
 
     belongs_to :user
-    has_many :tasks, dependent: :nullify
+    has_many :tasks, class_name: 'Tasks::GoalTask', dependent: :nullify
 
     # TODO: better way to do this?
     GOAL_TYPES = %w[Goals::Daily Goals::TimesPerWeek Goals::DaysOfWeek].freeze

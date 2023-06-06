@@ -21,7 +21,6 @@ class GenerateTodaysTaskListAction
         task
       end
 
-      # tasks.sort_by!(&:goal.created_at)
       # TODO: order by goal position
 
       Tasks::GoalTask.create!(tasks)

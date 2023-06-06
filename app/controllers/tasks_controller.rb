@@ -38,7 +38,9 @@ class TasksController < ApplicationController
   private
 
   def task_update_params
-    params.require(:task).permit(:completed)
+    params.require(:task).permit(:completed).tap do |task_params|
+      task_params.require(:completed)
+    end
   end
 
   def task_list_and_date_from_params

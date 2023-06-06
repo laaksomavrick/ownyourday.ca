@@ -4,8 +4,6 @@ export default class extends Controller {
   static targets = ['toggleGoalCompletion', 'checkbox', 'submit', 'listItem'];
 
   toggleGoalCompletion(e) {
-    console.log('toggling goal completion');
-
     const target = e.target.dataset.taskTarget;
 
     if (target === 'submit') {
