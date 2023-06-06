@@ -24,7 +24,7 @@ class GenerateTodaysTaskListAction
       # tasks.sort_by!(&:goal.created_at)
       # TODO: order by goal position
 
-      Task.create!(tasks)
+      Tasks::GoalTask.create!(tasks)
 
       task_list
     end
@@ -54,12 +54,12 @@ class GenerateTodaysTaskListAction
     times_per_week_goals = @user.times_per_week_goals
     times_per_week_goal_ids = times_per_week_goals.select(:id)
 
-    completed_tasks = Task.joins(:task_list)
-                          .where('task_lists.date >= ?', start_of_week)
-                          .where('task_lists.date <= ?', end_of_week)
-                          .where(goal_id: times_per_week_goal_ids)
-                          .where(completed: true)
-                          .all
+    completed_tasks = Tasks::GoalTask.joins(:task_list)
+                                     .where('task_lists.date >= ?', start_of_week)
+                                     .where('task_lists.date <= ?', end_of_week)
+                                     .where(goal_id: times_per_week_goal_ids)
+                                     .where(completed: true)
+                                     .all
 
     # rubocop:disable Style/MultilineBlockChain
     times_per_week_goals

@@ -2,16 +2,17 @@
 
 class TaskPositionController < ApplicationController
   def update
+    # TODO: test
     id = task_position_update_params[:id]
     position = task_position_update_params[:position].to_i
     type = task_position_update_params[:type].constantize
 
-    unless [AdhocTask, Task].include?(type)
+    unless [Tasks::AdhocTask, Tasks::GoalTask].include?(type)
       head :bad_request
       return
     end
 
-    @task = authorize type.find_by(id:)
+    @task = authorize Tasks::Task.find_by(id:)
     authorize @task
 
     if @task.nil?
@@ -20,7 +21,6 @@ class TaskPositionController < ApplicationController
     end
 
     @task.insert_at(position)
-    @task.save
 
     if @task.errors.empty? == false
       flash.now[:alert] = t('helpers.alert.update_failed', name: @task.name)

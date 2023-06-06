@@ -10,10 +10,6 @@ class TaskListPresenter
   end
 
   def tasks
-    goal_tasks = @task_list.tasks
-    adhoc_tasks = @task_list.adhoc_tasks
-
-    tasks = goal_tasks + adhoc_tasks
-    tasks.sort_by(&:position)
+    @task_list.tasks.sort_by(&:position)
   end
 end

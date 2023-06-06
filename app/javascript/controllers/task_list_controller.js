@@ -8,7 +8,6 @@ export default class extends Sortable {
 
   async onUpdate({ item, newIndex }) {
     // https://github.com/stimulus-components/stimulus-sortable/blob/master/src/index.ts
-    console.log(item);
     if (!item.dataset.sortableUpdateUrl) return;
     if (!item.dataset.taskType) return;
 
