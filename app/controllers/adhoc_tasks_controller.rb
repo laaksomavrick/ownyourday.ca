@@ -6,11 +6,7 @@ class AdhocTasksController < ApplicationController
   end
 
   def create
-    # TODO: create action + test
-    task_list_id = adhoc_task_params[:task_list_id]
-    position = TaskList.where(id: task_list_id).includes(:tasks).count(:tasks)
-
-    @adhoc_task = authorize Tasks::AdhocTask.create(adhoc_task_params.merge(position:))
+    @adhoc_task = authorize CreateAdhocTaskAction.new.call(adhoc_task_params:)
 
     if @adhoc_task.errors.empty? == false
       render 'new', status: :unprocessable_entity
