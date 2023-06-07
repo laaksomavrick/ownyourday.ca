@@ -2,11 +2,11 @@
 
 class AdhocTasksController < ApplicationController
   def new
-    @adhoc_task = authorize AdhocTask.new
+    @adhoc_task = authorize Tasks::AdhocTask.new
   end
 
   def create
-    @adhoc_task = authorize AdhocTask.create(adhoc_task_params)
+    @adhoc_task = authorize CreateAdhocTaskAction.new.call(adhoc_task_params:)
 
     if @adhoc_task.errors.empty? == false
       render 'new', status: :unprocessable_entity

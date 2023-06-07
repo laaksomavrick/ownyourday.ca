@@ -56,6 +56,8 @@ gem 'bootsnap', require: false
 
 gem 'pundit', '~> 2.3'
 
+gem 'acts_as_list'
+
 # Use Sass to process CSS
 # gem "sassc-rails"
 

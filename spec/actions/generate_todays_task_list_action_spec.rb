@@ -3,6 +3,22 @@
 require 'rails_helper'
 
 RSpec.describe GenerateTodaysTaskListAction do
+  describe 'task positions' do
+    let!(:user) { create(:user) }
+
+    it 'sets a position for each task' do
+      create(:daily_goal, user:)
+      create(:days_of_week_goal, user:, metadata: { 'days_of_week' => [0, 1, 2, 3, 4, 5, 6] })
+      create(:times_per_week_goal, user:, metadata: { 'times_per_week' => 6 })
+
+      task_list = described_class.new(user:).call
+      expect(task_list.tasks.length).to be(3)
+      expect(task_list.tasks.first.position).to be(0)
+      expect(task_list.tasks.second.position).to be(1)
+      expect(task_list.tasks.third.position).to be(2)
+    end
+  end
+
   SpecConstants::TIME_ZONES.each do |time_zone|
     SpecConstants::HOURS.each do |hour|
       let!(:today) { DateTime.current.utc.end_of_day }

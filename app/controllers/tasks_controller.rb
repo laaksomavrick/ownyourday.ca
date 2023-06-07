@@ -2,8 +2,6 @@
 
 class TasksController < ApplicationController
   def index
-    # TODO: goal ordering
-
     hash = task_list_and_date_from_params
     task_list = hash[:task_list]
     date = hash[:date]
@@ -23,7 +21,7 @@ class TasksController < ApplicationController
     id = params[:id]
     completed = task_update_params[:completed]
 
-    @task = authorize Task.find_by(id:)
+    @task = authorize Tasks::Task.find_by(id:)
     @task.completed = completed
 
     @task.save
@@ -40,7 +38,9 @@ class TasksController < ApplicationController
   private
 
   def task_update_params
-    params.fetch(:task, {}).permit(:completed)
+    params.require(:task).permit(:completed).tap do |task_params|
+      task_params.require(:completed)
+    end
   end
 
   def task_list_and_date_from_params
