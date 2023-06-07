@@ -2,6 +2,7 @@
   <div class="space-y-4" data-controller="task-list">
     <% @task_list.tasks.each do |task| %>
       <div
+        id="task-list-item-<%= task.id %>"
         data-task-id="<%= task.id %>"
       >
         <div class="hidden" >

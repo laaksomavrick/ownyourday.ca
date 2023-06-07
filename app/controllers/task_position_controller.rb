@@ -2,13 +2,13 @@
 
 class TaskPositionController < ApplicationController
   def update
-    # TODO: test
     id = params[:id]
     position = task_position_update_params[:position].to_i
     type = task_position_update_params[:type].constantize
 
     unless [Tasks::AdhocTask, Tasks::GoalTask].include?(type)
-      head :bad_request
+      flash.now[:alert] = t('helpers.alert.update_failed', name: @task.name)
+      render 'update', status: :unprocessable_entity
       return
     end
 
