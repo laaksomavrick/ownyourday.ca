@@ -1,0 +1,4 @@
+<%= turbo_stream.replace "task-list-turbo-frame" do %>
+  <%= render 'tasks/task_list' %>
+<% end %>
+<%= turbo_stream.prepend "flash", partial: "layouts/alerts" %>

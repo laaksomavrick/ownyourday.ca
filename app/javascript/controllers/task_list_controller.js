@@ -1,5 +1,4 @@
 import Sortable from 'stimulus-sortable';
-import { patch } from '@rails/request.js';
 
 export default class extends Sortable {
   connect() {
@@ -8,15 +7,22 @@ export default class extends Sortable {
 
   async onUpdate({ item, newIndex }) {
     // https://github.com/stimulus-components/stimulus-sortable/blob/master/src/index.ts
-    if (!item.dataset.sortableUpdateUrl) return;
-    if (!item.dataset.taskType) return;
+    if (!item.dataset.taskId) return;
 
-    const data = new FormData();
-    // Remove 1 indexing
-    data.append('position', newIndex);
-    data.append('type', item.dataset.taskType);
+    const formField = document.getElementById(
+      `task-${item.dataset.taskId}-position-form`,
+    );
+    const formSubmit = document.getElementById(
+      `task-${item.dataset.taskId}-position-form-submit`,
+    );
 
-    await patch(item.dataset.sortableUpdateUrl, { body: data });
+    const positionField = formField.querySelector(
+      'input[name="task_position[position]"]',
+    );
+    positionField.value = newIndex.toString();
+    positionField.currentValue = newIndex.toString();
+
+    formSubmit.click();
   }
 
   get defaultOptions() {

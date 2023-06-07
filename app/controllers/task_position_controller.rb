@@ -3,7 +3,7 @@
 class TaskPositionController < ApplicationController
   def update
     # TODO: test
-    id = task_position_update_params[:id]
+    id = params[:id]
     position = task_position_update_params[:position].to_i
     type = task_position_update_params[:type].constantize
 
@@ -13,30 +13,20 @@ class TaskPositionController < ApplicationController
     end
 
     @task = authorize Tasks::Task.find_by(id:)
-    authorize @task
-
-    if @task.nil?
-      head :not_found
-      return
-    end
+    @task_list = @task.task_list
 
     @task.insert_at(position)
 
-    if @task.errors.empty? == false
-      flash.now[:alert] = t('helpers.alert.update_failed', name: @task.name)
-      head :unprocessable_entity
-      return
-    end
-
-    head :ok
+    flash.now[:alert] = t('helpers.alert.update_failed', name: @task.name) if @task.errors.empty? == false
   end
 
   private
 
   def task_position_update_params
-    params.require(:position)
     params.require(:id)
-    params.require(:type)
-    params.permit(:position, :id, :type)
+    params.require(:task_position).tap do |task_position_params|
+      task_position_params.require(:position)
+      task_position_params.require(:type)
+    end
   end
 end
