@@ -1,0 +1,26 @@
+<%= turbo_frame_tag "goal-list-turbo-frame" do %>
+  <div class="space-y-4 pb-4" data-controller="goal-list">
+    <% @goals.each do |goal| %>
+      <div
+        class="flex border rounded p-4 cursor-pointer border-gray-300 select-none"
+        id="goal-list-item-<%= goal.id %>"
+        data-goal-id="<%= goal.id %>"
+      >
+        <div class="hidden">
+          <% # Reload the goal-list-turbo-frame after sorting %>
+          <%= form_with model: goal, url: goal_position_path(goal), method: :patch, scope: :goal_position, id: "goal-#{goal.id}-position-form" do |f| %>
+            <%= f.text_field :position %>
+            <%= f.submit nil, { hidden: true, data: { goal_list_target: "submit" }, id: "goal-#{goal.id}-position-form-submit" } %>
+          <% end %>
+        </div>
+        <div class="w-full">
+          <%= link_to edit_goal_path(goal), { data: { 'turbo-frame': '_top' } } do %>
+            <p class="text-3xl cursor-pointer select-none w-full">
+              <%= goal.name %>
+            </p>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>

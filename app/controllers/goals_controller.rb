@@ -2,7 +2,7 @@
 
 class GoalsController < ApplicationController
   def index
-    @goals = policy_scope(Goals::Goal)
+    @goals = policy_scope(Goals::Goal).order(:position)
   end
 
   def new

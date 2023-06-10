@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   resources :goals, only: %i[index edit new create update destroy]
 
   resources :task_position, only: [:update]
+  resources :goal_position, only: [:update]
 
   root to: redirect('/tasks')
 end

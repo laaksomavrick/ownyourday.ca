@@ -3,8 +3,4 @@
   <%= link_to t('goals.new_button'), new_goal_path, class: primary_button  %>
 </div>
 
-<div class="space-y-4 pb-4">
-  <% @goals.each do |goal| %>
-    <%= render 'layouts/goals/list_item', goal: goal %>
-  <% end %>
-</div>
+<%= render 'goals/goal_list' %>
