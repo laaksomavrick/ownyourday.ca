@@ -7,6 +7,7 @@ class GoalsController < ApplicationController
 
   def new
     @goal = authorize Goals::Daily.new
+    @goal.position = Goals::Goal.where(user: current_user).count
     update_goal_action = UpdateGoalAction.new(@goal)
     @goal = update_goal_action.call(goal_params)
   end
@@ -65,6 +66,7 @@ class GoalsController < ApplicationController
     params.fetch(:goal, {}).permit(
       :user_id,
       :name,
+      :position,
       :type,
       :times_per_week,
       days_of_week: %w[0 1 2 3 4 5 6]
