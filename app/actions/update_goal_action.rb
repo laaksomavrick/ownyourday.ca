@@ -17,6 +17,7 @@ class UpdateGoalAction
 
     @goal.name = updates[:name] if updates[:name]
     @goal.user_id = updates[:user_id] if updates[:user_id]
+    @goal.position = updates[:position] if updates[:position]
 
     @goal = update_times_per_week(@goal, updates[:times_per_week]) if should_update_times_per_week
     @goal = update_days_of_week(@goal, updates[:days_of_week]) if should_update_days_of_week

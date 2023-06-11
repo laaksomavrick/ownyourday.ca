@@ -6,5 +6,6 @@ FactoryBot.define do
     name { Faker::Lorem.word }
     type { Goals::TimesPerWeek.name }
     metadata { { 'times_per_week' => Goals::TimesPerWeek::DEFAULT_SCHEDULE } }
+    position { 0 }
   end
 end

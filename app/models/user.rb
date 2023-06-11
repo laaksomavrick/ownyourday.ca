@@ -9,6 +9,7 @@ class User < ApplicationRecord
   has_many :daily_goals, class_name: 'Goals::Daily', dependent: :destroy
   has_many :days_of_week_goals, class_name: 'Goals::DaysOfWeek', dependent: :destroy
   has_many :times_per_week_goals, class_name: 'Goals::TimesPerWeek', dependent: :destroy
+  has_many :goals, -> { order(position: :asc) }, class_name: 'Goals::Goal', dependent: :destroy, inverse_of: :user
   has_many :task_lists, dependent: :destroy
   has_many :tasks, class_name: 'Tasks::Task', dependent: :destroy
   has_many :goal_tasks, class_name: 'Tasks::GoalTask', dependent: :destroy

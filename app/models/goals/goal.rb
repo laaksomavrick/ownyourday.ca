@@ -12,6 +12,9 @@ module Goals
 
     validates :name, presence: true
     validates :type, inclusion: GOAL_TYPES
+    validates :position, presence: true
+
+    acts_as_list scope: :user, top_of_list: 0
 
     # rubocop:disable Naming/PredicateName
     def is_daily?

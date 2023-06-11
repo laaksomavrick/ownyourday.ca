@@ -7,9 +7,9 @@ RSpec.describe RetrieveTodaysTaskListAction do
     let!(:user) { create(:user) }
 
     it 'retrieves tasks ordered by position' do
-      create(:daily_goal, user:)
-      create(:days_of_week_goal, user:, metadata: { 'days_of_week' => [0, 1, 2, 3, 4, 5, 6] })
-      create(:times_per_week_goal, user:, metadata: { 'times_per_week' => 6 })
+      create(:daily_goal, user:, position: 0)
+      create(:days_of_week_goal, user:, metadata: { 'days_of_week' => [0, 1, 2, 3, 4, 5, 6] }, position: 1)
+      create(:times_per_week_goal, user:, metadata: { 'times_per_week' => 6 }, position: 2)
 
       task_list = GenerateTodaysTaskListAction.new(user:).call
 

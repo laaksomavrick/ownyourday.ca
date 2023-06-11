@@ -4,8 +4,8 @@ require 'rails_helper'
 
 RSpec.describe 'TaskPosition' do
   let!(:user) { create(:user) }
-  let!(:goal_one) { create(:daily_goal, user:) }
-  let!(:goal_two) { create(:daily_goal, user:) }
+  let!(:goal_one) { create(:daily_goal, user:, position: 0) }
+  let!(:goal_two) { create(:daily_goal, user:, position: 1) }
 
   describe 'update' do
     it 'can update a task position' do

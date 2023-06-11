@@ -5,6 +5,7 @@
 <%= form_with model: model, url: action_path, scope: :goal do |f| %>
 
   <%= f.hidden_field :user_id, :value => current_user.id %>
+  <%= f.hidden_field :position, :value => @goal.position %>
 
   <div class="flex flex-col pb-4">
     <%= f.label :name, t('goal.name_label'), class: "text-2xl font-medium pb-4 select-none" %>

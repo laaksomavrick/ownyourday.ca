@@ -1,0 +1,4 @@
+<%= turbo_stream.replace "goal-list-turbo-frame" do %>
+  <%= render 'goals/goal_list' %>
+<% end %>
+<%= turbo_stream.prepend "flash", partial: "layouts/alerts" %>

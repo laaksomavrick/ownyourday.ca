@@ -5,5 +5,6 @@ FactoryBot.define do
     user factory: :user
     name { Faker::Lorem.word }
     type { Goals::Daily.name }
+    position { 0 }
   end
 end

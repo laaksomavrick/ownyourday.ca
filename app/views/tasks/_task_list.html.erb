@@ -11,7 +11,7 @@
             <%= f.text_field :type %>
             <%= f.text_field :position %>
             <%= f.submit nil, { hidden: true, data: { task_list_target: "submit" }, id: "task-#{task.id}-position-form-submit" } %>
-        <% end %>
+          <% end %>
         </div>
         <%= turbo_frame_tag "task-#{task.id}-turbo-frame", class: "pb-4" do %>
           <div
