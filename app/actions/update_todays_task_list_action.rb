@@ -27,26 +27,35 @@ class UpdateTodaysTaskListAction
       raise "No task list found for user=#{user.id}" if task_lists.count.zero?
 
       task_lists.each do |task_list|
-        goal_tasks = task_list.goal_tasks
-        adhoc_tasks = task_list.adhoc_tasks
+        goal_task_data = task_list.goal_tasks.map do |goal_task|
+          { goal_id: goal_task.goal_id, completed: goal_task.completed }
+        end
+        adhoc_task_ids = task_list.adhoc_tasks.map(&:id)
 
         task_list.destroy
 
         task_list = GenerateTodaysTaskListAction.new(user:).call
 
-        adhoc_tasks.update_all(task_list_id: task_list.id)
-        # goal_tasks.update_all(task_list_id: task_list.id)
+        # Re-add ad-hoc tasks
+        Tasks::AdhocTask.where(id: adhoc_task_ids).update_all(task_list_id: task_list.id)
 
-        # TODO: mass update for performance reasons
-        # goal_tasks.tasks.each do |task|
-        # matching_task = tasks.find_by(id: task.id)
-        # if matching_task
-        #   if matching_task.completed
-        #     task.completed = matching_task.completed
-        #     task.save
-        #   end
-        # end
-        # end
+        # Complete previously completed goal tasks
+        goal_task_ids_to_complete = []
+        task_list.tasks.each do |task|
+          match = goal_task_data.find { |goal_task| goal_task[:goal_id] == task.goal_id }
+          next if match.blank?
+
+          completed = match[:completed]
+          goal_id = match[:goal_id]
+          goal_task_ids_to_complete.push(goal_id) if completed
+        end
+
+        Tasks::GoalTask.where(goal_id: goal_task_ids_to_complete).update_all(completed: true)
+
+        # Normalize position
+        task_list.tasks.order(position: :asc).each_with_index do |task, index|
+          task.insert_at(index)
+        end
       end
     end
   end
