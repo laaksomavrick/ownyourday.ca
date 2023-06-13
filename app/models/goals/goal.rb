@@ -3,16 +3,18 @@
 module Goals
   class Goal < ApplicationRecord
     self.table_name = 'goals'
+    GOAL_TYPES = %w[Goals::Daily Goals::TimesPerWeek Goals::DaysOfWeek].freeze
 
     belongs_to :user
     has_many :tasks, class_name: 'Tasks::GoalTask', dependent: :nullify
 
-    # TODO: better way to do this?
-    GOAL_TYPES = %w[Goals::Daily Goals::TimesPerWeek Goals::DaysOfWeek].freeze
-
     validates :name, presence: true
     validates :type, inclusion: GOAL_TYPES
     validates :position, presence: true
+
+    after_create :regenerate_todays_task_list
+    after_update :regenerate_todays_task_list
+    after_destroy :regenerate_todays_task_list, prepend: true
 
     acts_as_list scope: :user, top_of_list: 0
 
@@ -38,6 +40,13 @@ module Goals
       def goal_types
         GOAL_TYPES
       end
+    end
+
+    private
+
+    def regenerate_todays_task_list
+      Rails.logger.debug 'Hello, world'
+      Rails.logger.debug self
     end
   end
 end
