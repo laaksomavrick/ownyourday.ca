@@ -48,10 +48,30 @@ RSpec.describe UpdateTodaysTaskListAction do
   end
 
   context 'when an existing goal is modified' do
-    # Only need one of these with all three modified
-    # utilize UpdateGoalAction in a before .. do .. end
-    pending 'updates the task when the goal name is changed'
-    pending 'updates the task when the goal type is changed'
-    pending 'updates the task when the goal metadata is changed'
+    name = Faker::Lorem.word
+    position = 1
+    type = 'Goals::TimesPerWeek'
+    times_per_week = 3
+
+    before do
+      UpdateGoalAction.new(daily_goal).call({ name:, position:, type:, times_per_week: }, { persist: true })
+    end
+
+    it 'updates the task when the goal is changed' do
+      described_class.new(goal: daily_goal).call
+
+      expect(user.task_lists.count).to eq 1
+
+      new_task_list = user.task_lists.first
+      updated_task = new_task_list.tasks.find_by(goal_id: daily_goal.id)
+
+      expect(new_task_list.id).not_to eq task_list.id
+      expect(new_task_list.tasks.count).to eq 3
+
+      expect(updated_task.name).to eq name
+      expect(updated_task.position).to eq position
+      expect(updated_task.goal.type).to eq type
+      expect(updated_task.goal.times_per_week).to eq times_per_week
+    end
   end
 end

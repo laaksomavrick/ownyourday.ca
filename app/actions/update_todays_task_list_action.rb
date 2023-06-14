@@ -1,14 +1,5 @@
 # frozen_string_literal: true
 
-# For every task list from today and beyond:
-# Null adhoc-task task_list_id
-# Maintain goal completions and goal positions
-# Generate new task list
-# Remove the prior task list
-# Complete goals that were previously completed
-# Add adhhoc-tasks back
-# Normalize position for any additions or removals
-
 # Intended to regenerate the existing (and any future) "today's task list" for a
 # user when a goal has been added, changed, or deleted
 # Prior task lists won't be affected
