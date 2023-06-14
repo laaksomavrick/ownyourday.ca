@@ -27,31 +27,40 @@ class UpdateTodaysTaskListAction
 
         task_list = GenerateTodaysTaskListAction.new(user:).call
 
-        # Re-add ad-hoc tasks
-        # rubocop:disable Rails/SkipsModelValidations
-        Tasks::AdhocTask.where(id: adhoc_task_ids).update_all(task_list_id: task_list.id)
-        # rubocop:enable Rails/SkipsModelValidations
-
-        # Complete previously completed goal tasks
-        goal_task_ids_to_complete = []
-        task_list.tasks.each do |task|
-          match = goal_task_data.find { |goal_task| goal_task[:goal_id] == task.goal_id }
-          next if match.blank?
-
-          completed = match[:completed]
-          goal_id = match[:goal_id]
-          goal_task_ids_to_complete.push(goal_id) if completed
-        end
-
-        # rubocop:disable Rails/SkipsModelValidations
-        Tasks::GoalTask.where(goal_id: goal_task_ids_to_complete).update_all(completed: true)
-        # rubocop:enable Rails/SkipsModelValidations
-
-        # Normalize position
-        task_list.tasks.order(position: :asc).each_with_index do |task, index|
-          task.insert_at(index)
-        end
+        add_adhoc_tasks(task_list, adhoc_task_ids)
+        complete_goal_tasks(task_list, goal_task_data)
+        normalize_goal_positions(task_list)
       end
     end
+  end
+
+  private
+
+  def normalize_goal_positions(task_list)
+    task_list.tasks.order(position: :asc).each_with_index do |task, index|
+      task.insert_at(index)
+    end
+  end
+
+  def add_adhoc_tasks(task_list, adhoc_task_ids)
+    # rubocop:disable Rails/SkipsModelValidations
+    Tasks::AdhocTask.where(id: adhoc_task_ids).update_all(task_list_id: task_list.id)
+    # rubocop:enable Rails/SkipsModelValidations
+  end
+
+  def complete_goal_tasks(task_list, goal_task_data)
+    goal_task_ids_to_complete = []
+    task_list.tasks.each do |task|
+      match = goal_task_data.find { |goal_task| goal_task[:goal_id] == task.goal_id }
+      next if match.blank?
+
+      completed = match[:completed]
+      goal_id = match[:goal_id]
+      goal_task_ids_to_complete.push(goal_id) if completed
+    end
+
+    # rubocop:disable Rails/SkipsModelValidations
+    Tasks::GoalTask.where(goal_id: goal_task_ids_to_complete).update_all(completed: true)
+    # rubocop:enable Rails/SkipsModelValidations
   end
 end

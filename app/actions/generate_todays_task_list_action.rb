@@ -34,7 +34,7 @@ class GenerateTodaysTaskListAction
 
   def days_of_week_goals_to_schedule(task_list:, today:)
     current_day_of_week = (today.wday + 6) % 7 # Monday is our 0 instead of Sunday
-    days_of_week_goals = @user.goals.where(type: 'Goals::DayOfWeek').all
+    days_of_week_goals = @user.goals.where(type: 'Goals::DaysOfWeek').all
     days_of_week_goals
       .filter { |day_of_week_goal| day_of_week_goal.days_of_week.include?(current_day_of_week) }
       .map do |day_of_week_goal|
