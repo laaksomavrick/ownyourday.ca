@@ -26,7 +26,7 @@ class GenerateTodaysTaskListAction
   private
 
   def daily_goals_to_schedule(task_list:)
-    daily_goals = @user.daily_goals
+    daily_goals = @user.goals.where(type: 'Goals::Daily').all
     daily_goals.map do |daily_goal|
       { user: @user, goal: daily_goal, task_list:, position: daily_goal.position }
     end
@@ -34,7 +34,7 @@ class GenerateTodaysTaskListAction
 
   def days_of_week_goals_to_schedule(task_list:, today:)
     current_day_of_week = (today.wday + 6) % 7 # Monday is our 0 instead of Sunday
-    days_of_week_goals = @user.days_of_week_goals
+    days_of_week_goals = @user.goals.where(type: 'Goals::DaysOfWeek').all
     days_of_week_goals
       .filter { |day_of_week_goal| day_of_week_goal.days_of_week.include?(current_day_of_week) }
       .map do |day_of_week_goal|
@@ -47,7 +47,7 @@ class GenerateTodaysTaskListAction
     start_of_week = today.beginning_of_week
     end_of_week = today.end_of_week.beginning_of_day
 
-    times_per_week_goals = @user.times_per_week_goals
+    times_per_week_goals = @user.goals.where(type: 'Goals::TimesPerWeek').all
     times_per_week_goal_ids = times_per_week_goals.select(:id)
 
     completed_tasks = Tasks::GoalTask.joins(:task_list)
