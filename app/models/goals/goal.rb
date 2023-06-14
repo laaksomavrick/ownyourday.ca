@@ -12,9 +12,9 @@ module Goals
     validates :type, inclusion: GOAL_TYPES
     validates :position, presence: true
 
-    after_create :regenerate_todays_task_list
-    after_update :regenerate_todays_task_list
-    after_destroy :regenerate_todays_task_list, prepend: true
+    after_create :update_todays_task_list
+    after_update :update_todays_task_list
+    after_destroy :update_todays_task_list, prepend: true
 
     acts_as_list scope: :user, top_of_list: 0
 
@@ -44,9 +44,8 @@ module Goals
 
     private
 
-    def regenerate_todays_task_list
-      Rails.logger.debug 'Hello, world'
-      Rails.logger.debug self
+    def update_todays_task_list
+      UpdateTodaysTaskListAction.new(goal: self).call
     end
   end
 end

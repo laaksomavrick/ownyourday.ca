@@ -7,7 +7,9 @@ RSpec.describe UpdateTodaysTaskListAction do
   let!(:daily_goal) { create(:daily_goal, user:, position: 0) }
   let!(:daily_goal_two) { create(:daily_goal, user:, position: 1) }
   let!(:task_list) { GenerateTodaysTaskListAction.new(user:).call }
+  # rubocop:disable RSpec/LetSetup
   let!(:adhoc_task) { create(:adhoc_task, user:, task_list:, position: 2) }
+  # rubocop:enable RSpec/LetSetup
 
   before do
     task_list.tasks.where(goal_id: daily_goal_two.id).update(completed: true)

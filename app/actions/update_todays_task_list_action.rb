@@ -15,7 +15,7 @@ class UpdateTodaysTaskListAction
 
       task_lists = TaskList.where(user:).where('date >= ?', date).all
 
-      raise "No task list found for user=#{user.id}" if task_lists.count.zero?
+      raise ActiveRecord::Rollback if task_lists.count.zero?
 
       task_lists.each do |task_list|
         goal_task_data = task_list.goal_tasks.map do |goal_task|
@@ -28,7 +28,9 @@ class UpdateTodaysTaskListAction
         task_list = GenerateTodaysTaskListAction.new(user:).call
 
         # Re-add ad-hoc tasks
+        # rubocop:disable Rails/SkipsModelValidations
         Tasks::AdhocTask.where(id: adhoc_task_ids).update_all(task_list_id: task_list.id)
+        # rubocop:enable Rails/SkipsModelValidations
 
         # Complete previously completed goal tasks
         goal_task_ids_to_complete = []
@@ -41,7 +43,9 @@ class UpdateTodaysTaskListAction
           goal_task_ids_to_complete.push(goal_id) if completed
         end
 
+        # rubocop:disable Rails/SkipsModelValidations
         Tasks::GoalTask.where(goal_id: goal_task_ids_to_complete).update_all(completed: true)
+        # rubocop:enable Rails/SkipsModelValidations
 
         # Normalize position
         task_list.tasks.order(position: :asc).each_with_index do |task, index|
