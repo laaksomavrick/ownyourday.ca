@@ -22,6 +22,7 @@ en:
     sunday: "Sunday"
   tasks:
     navigation: "Tasks"
+    streak: "Streak"
     date:
       label: 'Select a date'
       button: "Select"
