@@ -46,6 +46,31 @@ class RetrieveGoalsStreakAction
     streak_count
   end
 
+  def find_goal_completions_per_week(goal_id:)
+    start_date = @user.beginning_of_day(@user.created_at)
+    end_date = @user.beginning_of_day
+    user_id = @user.id
+
+    # TODO: find first where completed != expected completed; find # of rows after then; multiply that by completions_expected (excluding this week)
+
+    query = <<-SQL.squish
+      SELECT * FROM (
+        SELECT To_char(week_start, 'IYYY-IW') year_week FROM generate_series(:start_date, :end_date, '1 week'::interval)
+      ) as year_weeks
+      LEFT OUTER JOIN (
+        SELECT To_char(tl.date, 'IYYY-IW') year_week, COUNT(completed) completed
+        FROM  tasks inner join task_lists tl on tasks.task_list_id = tl.id
+        WHERE tl.user_id = :user_id GROUP  BY year_week
+      ) tasks
+    ON year_weeks.year_week = tasks.year_week
+    ORDER BY year_weeks.year_week desc
+    SQL
+
+    results = connection.execute(
+      sanitize_sql_for_assignment([query, { start_date:, end_date:, user_id: }])
+    )
+  end
+
   def find_last_uncompleted_task(goal_id:, task_list_date:)
     Tasks::GoalTask
       .joins(:task_list)

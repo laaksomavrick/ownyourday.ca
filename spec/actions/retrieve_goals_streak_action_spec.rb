@@ -5,6 +5,8 @@ require 'rails_helper'
 RSpec.describe RetrieveGoalsStreakAction do
   let!(:user) { create(:user) }
 
+  context 'when g'
+
   context 'when goal is a daily goal' do
     let!(:goal) { create(:daily_goal, user:) }
 
