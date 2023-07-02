@@ -7,6 +7,7 @@ class RetrieveGoalsStreakAction
   end
 
   def call
+    # TODO: transaction?
     user_today_date = @user.beginning_of_day
     streaks = {}
 
@@ -29,7 +30,6 @@ class RetrieveGoalsStreakAction
 
   def streak_for_times_per_week_goal(goal:, task_list_date:)
     goal_id = goal.id
-    # TODO: completions this week
     last_failed_week = find_most_recent_days_per_week_failure(goal:, task_list_date:)
 
     if last_failed_week.count.zero?
@@ -38,13 +38,12 @@ class RetrieveGoalsStreakAction
                      .where(goal_id:, completed: true)
                      .count
     else
-      completions_this_week = 0
+      week_start = last_failed_week[0]['week_start']
       streak_count = Tasks::GoalTask
                      .joins(:task_list)
                      .where(goal_id:, completed: true)
-                     .where('task_lists.date > ?', last_failed_week.week_end)
+                     .where('task_lists.date > ?', week_start)
                      .count
-      streak_count += completions_this_week
     end
 
     streak_count
@@ -89,17 +88,21 @@ class RetrieveGoalsStreakAction
           AS week_start
       ) as year_weeks
       LEFT OUTER JOIN (
-        SELECT To_char(tl.date, 'IYYY-IW') year_week, COUNT(completed) completed_tasks_that_week
+        SELECT
+          To_char(tl.date, 'IYYY-IW') year_week,
+          COUNT(completed) completed_tasks_that_week
         FROM  tasks inner join task_lists tl on tasks.task_list_id = tl.id
-        WHERE tl.user_id = :user_id GROUP  BY year_week
+        WHERE tl.user_id = :user_id
+        AND completed = true
+        GROUP  BY year_week
       ) tasks
-    ON year_weeks.year_week = tasks.year_week
-    WHERE completed_tasks_that_week != :times_per_week
-    AND year_weeks.week_start < :task_list_date
-    ORDER BY year_weeks.year_week desc
+      ON year_weeks.year_week = tasks.year_week
+      WHERE completed_tasks_that_week != :times_per_week
+      AND year_weeks.week_end < :task_list_date::DATE
+      ORDER BY year_weeks.year_week desc
     SQL
 
-    results = ActiveRecord::Base.connection.execute(
+    result = ActiveRecord::Base.connection.execute(
       ActiveRecord::Base.sanitize_sql([query, { start_date:, end_date:, user_id:, times_per_week:, task_list_date: }])
     )
   end

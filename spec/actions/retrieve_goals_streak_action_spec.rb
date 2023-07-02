@@ -6,16 +6,91 @@ RSpec.describe RetrieveGoalsStreakAction do
   let!(:user) { create(:user, created_at: 14.days.ago) }
 
   context 'when the goal is a times per week goal' do
-    let!(:goal) { create(:times_per_week_goal, user:) }
+    let!(:goal) { create(:times_per_week_goal, user:, metadata: { 'times_per_week' => 2 }) }
 
     it 'retrieves streak when all prior weeks tasks have been completed' do
+      monday = user.beginning_of_day.monday
+      monday_one_week_ago = monday - 7.days
+      monday_two_weeks_ago = monday - 14.days
       goal_id = goal.id
-      two_weeks_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: 14.days.ago)
-      one_week_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: 7.days.ago)
+
+      two_weeks_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday_two_weeks_ago)
+      another_two_weeks_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday_two_weeks_ago + 1.day)
+      one_week_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday_one_week_ago)
+      another_one_week_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday_one_week_ago + 1.day)
       today_task_list = GenerateTodaysTaskListAction.new(user:).call
 
       two_weeks_ago_task_list.tasks.first.update(completed: true)
+      another_two_weeks_ago_task_list.tasks.first.update(completed: true)
       one_week_ago_task_list.tasks.first.update(completed: true)
+      another_one_week_ago_task_list.tasks.first.update(completed: true)
+
+      today_task_list.tasks.first.update(completed: false)
+
+      streaks = described_class.new(user:, goals: [goal]).call
+      goal_streak = streaks[goal_id]
+
+      expect(goal_streak).to eq 4
+    end
+
+    it 'retrieves streak when all prior weeks tasks and some tasks this week have been completed' do
+      monday = user.beginning_of_day.monday
+      monday_one_week_ago = monday - 7.days
+      monday_two_weeks_ago = monday - 14.days
+      goal_id = goal.id
+
+      two_weeks_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday_two_weeks_ago)
+      another_two_weeks_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday_two_weeks_ago + 1.day)
+      one_week_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday_one_week_ago)
+      another_one_week_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday_one_week_ago + 1.day)
+      today_task_list = GenerateTodaysTaskListAction.new(user:).call
+
+      two_weeks_ago_task_list.tasks.first.update(completed: true)
+      another_two_weeks_ago_task_list.tasks.first.update(completed: true)
+      one_week_ago_task_list.tasks.first.update(completed: true)
+      another_one_week_ago_task_list.tasks.first.update(completed: true)
+      today_task_list.tasks.first.update(completed: true)
+
+      streaks = described_class.new(user:, goals: [goal]).call
+      goal_streak = streaks[goal_id]
+
+      expect(goal_streak).to eq 5
+    end
+
+    it 'retrieves streak when no prior tasks have been completed' do
+      monday = user.beginning_of_day.monday
+      monday_one_week_ago = monday - 7.days
+      monday_two_weeks_ago = monday - 14.days
+      goal_id = goal.id
+
+      GenerateTodaysTaskListAction.new(user:).call(today: monday_two_weeks_ago)
+      GenerateTodaysTaskListAction.new(user:).call(today: monday_two_weeks_ago + 1.day)
+      GenerateTodaysTaskListAction.new(user:).call(today: monday_one_week_ago)
+      GenerateTodaysTaskListAction.new(user:).call(today: monday_one_week_ago + 1.day)
+      GenerateTodaysTaskListAction.new(user:).call
+
+      streaks = described_class.new(user:, goals: [goal]).call
+      goal_streak = streaks[goal_id]
+
+      expect(goal_streak).to eq 0
+    end
+
+    it 'retrieves streak when some prior tasks were not completed' do
+      monday = user.beginning_of_day.monday
+      monday_one_week_ago = monday - 7.days
+      monday_two_weeks_ago = monday - 14.days
+      goal_id = goal.id
+
+      two_weeks_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday_two_weeks_ago)
+      another_two_weeks_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday_two_weeks_ago + 1.day)
+      one_week_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday_one_week_ago)
+      another_one_week_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday_one_week_ago + 1.day)
+      today_task_list = GenerateTodaysTaskListAction.new(user:).call
+
+      two_weeks_ago_task_list.tasks.first.update(completed: true)
+      another_two_weeks_ago_task_list.tasks.first.update(completed: false)
+      one_week_ago_task_list.tasks.first.update(completed: true)
+      another_one_week_ago_task_list.tasks.first.update(completed: true)
       today_task_list.tasks.first.update(completed: false)
 
       streaks = described_class.new(user:, goals: [goal]).call
@@ -24,14 +99,22 @@ RSpec.describe RetrieveGoalsStreakAction do
       expect(goal_streak).to eq 2
     end
 
-    it 'retrieves streak when all prior weeks tasks and some tasks this week have been completed' do
+    it 'retrieves streak when some prior tasks were not completed and today is completed' do
+      monday = user.beginning_of_day.monday
+      monday_one_week_ago = monday - 7.days
+      monday_two_weeks_ago = monday - 14.days
       goal_id = goal.id
-      two_weeks_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: 14.days.ago)
-      one_week_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: 7.days.ago)
+
+      two_weeks_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday_two_weeks_ago)
+      another_two_weeks_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday_two_weeks_ago + 1.day)
+      one_week_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday_one_week_ago)
+      another_one_week_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday_one_week_ago + 1.day)
       today_task_list = GenerateTodaysTaskListAction.new(user:).call
 
       two_weeks_ago_task_list.tasks.first.update(completed: true)
+      another_two_weeks_ago_task_list.tasks.first.update(completed: false)
       one_week_ago_task_list.tasks.first.update(completed: true)
+      another_one_week_ago_task_list.tasks.first.update(completed: true)
       today_task_list.tasks.first.update(completed: true)
 
       streaks = described_class.new(user:, goals: [goal]).call
