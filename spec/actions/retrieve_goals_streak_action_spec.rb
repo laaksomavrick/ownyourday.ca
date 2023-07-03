@@ -14,12 +14,19 @@ RSpec.describe RetrieveGoalsStreakAction do
       monday_two_weeks_ago = monday - 14.days
       goal_id = goal.id
 
-      two_weeks_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday_two_weeks_ago)
-      another_two_weeks_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday_two_weeks_ago + 1.day)
-      one_week_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday_one_week_ago)
-      another_one_week_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday_one_week_ago + 1.day)
+      two_weeks_ago_task_list = GenerateTodaysTaskListAction
+                                .new(user:)
+                                .call(today: monday_two_weeks_ago)
+      another_two_weeks_ago_task_list = GenerateTodaysTaskListAction
+                                        .new(user:)
+                                        .call(today: monday_two_weeks_ago + 1.day)
+      one_week_ago_task_list = GenerateTodaysTaskListAction
+                               .new(user:)
+                               .call(today: monday_one_week_ago)
+      another_one_week_ago_task_list = GenerateTodaysTaskListAction
+                                       .new(user:)
+                                       .call(today: monday_one_week_ago + 1.day)
       today_task_list = GenerateTodaysTaskListAction.new(user:).call
-
       two_weeks_ago_task_list.tasks.first.update(completed: true)
       another_two_weeks_ago_task_list.tasks.first.update(completed: true)
       one_week_ago_task_list.tasks.first.update(completed: true)
@@ -40,9 +47,15 @@ RSpec.describe RetrieveGoalsStreakAction do
       goal_id = goal.id
 
       two_weeks_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday_two_weeks_ago)
-      another_two_weeks_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday_two_weeks_ago + 1.day)
-      one_week_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday_one_week_ago)
-      another_one_week_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday_one_week_ago + 1.day)
+      another_two_weeks_ago_task_list = GenerateTodaysTaskListAction
+                                        .new(user:)
+                                        .call(today: monday_two_weeks_ago + 1.day)
+      one_week_ago_task_list = GenerateTodaysTaskListAction
+                               .new(user:)
+                               .call(today: monday_one_week_ago)
+      another_one_week_ago_task_list = GenerateTodaysTaskListAction
+                                       .new(user:)
+                                       .call(today: monday_one_week_ago + 1.day)
       today_task_list = GenerateTodaysTaskListAction.new(user:).call
 
       two_weeks_ago_task_list.tasks.first.update(completed: true)
@@ -82,9 +95,15 @@ RSpec.describe RetrieveGoalsStreakAction do
       goal_id = goal.id
 
       two_weeks_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday_two_weeks_ago)
-      another_two_weeks_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday_two_weeks_ago + 1.day)
-      one_week_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday_one_week_ago)
-      another_one_week_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday_one_week_ago + 1.day)
+      another_two_weeks_ago_task_list = GenerateTodaysTaskListAction
+                                        .new(user:)
+                                        .call(today: monday_two_weeks_ago + 1.day)
+      one_week_ago_task_list = GenerateTodaysTaskListAction
+                               .new(user:)
+                               .call(today: monday_one_week_ago)
+      another_one_week_ago_task_list = GenerateTodaysTaskListAction
+                                       .new(user:)
+                                       .call(today: monday_one_week_ago + 1.day)
       today_task_list = GenerateTodaysTaskListAction.new(user:).call
 
       two_weeks_ago_task_list.tasks.first.update(completed: true)
@@ -105,10 +124,18 @@ RSpec.describe RetrieveGoalsStreakAction do
       monday_two_weeks_ago = monday - 14.days
       goal_id = goal.id
 
-      two_weeks_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday_two_weeks_ago)
-      another_two_weeks_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday_two_weeks_ago + 1.day)
-      one_week_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday_one_week_ago)
-      another_one_week_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday_one_week_ago + 1.day)
+      two_weeks_ago_task_list = GenerateTodaysTaskListAction
+                                .new(user:)
+                                .call(today: monday_two_weeks_ago)
+      another_two_weeks_ago_task_list = GenerateTodaysTaskListAction
+                                        .new(user:)
+                                        .call(today: monday_two_weeks_ago + 1.day)
+      one_week_ago_task_list = GenerateTodaysTaskListAction
+                               .new(user:)
+                               .call(today: monday_one_week_ago)
+      another_one_week_ago_task_list = GenerateTodaysTaskListAction
+                                       .new(user:)
+                                       .call(today: monday_one_week_ago + 1.day)
       today_task_list = GenerateTodaysTaskListAction.new(user:).call
 
       two_weeks_ago_task_list.tasks.first.update(completed: true)

@@ -14,9 +14,7 @@ class RetrieveGoalsStreakAction
     @goals.each do |goal|
       goal_id = goal.id
       streak_count = case goal.type
-                     when Goals::Daily.name
-                       streak_for_sequential_goal(goal:, task_list_date: user_today_date)
-                     when Goals::DaysOfWeek.name
+                     when Goals::Daily.name, Goals::DaysOfWeek.name
                        streak_for_sequential_goal(goal:, task_list_date: user_today_date)
                      when Goals::TimesPerWeek.name
                        streak_for_times_per_week_goal(goal:, task_list_date: user_today_date)
