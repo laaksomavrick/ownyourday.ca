@@ -1,35 +1,40 @@
 <%= turbo_frame_tag "task-list-turbo-frame" do %>
   <div class="space-y-4" data-controller="task-list">
-    <% @task_list.tasks.each do |task| %>
+    <% @task_list.tasks.each do |vm| %>
       <div
-        id="task-list-item-<%= task.id %>"
-        data-task-id="<%= task.id %>"
+        id="task-list-item-<%= vm.task.id %>"
+        data-task-id="<%= vm.task.id %>"
       >
         <div class="hidden" >
           <% # Reload the task-list-turbo-frame after sorting %>
-          <%= form_with model: task, url: task_position_path(task), method: :patch, scope: :task_position, id: "task-#{task.id}-position-form" do |f| %>
+          <%= form_with model: vm.task, url: task_position_path(vm.task), method: :patch, scope: :task_position, id: "task-#{vm.task.id}-position-form" do |f| %>
             <%= f.text_field :type %>
             <%= f.text_field :position %>
-            <%= f.submit nil, { hidden: true, data: { task_list_target: "submit" }, id: "task-#{task.id}-position-form-submit" } %>
+            <%= f.submit nil, { hidden: true, data: { task_list_target: "submit" }, id: "task-#{vm.task.id}-position-form-submit" } %>
           <% end %>
         </div>
-        <%= turbo_frame_tag "task-#{task.id}-turbo-frame", class: "pb-4" do %>
+        <%= turbo_frame_tag "task-#{vm.task.id}-turbo-frame", class: "pb-4" do %>
           <div
             data-controller="task"
             data-action="click->task#toggleGoalCompletion"
             data-task-target="listItem"
-            class="flex items-center border rounded border-gray-300 p-4 cursor-pointer select-none <%= task.completed ? "opacity-50" : nil %>">
+            class="flex items-center border rounded border-gray-300 p-4 cursor-pointer select-none <%= vm.task.completed ? "opacity-50" : nil %>">
             <div class="max-w-sm mr-2 mr-4">
-              <%= form_with model: task, url: task_path(task), method: "patch", scope: :task do |f| %>
-                <%= f.check_box :completed, { checked: task.completed, data: { task_target: "checkbox", task_id: task.id } } %>
+              <%= form_with model: vm.task, url: task_path(vm.task), method: "patch", scope: :task do |f| %>
+                <%= f.check_box :completed, { checked: vm.task.completed, data: { task_target: "checkbox", task_id: vm.task.id } } %>
                 <% # Reload the task-#{id}-turbo-frame after completion %>
                 <%= f.submit nil, { hidden: true, data: { task_target: "submit" } } %>
               <% end %>
             </div>
             <div class="w-full">
-              <p class="text-3xl">
-                <%= task.name %>
-              </p>
+              <div class="flex flex-col flex-1">
+                <p class="text-3xl mb-1">
+                  <%= vm.task.name %>
+                </p>
+                <div class="flex text-gray-400">
+                  <%= t('tasks.streak') %>: <%= vm.streak %>
+                </div>
+              </div>
             </div>
           </div>
         <% end %>
