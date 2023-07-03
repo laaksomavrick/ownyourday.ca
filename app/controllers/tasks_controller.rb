@@ -15,7 +15,6 @@ class TasksController < ApplicationController
 
     goals = task_list.user.goals
     streaks = RetrieveGoalsStreakAction.new(user: current_user, goals:).call
-
     @task_list = TaskListPresenter.new(task_list:, streaks:)
     @date = date
   end

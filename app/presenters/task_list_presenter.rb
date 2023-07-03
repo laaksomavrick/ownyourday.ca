@@ -12,7 +12,7 @@ class TaskListPresenter
 
   def tasks
     task_vms = @task_list.tasks.map do |task|
-      goal_id = task.goal.id
+      goal_id = task.try(:goal).try(:id)
       streak = @streaks[goal_id]
       TaskViewModel.new(task:, streak:)
     end
