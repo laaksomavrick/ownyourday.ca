@@ -123,6 +123,34 @@ RSpec.describe 'Tasks' do
         end
       end
 
+      describe 'task list item context' do
+        let!(:goal) { create(:times_per_week_goal, user:, metadata: { 'times_per_week' => 3 }) }
+
+        it 'shows task context when there are no completions this week' do
+          visit tasks_path
+          expect(page).to have_content('0 / 3')
+        end
+
+        it 'shows task context when there are some completions this week' do
+          monday = user.beginning_of_day.monday
+          tuesday = monday + 1.day
+          wednesday = monday + 2.days
+
+          monday_task_list = GenerateTodaysTaskListAction
+                             .new(user:)
+                             .call(today: monday)
+          tuesday_task_list = GenerateTodaysTaskListAction
+                              .new(user:)
+                              .call(today: tuesday)
+          monday_task_list.tasks.find_by(goal_id: goal.id).update(completed: true)
+          tuesday_task_list.tasks.find_by(goal_id: goal.id).update(completed: true)
+
+          visit tasks_path(date: wednesday)
+
+          expect(page).to have_content('2 / 3')
+        end
+      end
+
       it 'shows a user\'s tasks' do
         visit tasks_path
         expect(page).to have_content(goals.first.name)
