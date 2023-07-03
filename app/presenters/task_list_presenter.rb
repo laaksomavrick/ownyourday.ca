@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class TaskListPresenter
-  def initialize(task_list:, streaks:)
+  def initialize(user:, task_list:)
+    @user = user
     @task_list = task_list
-    @streaks = streaks
   end
 
   def id
@@ -11,13 +11,21 @@ class TaskListPresenter
   end
 
   def tasks
+    streaks = generate_streaks
     task_vms = @task_list.tasks.map do |task|
       goal_id = task.try(:goal).try(:id)
-      streak = @streaks[goal_id]
+      streak = streaks[goal_id]
       TaskViewModel.new(task:, streak:)
     end
 
     task_vms.sort_by { |vm| vm.task.position }
+  end
+
+  private
+
+  def generate_streaks
+    goals = @user.goals
+    RetrieveGoalsStreakAction.new(user: @user, goals:).call
   end
 end
 
