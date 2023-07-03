@@ -7,25 +7,27 @@ class RetrieveGoalsStreakAction
   end
 
   def call
-    # TODO: transaction?
-    user_today_date = @user.beginning_of_day
-    streaks = {}
+    ActiveRecord::Base.transaction do
+      user_today_date = @user.beginning_of_day
+      streaks = {}
 
-    @goals.each do |goal|
-      goal_id = goal.id
-      streak_count = case goal.type
-                     when Goals::Daily.name, Goals::DaysOfWeek.name
-                       streak_for_sequential_goal(goal:, task_list_date: user_today_date)
-                     when Goals::TimesPerWeek.name
-                       streak_for_times_per_week_goal(goal:, task_list_date: user_today_date)
-                     else
-                       raise "Goal type #{goal.type} not recognized"
-                     end
+      @goals.each do |goal|
+        goal_id = goal.id
+        # TODO: introduce caching for these queries with memcached or redis
+        streak_count = case goal.type
+                       when Goals::Daily.name, Goals::DaysOfWeek.name
+                         streak_for_sequential_goal(goal:, task_list_date: user_today_date)
+                       when Goals::TimesPerWeek.name
+                         streak_for_times_per_week_goal(goal:, task_list_date: user_today_date)
+                       else
+                         raise "Goal type #{goal.type} not recognized"
+                       end
 
-      streaks[goal_id] = streak_count
+        streaks[goal_id] = streak_count
+      end
+
+      streaks
     end
-
-    streaks
   end
 
   private
@@ -53,7 +55,7 @@ class RetrieveGoalsStreakAction
 
   def streak_for_sequential_goal(goal:, task_list_date:)
     goal_id = goal.id
-    last_uncompleted_task = find_last_uncompleted_task(goal_id:, task_list_date:)
+    last_uncompleted_task = find_most_recent_uncompleted_task(goal_id:, task_list_date:)
 
     if last_uncompleted_task
       last_uncompleted_task_date = last_uncompleted_task.task_list.date
@@ -107,7 +109,7 @@ class RetrieveGoalsStreakAction
     )
   end
 
-  def find_last_uncompleted_task(goal_id:, task_list_date:)
+  def find_most_recent_uncompleted_task(goal_id:, task_list_date:)
     Tasks::GoalTask
       .joins(:task_list)
       .where(goal_id:, completed: false)
