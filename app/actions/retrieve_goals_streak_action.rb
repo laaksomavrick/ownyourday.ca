@@ -15,9 +15,13 @@ class RetrieveGoalsStreakAction
       goal_id = goal.id
       streak_count = case goal.type
                      when Goals::Daily.name
-                       streak_for_daily_goal(goal:, task_list_date: user_today_date)
+                       streak_for_sequential_goal(goal:, task_list_date: user_today_date)
+                     when Goals::DaysOfWeek.name
+                       streak_for_sequential_goal(goal:, task_list_date: user_today_date)
                      when Goals::TimesPerWeek.name
                        streak_for_times_per_week_goal(goal:, task_list_date: user_today_date)
+                     else
+                       raise "Goal type #{goal.type} not recognized"
                      end
 
       streaks[goal_id] = streak_count
@@ -49,9 +53,9 @@ class RetrieveGoalsStreakAction
     streak_count
   end
 
-  def streak_for_daily_goal(goal:, task_list_date:)
+  def streak_for_sequential_goal(goal:, task_list_date:)
     goal_id = goal.id
-    last_uncompleted_task = find_last_uncompleted_daily_task(goal_id:, task_list_date:)
+    last_uncompleted_task = find_last_uncompleted_task(goal_id:, task_list_date:)
 
     if last_uncompleted_task
       last_uncompleted_task_date = last_uncompleted_task.task_list.date
@@ -71,8 +75,6 @@ class RetrieveGoalsStreakAction
   end
 
   def find_most_recent_days_per_week_failure(goal:, task_list_date:)
-    # exclude_this_week = opts[:exclude_this_week] || false
-
     start_date = @user.beginning_of_day(today: @user.created_at)
     end_date = @user.beginning_of_day
     user_id = @user.id
@@ -102,12 +104,12 @@ class RetrieveGoalsStreakAction
       ORDER BY year_weeks.year_week desc
     SQL
 
-    result = ActiveRecord::Base.connection.execute(
+    ActiveRecord::Base.connection.execute(
       ActiveRecord::Base.sanitize_sql([query, { start_date:, end_date:, user_id:, times_per_week:, task_list_date: }])
     )
   end
 
-  def find_last_uncompleted_daily_task(goal_id:, task_list_date:)
+  def find_last_uncompleted_task(goal_id:, task_list_date:)
     Tasks::GoalTask
       .joins(:task_list)
       .where(goal_id:, completed: false)
