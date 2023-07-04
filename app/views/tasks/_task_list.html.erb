@@ -32,9 +32,13 @@
                   <p class="text-3xl mb-1">
                     <%= vm.task.name %>
                   </p>
-                  <div class="flex text-gray-400">
-                    <%= t('tasks.streak') %>: <%= vm.streak %>
-                  </div>
+                    <div class="flex text-gray-400">
+                      <% if vm.show_streak? %>
+                        <%= t('tasks.streak') %>: <%= vm.streak %>
+                      <% else  %>
+                       <%= t('common.adhoc_task') %>
+                      <% end %>
+                    </div>
                 </div>
                 <% if vm.show_context? %>
                   <div class="flex justify-center items-center text-gray-400">

@@ -61,6 +61,10 @@ class TaskViewModel
     @context = context
   end
 
+  def show_streak?
+    @task.try(:goal).present?
+  end
+
   def show_context?
     task_type = @task.try(:goal).try(:type)
 
