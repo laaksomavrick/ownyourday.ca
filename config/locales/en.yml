@@ -12,6 +12,7 @@ en:
     time: "time"
     times: "times"
     and: "and"
+    adhoc_task: 'Adhoc Task'
   days_of_week:
     monday: "Monday"
     tuesday: "Tuesday"

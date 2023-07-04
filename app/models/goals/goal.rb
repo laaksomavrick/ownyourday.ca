@@ -6,7 +6,7 @@ module Goals
     GOAL_TYPES = %w[Goals::Daily Goals::TimesPerWeek Goals::DaysOfWeek].freeze
 
     belongs_to :user
-    has_many :tasks, class_name: 'Tasks::GoalTask', dependent: :nullify
+    has_many :tasks, class_name: 'Tasks::GoalTask', dependent: :destroy
 
     validates :name, presence: true
     validates :type, inclusion: GOAL_TYPES

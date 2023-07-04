@@ -151,6 +151,20 @@ RSpec.describe 'Tasks' do
         end
       end
 
+      describe 'goal deletion' do
+        it 'deletes the corresponding task when a goal is deleted' do
+          GenerateTodaysTaskListAction
+            .new(user:)
+            .call
+          goal_to_delete = user.goals.first
+
+          goal_to_delete.destroy!
+          visit tasks_path
+
+          expect(page).not_to have_content(goal_to_delete.name)
+        end
+      end
+
       it 'shows a user\'s tasks' do
         visit tasks_path
         expect(page).to have_content(goals.first.name)
