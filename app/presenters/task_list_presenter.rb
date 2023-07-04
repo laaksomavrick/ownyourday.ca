@@ -62,6 +62,10 @@ class TaskViewModel
   end
 
   def show_context?
+    task_type = @task.try(:goal).try(:type)
+
+    return false if task_type.nil?
+
     @task.goal.type == Goals::TimesPerWeek.name
   end
 end
