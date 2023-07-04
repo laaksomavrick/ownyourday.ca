@@ -16,9 +16,7 @@ class TaskPositionController < ApplicationController
     @task.insert_at(position)
 
     task_list = @task.task_list
-    goals = task_list.user.goals
-    streaks = RetrieveGoalsStreakAction.new(user: current_user, goals:).call
-    @task_list = TaskListPresenter.new(task_list:, streaks:)
+    @task_list = TaskListPresenter.new(user: current_user, task_list:)
 
     flash.now[:alert] = t('helpers.alert.update_failed', name: @task.name) if @task.errors.empty? == false
   end

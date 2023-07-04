@@ -13,9 +13,7 @@ class TasksController < ApplicationController
 
     authorize task_list
 
-    goals = task_list.user.goals
-    streaks = RetrieveGoalsStreakAction.new(user: current_user, goals:).call
-    @task_list = TaskListPresenter.new(task_list:, streaks:)
+    @task_list = TaskListPresenter.new(user: current_user, task_list:)
     @date = date
   end
 
