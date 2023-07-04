@@ -13,44 +13,7 @@
             <%= f.submit nil, { hidden: true, data: { task_list_target: "submit" }, id: "task-#{vm.task.id}-position-form-submit" } %>
           <% end %>
         </div>
-        <%= turbo_frame_tag "task-#{vm.task.id}-turbo-frame", class: "pb-4" do %>
-          <div
-            data-controller="task"
-            data-action="click->task#toggleGoalCompletion"
-            data-task-target="listItem"
-            class="flex items-center border rounded border-gray-300 p-4 cursor-pointer select-none <%= vm.task.completed ? "opacity-50" : nil %>">
-            <div class="max-w-sm mr-2 mr-4">
-              <%= form_with model: vm.task, url: task_path(vm.task), method: "patch", scope: :task do |f| %>
-                <%= f.check_box :completed, { checked: vm.task.completed, data: { task_target: "checkbox", task_id: vm.task.id } } %>
-                <% # Reload the task-#{id}-turbo-frame after completion %>
-                <%= f.submit nil, { hidden: true, data: { task_target: "submit" } } %>
-              <% end %>
-            </div>
-            <div class="w-full">
-              <div class="flex">
-                <div class="flex flex-col flex-1">
-                  <p class="text-3xl mb-1">
-                    <%= vm.task.name %>
-                  </p>
-                    <div class="flex text-gray-400">
-                      <% if vm.show_streak? %>
-                        <%= t('tasks.streak') %>: <%= vm.streak %>
-                      <% else  %>
-                       <%= t('common.adhoc_task') %>
-                      <% end %>
-                    </div>
-                </div>
-                <% if vm.show_context? %>
-                  <div class="flex justify-center items-center text-gray-400">
-                    <div class="flex text-gray-400">
-                      <%= vm.context[:completions_this_week] %> / <%= vm.context[:completions_expected] %>
-                    </div>
-                  </div>
-                <% end %>
-              </div>
-            </div>
-          </div>
-        <% end %>
+        <%= render 'tasks/task', vm: vm %>
       </div>
     <% end %>
   </div>

@@ -25,14 +25,12 @@ class TasksController < ApplicationController
     @task.completed = completed
 
     @task.save
+    @vm = TaskPresenter.new(user: current_user, task: @task).call
 
-    if @task.errors.empty? == false
-      flash.now[:alert] = t('helpers.alert.update_failed', name: @task.name)
-      render 'index', status: :unprocessable_entity
-      return
-    end
+    return unless @task.errors.empty? == false
 
-    redirect_to tasks_path
+    flash.now[:alert] = t('helpers.alert.update_failed', name: @task.name)
+    render 'index', status: :unprocessable_entity
   end
 
   private
