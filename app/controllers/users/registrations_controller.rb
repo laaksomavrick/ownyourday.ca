@@ -13,6 +13,16 @@ module Users
 
     # POST /resource
     def create
+      # TODO
+      # If enable_users_registration_allowlist == true
+      # Check that username is in the allowlist (from credentials.yml into an object)
+      # If it is not, fail
+      # if FeatureFlags.user_signup_enabled? == false
+      #       flash[:alert] = t('.disabled')
+      #       redirect_to new_user_registration_path
+      #     else
+      #       super
+      #     end
       super
     end
     # rubocop:enable Lint/UselessMethodDefinition
