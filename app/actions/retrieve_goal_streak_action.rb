@@ -6,8 +6,8 @@ class RetrieveGoalStreakAction
     @goal = goal
   end
 
-  def call
-    user_today_date = @user.beginning_of_day
+  def call(today: DateTime.current.utc)
+    user_today_date = @user.beginning_of_day(today:)
 
     # TODO: introduce caching for these queries with memcached or redis
     case @goal.type
