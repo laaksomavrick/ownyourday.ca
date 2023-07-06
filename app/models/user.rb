@@ -4,13 +4,17 @@ class User < ApplicationRecord
   devise :database_authenticatable,
          :registerable,
          :rememberable,
-         :trackable, :omniauthable, omniauth_providers: [:google_oauth2]
+         :validatable,
+         :trackable,
+         :omniauthable, omniauth_providers: [:google_oauth2]
 
   has_many :goals, -> { order(position: :asc) }, class_name: 'Goals::Goal', dependent: :destroy, inverse_of: :user
   has_many :task_lists, dependent: :destroy
   has_many :tasks, class_name: 'Tasks::Task', dependent: :destroy
   has_many :goal_tasks, class_name: 'Tasks::GoalTask', dependent: :destroy
   has_many :adhoc_tasks, class_name: 'Tasks::AdhocTask', dependent: :destroy
+
+  validates :email, format: { with: Devise.email_regexp }, uniqueness: true
 
   def beginning_of_day(today: DateTime.current.utc)
     user_today = today.in_time_zone(time_zone)
