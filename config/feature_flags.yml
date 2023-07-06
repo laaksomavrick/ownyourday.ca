@@ -1,0 +1,13 @@
+default: &default
+users_registration_allow_list: true # All user registrations must have an email present in the allowlist. See credentials.yml.enc
+
+production:
+  <<: *default
+
+development:
+  <<: *default
+  users_registration_allow_list: false
+
+test:
+  <<: *default
+  users_registration_allow_list: false

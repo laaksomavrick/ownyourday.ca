@@ -164,13 +164,13 @@ RSpec.describe RetrieveGoalsStreakAction do
 
       monday_one_week_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday_one_week_ago)
       tuesday_one_week_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: tuesday_one_week_ago)
-      today_task_list = GenerateTodaysTaskListAction.new(user:).call
+      today_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday)
 
       monday_one_week_ago_task_list.tasks.first.update(completed: true)
       tuesday_one_week_ago_task_list.tasks.first.update(completed: true)
       today_task_list.tasks.first.update(completed: false)
 
-      streaks = described_class.new(user:, goals: [goal]).call
+      streaks = described_class.new(user:, goals: [goal]).call(today: monday)
       goal_streak = streaks[goal_id]
 
       expect(goal_streak).to eq 2
@@ -181,7 +181,7 @@ RSpec.describe RetrieveGoalsStreakAction do
 
       monday_one_week_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday_one_week_ago)
       tuesday_one_week_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: tuesday_one_week_ago)
-      today_task_list = GenerateTodaysTaskListAction.new(user:).call
+      today_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday)
 
       monday_one_week_ago_task_list.tasks.first.update(completed: false)
       tuesday_one_week_ago_task_list.tasks.first.update(completed: false)
@@ -198,7 +198,7 @@ RSpec.describe RetrieveGoalsStreakAction do
 
       monday_one_week_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday_one_week_ago)
       tuesday_one_week_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: tuesday_one_week_ago)
-      today_task_list = GenerateTodaysTaskListAction.new(user:).call
+      today_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday)
 
       monday_one_week_ago_task_list.tasks.first.update(completed: true)
       tuesday_one_week_ago_task_list.tasks.first.update(completed: false)

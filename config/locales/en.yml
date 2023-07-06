@@ -52,3 +52,7 @@ en:
     destroy:
       confirmation: 'Are you sure you want to delete %{name}?'
       success: 'Successfully deleted %{name}'
+  users:
+    registrations:
+      create:
+        disabled: 'Creating new accounts is currently disabled'
