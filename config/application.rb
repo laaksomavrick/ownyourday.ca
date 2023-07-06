@@ -20,5 +20,8 @@ module Ownyourday
       html_tag.html_safe
     end
     # rubocop:enable Rails/OutputSafety
+
+    # Add feature flags to config
+    config.feature_flags = config_for(:feature_flags)
   end
 end
