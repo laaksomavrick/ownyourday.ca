@@ -55,4 +55,5 @@ en:
   users:
     registrations:
       create:
+        url_text: 'No account? Sign up here'
         disabled: 'Creating new accounts is currently disabled'
