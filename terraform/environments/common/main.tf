@@ -18,9 +18,4 @@ terraform {
 
 module "container-registry" {
   source = "../../modules/container-registry"
-
-  common_tags = {
-    Project     = "ownyourday"
-    Environment = "production"
-  }
 }

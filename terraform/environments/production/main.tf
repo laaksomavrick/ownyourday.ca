@@ -18,9 +18,4 @@ terraform {
 
 module "app-server" {
   source = "../../modules/app-server"
-
-  common_tags = {
-    Project     = "ownyourday"
-    Environment = "production"
-  }
 }
