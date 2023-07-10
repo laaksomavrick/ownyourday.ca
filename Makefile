@@ -1,3 +1,5 @@
+VERSION=latest
+
 .PHONY: up
 up:
 	@docker-compose -f docker-compose.local.yml up -d
@@ -25,3 +27,7 @@ format:
 .PHONY: check-format
 check-format:
 	@bundler exec rubocop --fail-level=warning
+
+.PHONY: build
+build:
+	@docker build -f Dockerfile -t ownyourday:$(VERSION) .
