@@ -109,6 +109,12 @@ jobs:
       - name: Check JavaScript lint
         run: nix --store ${{ env.NIX_STORE_PATH }} develop . --command pnpm run lint
 
+      - name: Check Terraform formatting
+        run: nix --store ${{ env.NIX_STORE_PATH }} develop . --command terraform fmt -recursive -check
+
+      - name: Check Terraform lint
+        run: nix --store ${{ env.NIX_STORE_PATH }} develop . --command terraform validate -no-color
+
       - name: Run JavaScript tests
         run: nix --store ${{ env.NIX_STORE_PATH }} develop . --command pnpm run test
 
