@@ -8,9 +8,9 @@ terraform {
   }
 
   backend "s3" {
-    bucket         = "ownyourday-terraform-states"
-    key            = "common.tfstate"
-    region         = "ca-central-1"
+    bucket = "ownyourday-terraform-states"
+    key    = "common.tfstate"
+    region = "ca-central-1"
   }
 
   required_version = ">= 1.2.0"
@@ -21,7 +21,7 @@ module "container_registry" {
 }
 
 module "pipeline_role" {
-  source = "../../modules/pipeline-role"
+  source                 = "../../modules/pipeline-role"
   container_registry_arn = module.container_registry.container_registry_arn
-  github_repo_path = var.github_repo_path
+  github_repo_path       = var.github_repo_path
 }

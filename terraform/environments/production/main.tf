@@ -8,9 +8,9 @@ terraform {
   }
 
   backend "s3" {
-    bucket         = "ownyourday-terraform-states"
-    key            = "production.tfstate"
-    region         = "ca-central-1"
+    bucket = "ownyourday-terraform-states"
+    key    = "production.tfstate"
+    region = "ca-central-1"
   }
 
   required_version = ">= 1.2.0"

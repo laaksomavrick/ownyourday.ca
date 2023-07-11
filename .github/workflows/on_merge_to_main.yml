@@ -1,1 +1,41 @@
-# https://github.com/aws-actions/configure-aws-credentials
+name: On merge to main
+
+on:
+  push:
+    branches: [ main ]
+
+
+env:
+  DOCKER_REGISTRY_URL: ${{ vars.AWS_ACCOUNT_ID }}.dkr.ecr.${{ vars.AWS_REGION }}.amazonaws.com
+  DOCKER_REPO_URL: ${{ vars.AWS_ACCOUNT_ID }}.dkr.ecr.${{ vars.AWS_REGION }}.amazonaws.com/${{ vars.ECR_REPO_NAME }}
+  DOCKER_IMAGE_TAG: $(echo $GITHUB_SHA | head -c7)
+
+# TODO: apply infra updates via CI
+# TODO: deploy app via CI
+
+jobs:
+  build-and-push-docker-image:
+    name: Build and push docker image
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ vars.RUNNER_AWS_ROLE_ID }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Login to ECR registry
+        run: aws ecr get-login-password --region ${{ vars.AWS_REGION }} | docker login --username AWS --password-stdin ${{ env.DOCKER_REGISTRY_URL }}
+
+      - name: Build container image
+        run: docker build -t ${{ env.DOCKER_REPO_URL }}:${{ env.DOCKER_IMAGE_TAG }} .
+
+      - name: Push container image
+        run: docker push ${{ env.DOCKER_REPO_URL }}:${{ env.DOCKER_IMAGE_TAG }}
