@@ -38,3 +38,5 @@ node_modules
 # Direnv
 .direnv*
 
+.terraform
+*.tfvars

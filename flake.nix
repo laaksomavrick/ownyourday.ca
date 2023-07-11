@@ -33,6 +33,7 @@
             pkgs.docker
             pkgs.git
             pkgs.gnumake
+            pkgs.terraform
             pkgs.nixpkgs-fmt
             pkgs.nodejs
             pkgs.nodePackages.pnpm
