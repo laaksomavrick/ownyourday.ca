@@ -19,3 +19,7 @@ terraform {
 module "app-server" {
   source = "../../modules/app-server"
 }
+
+module "network" {
+  source = "../../modules/network"
+}
