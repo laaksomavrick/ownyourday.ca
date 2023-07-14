@@ -42,13 +42,9 @@ Investigate New Relic versus AWS offerings for the above. TBD.
   - PR time, rename branch to iac-container-registry
 
 #### Step 2:
-- VPC, public subnet, EC2
+- VPC, subnet, security group
   - All this goes into "production" via the modules
 - App server
-  - Use EC2
+  - Use EC2 backed ECS
     - Maybe use ECS instead with EC2 launch type with a t4g.nano; handles a lot of the leg work?
-    - Install docker with userdata or with an image that contains Docker by default
-      - Make sure terraform has a reference to the image tag in EC2 so we can update that to pull
-    - Docker environment platform
-    - EC2: t4g.nano
     - ECR: hold 2 images per month, last and current

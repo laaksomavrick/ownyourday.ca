@@ -5,7 +5,7 @@ provider "aws" {
 
   default_tags {
     tags = {
-      Environment = "common"
+      Environment = "production"
       Project     = "ownyourday"
     }
   }
