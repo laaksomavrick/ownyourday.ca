@@ -16,3 +16,7 @@ variable "public_security_group_ids" {
   description = ""
   type        = list(string)
 }
+
+variable "public_key_file_path" {
+ type = string
+}

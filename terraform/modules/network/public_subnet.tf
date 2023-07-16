@@ -20,7 +20,7 @@ resource "aws_network_acl" "public_subnet_nacl" {
     protocol   = "tcp"
     rule_no    = 100
     action     = "allow"
-    cidr_block = aws_vpc.app_vpc.cidr_block
+    cidr_block = local.everything_cidr_block
     from_port  = 80
     to_port    = 80
   }
@@ -29,27 +29,45 @@ resource "aws_network_acl" "public_subnet_nacl" {
     protocol   = "tcp"
     rule_no    = 200
     action     = "allow"
-    cidr_block = aws_vpc.app_vpc.cidr_block
+    cidr_block = local.everything_cidr_block
     from_port  = 443
     to_port    = 443
+  }
+
+  ingress {
+    protocol   = "tcp"
+    rule_no    = 300
+    action     = "allow"
+    cidr_block = local.everything_cidr_block #aws_vpc.app_vpc.cidr_block
+    from_port  = 22
+    to_port    = 22
   }
 
   egress {
     protocol   = "tcp"
     rule_no    = 100
     action     = "allow"
-    cidr_block = aws_vpc.app_vpc.cidr_block
-    from_port  = 80
-    to_port    = 80
+    cidr_block = local.everything_cidr_block
+    from_port  = 1024
+    to_port    = 65535
   }
 
   egress {
     protocol   = "tcp"
     rule_no    = 200
     action     = "allow"
-    cidr_block = aws_vpc.app_vpc.cidr_block
-    from_port  = 443
-    to_port    = 443
+    cidr_block = local.everything_cidr_block
+    from_port  = 1024
+    to_port    = 65535
+  }
+
+  egress {
+    protocol   = "tcp"
+    rule_no    = 300
+    action     = "allow"
+    cidr_block = local.everything_cidr_block
+    from_port  = 1024
+    to_port    = 65535
   }
 
 }
@@ -64,7 +82,7 @@ resource "aws_network_acl_association" "public_subnet_nacl_assoc" {
   subnet_id      = aws_subnet.public_subnet.id
 }
 
-resource "aws_security_group" "private_subnet_security_group" {
+resource "aws_security_group" "public_subnet_security_group" {
   vpc_id = aws_vpc.app_vpc.id
 
   ingress {
@@ -72,7 +90,7 @@ resource "aws_security_group" "private_subnet_security_group" {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = [aws_subnet.public_subnet.cidr_block]
+    cidr_blocks = [local.everything_cidr_block]
   }
 
   ingress {
@@ -80,7 +98,15 @@ resource "aws_security_group" "private_subnet_security_group" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = [aws_subnet.public_subnet.cidr_block]
+    cidr_blocks = [local.everything_cidr_block]
+  }
+
+  ingress {
+    description = ""
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = [local.everything_cidr_block]
   }
 
   lifecycle {
@@ -88,3 +114,4 @@ resource "aws_security_group" "private_subnet_security_group" {
   }
 
 }
+

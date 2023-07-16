@@ -110,6 +110,7 @@ resource "aws_launch_template" "instance" {
   instance_type          = "t4g.nano"
   user_data              = base64encode(templatefile("${path.module}/user_data.sh", { log_group = aws_cloudwatch_log_group.instance.name, ecs_cluster = "TODO" }))
   vpc_security_group_ids = var.public_security_group_ids
+  key_name               = aws_key_pair.deployer.key_name
 
   iam_instance_profile {
     arn = aws_iam_instance_profile.instance.arn
