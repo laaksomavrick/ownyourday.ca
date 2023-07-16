@@ -18,6 +18,10 @@ terraform {
 
 module "app-server" {
   source = "../../modules/app-server"
+
+  app_name                  = "ownyourday"
+  public_security_group_ids = [module.network.public_subnet_security_group_id]
+  public_subnet_ids         = [module.network.public_subnet_id]
 }
 
 module "network" {
