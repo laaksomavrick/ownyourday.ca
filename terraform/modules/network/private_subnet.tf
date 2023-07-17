@@ -50,7 +50,7 @@ resource "aws_network_acl_association" "private_subnet_nacl_assoc" {
   subnet_id      = aws_subnet.private_subnet.id
 }
 
-resource "aws_security_group" "public_subnet_security_group" {
+resource "aws_security_group" "private_subnet_security_group" {
   vpc_id = aws_vpc.app_vpc.id
 
   ingress {
@@ -58,7 +58,7 @@ resource "aws_security_group" "public_subnet_security_group" {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = [aws_vpc.app_vpc.cidr_block]
+    cidr_blocks = [aws_subnet.public_subnet.cidr_block]
   }
 
   ingress {
@@ -66,7 +66,7 @@ resource "aws_security_group" "public_subnet_security_group" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = [aws_vpc.app_vpc.cidr_block]
+    cidr_blocks = [aws_subnet.public_subnet.cidr_block]
   }
 
   lifecycle {
@@ -74,6 +74,7 @@ resource "aws_security_group" "public_subnet_security_group" {
   }
 
 }
+
 
 resource "aws_route_table" "private_route_table" {
   vpc_id = aws_vpc.app_vpc.id
