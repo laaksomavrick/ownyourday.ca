@@ -22,7 +22,7 @@ module "app-server" {
   app_name                  = "ownyourday"
   public_security_group_ids = [module.network.public_subnet_security_group_id]
   public_subnet_ids         = [module.network.public_subnet_id]
-  public_key_file_path = "~/.ssh/aws_ownyourday.pub"
+  public_key_file_path      = "~/.ssh/aws_ownyourday.pub"
 }
 
 module "network" {

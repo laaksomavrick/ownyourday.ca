@@ -87,7 +87,7 @@ resource "aws_autoscaling_group" "asg" {
   name = "${var.app_name}-asg"
 
   vpc_zone_identifier = var.public_subnet_ids
-  max_size            = 2
+  max_size            = 1
   min_size            = 1
   desired_capacity    = 1
 
@@ -107,8 +107,8 @@ resource "aws_autoscaling_group" "asg" {
 resource "aws_launch_template" "instance" {
   name_prefix            = "${var.app_name}-lt"
   image_id               = data.aws_ami.ecs.id
-  instance_type          = "t4g.nano"
-  user_data              = base64encode(templatefile("${path.module}/user_data.sh", { log_group = aws_cloudwatch_log_group.instance.name, ecs_cluster = "TODO" }))
+  instance_type          = "t4g.micro"
+  user_data              = base64encode(templatefile("${path.module}/user_data.sh", { log_group = aws_cloudwatch_log_group.instance.name, ecs_cluster = "${var.app_name}-cluster" }))
   vpc_security_group_ids = var.public_security_group_ids
   key_name               = aws_key_pair.deployer.key_name
 

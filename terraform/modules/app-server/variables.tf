@@ -18,5 +18,5 @@ variable "public_security_group_ids" {
 }
 
 variable "public_key_file_path" {
- type = string
+  type = string
 }

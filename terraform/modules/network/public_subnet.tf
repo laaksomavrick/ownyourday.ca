@@ -77,10 +77,11 @@ resource "aws_route_table_association" "public" {
   route_table_id = aws_route_table.public_route_table.id
 }
 
-resource "aws_network_acl_association" "public_subnet_nacl_assoc" {
-  network_acl_id = aws_network_acl.public_subnet_nacl.id
-  subnet_id      = aws_subnet.public_subnet.id
-}
+# TODO: re-enable me?
+//resource "aws_network_acl_association" "public_subnet_nacl_assoc" {
+//  network_acl_id = aws_network_acl.public_subnet_nacl.id
+//  subnet_id      = aws_subnet.public_subnet.id
+//}
 
 resource "aws_security_group" "public_subnet_security_group" {
   vpc_id = aws_vpc.app_vpc.id
@@ -105,6 +106,22 @@ resource "aws_security_group" "public_subnet_security_group" {
     description = ""
     from_port   = 22
     to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = [local.everything_cidr_block]
+  }
+
+  egress {
+    description = ""
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = [local.everything_cidr_block]
+  }
+
+  egress {
+    description = ""
+    from_port   = 80
+    to_port     = 80
     protocol    = "tcp"
     cidr_blocks = [local.everything_cidr_block]
   }
