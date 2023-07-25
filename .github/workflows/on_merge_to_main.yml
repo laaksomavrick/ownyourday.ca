@@ -4,14 +4,15 @@ on:
   push:
     branches: [ main ]
 
-
 env:
   DOCKER_REGISTRY_URL: ${{ vars.AWS_ACCOUNT_ID }}.dkr.ecr.${{ vars.AWS_REGION }}.amazonaws.com
   DOCKER_REPO_URL: ${{ vars.AWS_ACCOUNT_ID }}.dkr.ecr.${{ vars.AWS_REGION }}.amazonaws.com/${{ vars.ECR_REPO_NAME }}
-  DOCKER_IMAGE_TAG: $(echo $GITHUB_SHA | head -c7)
+  DOCKER_IMAGE_TAG: ${{ github.sha }}
 
 # TODO: apply infra updates via CI
 # TODO: deploy app via CI
+
+# TODO: only build image if something has changed requiring a new image build
 
 jobs:
   build-and-push-docker-image:
@@ -25,6 +26,12 @@ jobs:
       - name: Checkout main
         uses: actions/checkout@v2
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -34,8 +41,10 @@ jobs:
       - name: Login to ECR registry
         run: aws ecr get-login-password --region ${{ vars.AWS_REGION }} | docker login --username AWS --password-stdin ${{ env.DOCKER_REGISTRY_URL }}
 
-      - name: Build container image
-        run: docker build -t ${{ env.DOCKER_REPO_URL }}:${{ env.DOCKER_IMAGE_TAG }} .
-
-      - name: Push container image
-        run: docker push ${{ env.DOCKER_REPO_URL }}:${{ env.DOCKER_IMAGE_TAG }}
+      - name: Build and push container image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          platforms: linux/arm64
+          tags: ${{ env.DOCKER_REPO_URL }}:${{ env.DOCKER_IMAGE_TAG }}
+          push: true
