@@ -2,10 +2,10 @@ variable "app_name" {
   type = string
 }
 
-//variable "image_uri" {
-//  description = "The URI of the image to run in the task definition"
-//  type = string
-//}
+variable "image_uri" {
+  description = "The URI of the image to run in the task definition"
+  type        = string
+}
 
 variable "public_subnet_ids" {
   description = ""
