@@ -9,9 +9,6 @@ env:
   DOCKER_REPO_URL: ${{ vars.AWS_ACCOUNT_ID }}.dkr.ecr.${{ vars.AWS_REGION }}.amazonaws.com/${{ vars.ECR_REPO_NAME }}
   DOCKER_IMAGE_TAG: ${{ github.sha }}
 
-# TODO: apply infra updates via CI
-# TODO: deploy app via CI
-
 # TODO: only build image if something has changed requiring a new image build
 
 jobs:
@@ -50,3 +47,50 @@ jobs:
           push: true
           build-args: |
             "RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }}"
+
+  update-infrastructure:
+    name: Apply infrastructure updates
+    needs: [build-and-push-docker-image]
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    defaults:
+      run:
+        working-directory: terraform/environments/production
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ vars.RUNNER_AWS_ROLE_ID }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Setup terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.2.0
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Write public_ssh_key_file_path to file
+        run: echo "${{vars.SSH_PUBLIC_KEY}}" >> public_ssh_key.pub
+
+      - name: Terraform Plan
+        run: |
+          terraform plan \
+            -var app_image_uri=${{ env.DOCKER_REPO_URL }}:${{ env.DOCKER_IMAGE_TAG }} \
+            -var public_ssh_key_file_path=public_ssh_key.pub \
+            -input=false \
+            -no-color \
+            -out tf.plan
+
+      - name: Terraform Apply
+        run: |
+          terraform apply \
+            -input=false \
+            tf.plan
+

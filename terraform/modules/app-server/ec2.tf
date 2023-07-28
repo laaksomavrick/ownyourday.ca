@@ -11,7 +11,7 @@ data "aws_ami" "ecs" {
 
 
 resource "aws_cloudwatch_log_group" "instance" {
-  name = "${var.app_name}-log-group"
+  name              = "${var.app_name}-log-group"
   retention_in_days = 7
 }
 

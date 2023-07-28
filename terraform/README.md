@@ -54,7 +54,7 @@ Investigate New Relic versus AWS offerings for the above. TBD.
 - need to pass RAILS_MASTER_KEY via env for Docker
 
 
-- Update CI to add var for newly uploaded image and apply tf updates (will need new role for sts:assumerole)
+- Update CI to add var for newly uploaded image and apply tf updates (will need to modify PipelineRole ?)
 
 - Get db running
 - Get load balancer running
