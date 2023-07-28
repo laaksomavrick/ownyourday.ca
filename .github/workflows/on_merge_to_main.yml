@@ -48,3 +48,5 @@ jobs:
           platforms: linux/arm64
           tags: ${{ env.DOCKER_REPO_URL }}:${{ env.DOCKER_IMAGE_TAG }}
           push: true
+          build-args: |
+            "RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }}"
