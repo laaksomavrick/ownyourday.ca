@@ -49,13 +49,6 @@ Investigate New Relic versus AWS offerings for the above. TBD.
     - Maybe use ECS instead with EC2 launch type with a t4g.nano; handles a lot of the leg work?
     - ECR: hold 2 images per month, last and current
 
-- Get app server running ownyourday docker image
-=> https://docs.docker.com/build/ci/github-actions/secrets/
-- need to pass RAILS_MASTER_KEY via env for Docker
-
-
-- Update CI to add var for newly uploaded image and apply tf updates (will need to modify PipelineRole ?)
-
 - Get db running
 - Get load balancer running
 - Revisit security (sg, nacl)
