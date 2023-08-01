@@ -48,3 +48,10 @@ Investigate New Relic versus AWS offerings for the above. TBD.
   - Use EC2 backed ECS
     - Maybe use ECS instead with EC2 launch type with a t4g.nano; handles a lot of the leg work?
     - ECR: hold 2 images per month, last and current
+
+- Get db running
+- Get load balancer running
+- Revisit security (sg, nacl)
+- Setup SSL + move over domain (ownyourday.ca)
+
+- Logging, monitoring, alerting setup

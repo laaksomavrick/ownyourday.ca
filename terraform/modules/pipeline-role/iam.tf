@@ -47,6 +47,21 @@ data "aws_iam_policy_document" "pipeline_role_policy_doc" {
       "*"
     ]
   }
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "s3:*",
+      "ec2:*",
+      "ecs:*",
+      "logs:*",
+      "iam:*",
+      "autoscaling:*"
+    ]
+    resources = [
+      "*"
+    ]
+  }
 }
 
 resource "aws_iam_policy" "pipeline_role_policy" {

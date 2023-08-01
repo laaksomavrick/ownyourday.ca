@@ -44,13 +44,7 @@ resource "aws_ecs_task_definition" "service" {
   requires_compatibilities = ["EC2"]
   container_definitions = jsonencode([
     {
-      command : [
-        "/bin/sh -c \"echo '<html> <head> <title>Amazon ECS Sample App</title> <style>body {margin-top: 40px; background-color: #333;} </style> </head><body> <div style=color:white;text-align:center> <h1>Amazon ECS Sample App</h1> <h2>Congratulations!</h2> <p>Your application is now running on a container in Amazon ECS.</p> </div></body></html>' >  /usr/local/apache2/htdocs/index.html && httpd-foreground\""
-      ],
-      entryPoint : [
-        "sh",
-        "-c"
-      ],
+      // TODO: this health check
       //      healthCheck: {
       //        retries: 3,
       //        command: [
@@ -62,7 +56,7 @@ resource "aws_ecs_task_definition" "service" {
       //        startPeriod: null
       //      },
       essential : true,
-      image : "httpd:2.4",
+      image : var.image_uri,
       logConfiguration : {
         logDriver : "awslogs",
         options : {
@@ -81,7 +75,7 @@ resource "aws_ecs_task_definition" "service" {
           hostPort      = 443
         }
       ],
-      name : "hello-world",
+      name : var.app_name,
       cpu : 1024
       memory : 512,
     }
