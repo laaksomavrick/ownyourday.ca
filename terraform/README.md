@@ -50,7 +50,7 @@ Investigate New Relic versus AWS offerings for the above. TBD.
     - ECR: hold 2 images per month, last and current
 
 - Get db running
-- Get load balancer running
+- Get load balancer running (need to refactor subnets a bit)
 - Revisit security (sg, nacl)
 - Setup SSL + move over domain (ownyourday.ca)
 

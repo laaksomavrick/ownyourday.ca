@@ -39,6 +39,8 @@ resource "aws_ecs_service" "svc" {
   deployment_minimum_healthy_percent = 100
 }
 
+// TODO: environment variables
+// for example: db uname, db password, db connection string
 resource "aws_ecs_task_definition" "service" {
   family                   = "${var.app_name}-task-definition"
   requires_compatibilities = ["EC2"]
