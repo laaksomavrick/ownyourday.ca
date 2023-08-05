@@ -19,3 +19,8 @@ variable "app_name" {
   default = "ownyourday"
 }
 
+variable "environment" {
+  type    = string
+  default = "production"
+}
+

@@ -80,6 +80,16 @@ resource "aws_ecs_task_definition" "service" {
       name : var.app_name,
       cpu : 1024
       memory : 512,
+      environment : [
+        {
+          name : "OWNYOURDAY_DATABASE_USERNAME",
+          value : var.db_username
+        },
+        {
+          name : "OWNYOURDAY_DATABASE_PASSWORD"
+          value : var.db_password
+        }
+      ]
     }
   ])
 }

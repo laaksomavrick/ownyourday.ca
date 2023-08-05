@@ -24,10 +24,15 @@ module "app-server" {
   public_security_group_ids = [module.network.public_subnet_security_group_id]
   public_subnet_ids         = [module.network.public_subnet_id]
   public_ssh_key_file_path  = var.public_ssh_key_file_path
+
+  db_username = var.db_username
+  db_password = var.db_password
 }
 
 module "database" {
   source = "../../modules/database"
+
+  environment = var.environment
 
   app_name          = var.app_name
   username          = var.db_username

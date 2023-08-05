@@ -84,6 +84,6 @@ test:
 #
 production:
   <<: *default
-  database: ownyourday_production
-  username: ownyourday
+  database: <%= ENV.fetch("OWNYOURDAY_DATABASE_NAME") { "ownyourday_production" } %>
+  username: <%= ENV.fetch("OWNYOURDAY_DATABASE_USERNAME") { "ownyourday" } %>
   password: <%= ENV["OWNYOURDAY_DATABASE_PASSWORD"] %>

@@ -2,7 +2,7 @@
 
 resource "aws_db_instance" "database" {
   allocated_storage = 10
-  db_name           = var.app_name
+  db_name           = "${var.app_name}-${var.environment}"
   engine            = "postgres"
   engine_version    = "11"
   instance_class    = "db.t3.micro"
@@ -14,6 +14,9 @@ resource "aws_db_instance" "database" {
   db_subnet_group_name   = var.db_subnet_group
   vpc_security_group_ids = [var.db_security_group]
   parameter_group_name   = aws_db_parameter_group.parameter_group.name
+
+  # TODO; remove
+  skip_final_snapshot = true
 }
 
 resource "aws_db_parameter_group" "parameter_group" {
