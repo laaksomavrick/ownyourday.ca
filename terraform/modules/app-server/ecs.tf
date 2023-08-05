@@ -80,7 +80,16 @@ resource "aws_ecs_task_definition" "service" {
       name : var.app_name,
       cpu : 1024
       memory : 512,
+      // TODO: this are being passed in plaintext - refactor to use docker secrets or parameter store
       environment : [
+        {
+          name : "OWNYOURDAY_DATABASE_HOST",
+          value : var.db_host
+        },
+        {
+          name : "OWNYOURDAY_DATABASE_NAME",
+          value : var.app_name
+        },
         {
           name : "OWNYOURDAY_DATABASE_USERNAME",
           value : var.db_username

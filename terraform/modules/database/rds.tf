@@ -1,8 +1,6 @@
-# https://www.hiveit.co.uk/techshop/terraform-aws-vpc-example/03-create-an-rds-db-instance
-
 resource "aws_db_instance" "database" {
   allocated_storage = 10
-  db_name           = "${var.app_name}-${var.environment}"
+  db_name           = var.app_name
   engine            = "postgres"
   engine_version    = "11"
   instance_class    = "db.t3.micro"

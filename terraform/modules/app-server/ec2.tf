@@ -62,6 +62,18 @@ data "aws_iam_policy_document" "instance_policy" {
       aws_cloudwatch_log_group.instance.arn,
     ]
   }
+
+#  statement {
+#    sid = "DatabaseAccess"
+#
+#    actions = [
+#      "rds:*"
+#    ]
+#
+#    resources = [
+#      var.db_arn
+#    ]
+#  }
 }
 
 resource "aws_iam_policy" "instance_policy" {
@@ -89,7 +101,7 @@ resource "aws_autoscaling_group" "asg" {
 
   vpc_zone_identifier = var.public_subnet_ids
   max_size            = 1
-  min_size            = 1
+  min_size            = 0
   desired_capacity    = 1
 
   health_check_grace_period = 300

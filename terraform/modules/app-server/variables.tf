@@ -29,3 +29,6 @@ variable "db_password" {
   type = string
 }
 
+variable "db_host" {
+  type = string
+}

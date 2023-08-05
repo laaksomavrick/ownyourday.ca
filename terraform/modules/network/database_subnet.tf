@@ -12,7 +12,7 @@ resource "aws_subnet" "db_subnet" {
 }
 
 resource "aws_db_subnet_group" "db_subnet_group" {
-  name       = "${var.app_name}-private-subnet-group"
+  name       = "${var.app_name}-private-subnet-group" # TODO: db-subnet-group
   subnet_ids = aws_subnet.db_subnet.*.id
 }
 
