@@ -32,26 +32,10 @@ Investigate New Relic versus AWS offerings for the above. TBD.
 
 ### Execution strategy
 
-#### Step 1:
-- Dockerize the app + container registry
-  - ECR repository declaration in `common`
-    - Make note that user will have to invoke CI to upload to registry for first-time run
-  - Dockerize the app
-  - Create ContinuousDeployment role for Ownyourday (only upload to ECR for the moment) in `common`
-  - Add CI step to upload to ECR on merge
-  - PR time, rename branch to iac-container-registry
-
-#### Step 2:
-- VPC, subnet, security group
-  - All this goes into "production" via the modules
-- App server
-  - Use EC2 backed ECS
-    - Maybe use ECS instead with EC2 launch type with a t4g.nano; handles a lot of the leg work?
-    - ECR: hold 2 images per month, last and current
-
-- Get db running
 - Get load balancer running (need to refactor subnets a bit)
 - Revisit security (sg, nacl)
 - Setup SSL + move over domain (ownyourday.ca)
-
 - Logging, monitoring, alerting setup
+  - Can I check logs for errors when they occur?
+  - Can I check metrics for performance stats?
+  - Do I get notified when an error happens?

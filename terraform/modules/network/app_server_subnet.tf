@@ -21,6 +21,7 @@ resource "aws_route_table_association" "public" {
 resource "aws_security_group" "public_subnet_security_group" {
   vpc_id = aws_vpc.app_vpc.id
 
+  # TODO: remove when we refactor to use a load balancer
   ingress {
     description = ""
     from_port   = 443
@@ -29,6 +30,7 @@ resource "aws_security_group" "public_subnet_security_group" {
     cidr_blocks = [local.everything_cidr_block]
   }
 
+  # TODO: remove when we refactor to use a load balancer
   ingress {
     description = ""
     from_port   = 80
@@ -41,6 +43,14 @@ resource "aws_security_group" "public_subnet_security_group" {
     description = ""
     from_port   = 22
     to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = [local.everything_cidr_block]
+  }
+
+  ingress {
+    description = ""
+    from_port   = 3000
+    to_port     = 3000
     protocol    = "tcp"
     cidr_blocks = [local.everything_cidr_block]
   }

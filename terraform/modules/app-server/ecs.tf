@@ -44,17 +44,16 @@ resource "aws_ecs_task_definition" "service" {
   requires_compatibilities = ["EC2"]
   container_definitions = jsonencode([
     {
-      // TODO: this health check
-      //      healthCheck: {
-      //        retries: 3,
-      //        command: [
-      //          "CMD-SHELL",
-      //          "curl -f http://localhost:8080/ || exit 1"
-      //        ],
-      //        timeout: 5,
-      //        interval: 30,
-      //        startPeriod: null
-      //      },
+      healthCheck : {
+        retries : 3,
+        command : [
+          "CMD-SHELL",
+          "curl -f http://0.0.0.0:3000/ || exit 1"
+        ],
+        timeout : 5,
+        interval : 30,
+        startPeriod : null
+      },
       essential : true,
       image : var.image_uri,
       logConfiguration : {
@@ -66,19 +65,14 @@ resource "aws_ecs_task_definition" "service" {
         }
       },
       portMappings = [
-        // TODO: 443 only
         {
           containerPort = 3000
-          hostPort      = 80
+          hostPort      = 3000
         },
-        {
-          containerPort = 3000
-          hostPort      = 443
-        }
       ],
       name : var.app_name,
-      cpu : 1024
-      memory : 512,
+      cpu : 1000
+      memory : 400, # Not 512 since host uses some memory
       // TODO: these are being passed in plaintext - refactor to use docker secrets or parameter store
       environment : [
         {
