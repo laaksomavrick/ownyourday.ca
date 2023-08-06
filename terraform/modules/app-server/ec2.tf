@@ -88,8 +88,8 @@ resource "aws_autoscaling_group" "asg" {
   name = "${var.app_name}-asg"
 
   vpc_zone_identifier = var.public_subnet_ids
-  max_size            = 1
-  min_size            = 1
+  max_size            = 2
+  min_size            = 0
   desired_capacity    = 1
 
   health_check_grace_period = 300

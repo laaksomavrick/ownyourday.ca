@@ -20,3 +20,15 @@ variable "public_security_group_ids" {
 variable "public_ssh_key_file_path" {
   type = string
 }
+
+variable "db_username" {
+  type = string
+}
+
+variable "db_password" {
+  type = string
+}
+
+variable "db_host" {
+  type = string
+}
