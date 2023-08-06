@@ -90,6 +90,10 @@ resource "aws_ecs_task_definition" "service" {
         {
           name : "OWNYOURDAY_DATABASE_PASSWORD"
           value : var.db_password
+        },
+        {
+          name : "RAILS_SERVE_STATIC_FILES" // TODO: serve these with CDN at some point
+          value : "true"
         }
       ]
     }
