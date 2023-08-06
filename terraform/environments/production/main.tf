@@ -16,7 +16,6 @@ terraform {
   required_version = ">= 1.2.0"
 }
 
-// Task is failing to start. Is EC2 allowed to connect to RDS (iam?) no logs
 module "app-server" {
   source = "../../modules/app-server"
 
@@ -26,7 +25,7 @@ module "app-server" {
   public_subnet_ids         = [module.network.public_subnet_id]
   public_ssh_key_file_path  = var.public_ssh_key_file_path
 
-  db_host = module.database.db_host
+  db_host     = module.database.db_host
   db_username = var.db_username
   db_password = var.db_password
 }

@@ -39,8 +39,6 @@ resource "aws_ecs_service" "svc" {
   deployment_minimum_healthy_percent = 100
 }
 
-// TODO: environment variables
-// for example: db uname, db password, db connection string
 resource "aws_ecs_task_definition" "service" {
   family                   = "${var.app_name}-task-definition"
   requires_compatibilities = ["EC2"]
@@ -68,19 +66,20 @@ resource "aws_ecs_task_definition" "service" {
         }
       },
       portMappings = [
+        // TODO: 443 only
         {
-          containerPort = 80
+          containerPort = 3000
           hostPort      = 80
         },
         {
-          containerPort = 443
+          containerPort = 3000
           hostPort      = 443
         }
       ],
       name : var.app_name,
       cpu : 1024
       memory : 512,
-      // TODO: this are being passed in plaintext - refactor to use docker secrets or parameter store
+      // TODO: these are being passed in plaintext - refactor to use docker secrets or parameter store
       environment : [
         {
           name : "OWNYOURDAY_DATABASE_HOST",

@@ -62,18 +62,6 @@ data "aws_iam_policy_document" "instance_policy" {
       aws_cloudwatch_log_group.instance.arn,
     ]
   }
-
-#  statement {
-#    sid = "DatabaseAccess"
-#
-#    actions = [
-#      "rds:*"
-#    ]
-#
-#    resources = [
-#      var.db_arn
-#    ]
-#  }
 }
 
 resource "aws_iam_policy" "instance_policy" {

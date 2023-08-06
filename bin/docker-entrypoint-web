@@ -21,10 +21,6 @@ if compgen -G "${manifest_files}" > /dev/null 2>&1; then
     -delete
 fi
 
-echo $OWNYOURDAY_DATABASE_HOST
-echo $OWNYOURDAY_DATABASE_NAME
-echo $OWNYOURDAY_DATABASE_USERNAME
-
 # Database migrations
 # TODO: ideally this isn't part of the container definition
 rails db:create

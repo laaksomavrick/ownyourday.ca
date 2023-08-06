@@ -15,6 +15,8 @@ resource "aws_db_instance" "database" {
 
   # TODO; remove
   skip_final_snapshot = true
+
+  # TODO: backups...?
 }
 
 resource "aws_db_parameter_group" "parameter_group" {
