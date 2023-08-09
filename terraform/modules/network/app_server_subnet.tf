@@ -1,6 +1,6 @@
 resource "aws_subnet" "app_server_subnet" {
-  vpc_id                  = aws_vpc.app_vpc.id
-  cidr_block              = local.app_server_cidr_block
+  vpc_id     = aws_vpc.app_vpc.id
+  cidr_block = local.app_server_cidr_block
 
   tags = {
     Name = "${var.app_name}-app_server_subnet-1"
@@ -13,16 +13,8 @@ resource "aws_security_group" "app_server_security_group" {
 
   ingress {
     description = ""
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = [local.load_balancer_cidr_block]
-  }
-
-  ingress {
-    description = ""
-    from_port   = 80
-    to_port     = 80
+    from_port   = 1024
+    to_port     = 65535
     protocol    = "tcp"
     cidr_blocks = [local.load_balancer_cidr_block]
   }

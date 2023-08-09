@@ -67,7 +67,7 @@ resource "aws_ecs_task_definition" "service" {
       portMappings = [
         {
           containerPort = 3000
-          hostPort      = 3000
+          hostPort      = 0
         },
       ],
       name : var.app_name,

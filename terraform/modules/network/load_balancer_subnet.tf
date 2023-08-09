@@ -33,6 +33,7 @@ resource "aws_security_group" "load_balancer_security_group" {
     cidr_blocks = [local.everything_cidr_block]
   }
 
+  # TODO: only 443
   ingress {
     description = ""
     from_port   = 80

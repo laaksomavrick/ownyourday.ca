@@ -38,4 +38,9 @@ Investigate New Relic versus AWS offerings for the above. TBD.
 - Logging, monitoring, alerting setup
   - Can I check logs for errors when they occur?
   - Can I check metrics for performance stats?
+    - Request latency
+    - CPU utilization
+    - Memory utilization
+    - 2xx rate
+    - non-2xx rate
   - Do I get notified when an error happens?

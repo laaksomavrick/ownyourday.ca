@@ -7,12 +7,12 @@ variable "image_uri" {
   type        = string
 }
 
-variable "public_subnet_ids" {
+variable "app_server_subnet_ids" {
   description = ""
   type        = list(string)
 }
 
-variable "public_security_group_ids" {
+variable "app_server_security_group_ids" {
   description = ""
   type        = list(string)
 }
