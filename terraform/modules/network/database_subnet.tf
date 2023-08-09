@@ -3,11 +3,11 @@ data "aws_availability_zones" "available" {}
 resource "aws_subnet" "db_subnet" {
   count             = length(data.aws_availability_zones.available.names)
   vpc_id            = aws_vpc.app_vpc.id
-  cidr_block        = "10.0.${length(data.aws_availability_zones.available.names) + count.index}.0/24"
+  cidr_block        = "10.0.${length(data.aws_availability_zones.available.names) + count.index + local.db_subnet_cidr_tertiary_block}.0/24"
   availability_zone = element(data.aws_availability_zones.available.names, count.index)
 
   tags = {
-    Name = "db_subnet-${element(data.aws_availability_zones.available.names, count.index)}"
+    Name = "${var.app_name}-db_subnet-${element(data.aws_availability_zones.available.names, count.index)}"
   }
 }
 
