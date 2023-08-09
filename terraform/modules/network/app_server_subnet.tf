@@ -1,10 +1,19 @@
-resource "aws_subnet" "public_subnet" {
-  vpc_id                  = aws_vpc.app_vpc.id
-  cidr_block              = local.public_subnet_cidr_block
+resource "aws_subnet" "app_server_subnet" {
+  vpc_id     = aws_vpc.app_vpc.id
+  cidr_block = local.app_server_cidr_block
+
+  # TODO: is this necessary? Can't ssh without it into EC2 box to diagnose issues
   map_public_ip_on_launch = true
+
+  tags = {
+    Name = "${var.app_name}-app_server_subnet-1"
+  }
+
 }
 
-resource "aws_route_table" "public_route_table" {
+# TODO: investigate using VPC endpoint to avoid routing to public internet for image pulls
+# https://docs.aws.amazon.com/AmazonECS/latest/developerguide/vpc-endpoints.html
+resource "aws_route_table" "app_server_route_table" {
   vpc_id = aws_vpc.app_vpc.id
 
   route {
@@ -13,30 +22,20 @@ resource "aws_route_table" "public_route_table" {
   }
 }
 
-resource "aws_route_table_association" "public" {
-  subnet_id      = aws_subnet.public_subnet.id
-  route_table_id = aws_route_table.public_route_table.id
+resource "aws_route_table_association" "app_server_route_table_association" {
+  subnet_id      = aws_subnet.app_server_subnet.id
+  route_table_id = aws_route_table.app_server_route_table.id
 }
 
-resource "aws_security_group" "public_subnet_security_group" {
+resource "aws_security_group" "app_server_security_group" {
   vpc_id = aws_vpc.app_vpc.id
 
-  # TODO: remove when we refactor to use a load balancer
   ingress {
     description = ""
-    from_port   = 443
-    to_port     = 443
+    from_port   = 1024
+    to_port     = 65535
     protocol    = "tcp"
-    cidr_blocks = [local.everything_cidr_block]
-  }
-
-  # TODO: remove when we refactor to use a load balancer
-  ingress {
-    description = ""
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = [local.everything_cidr_block]
+    cidr_blocks = aws_subnet.load_balancer_subnet.*.cidr_block
   }
 
   ingress {
@@ -44,23 +43,6 @@ resource "aws_security_group" "public_subnet_security_group" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = [local.everything_cidr_block]
-  }
-
-  ingress {
-    description = ""
-    from_port   = 3000
-    to_port     = 3000
-    protocol    = "tcp"
-    cidr_blocks = [local.everything_cidr_block]
-  }
-
-  # TODO: can this be locked down more?
-  egress {
-    description = "Allow all outbound traffic"
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
     cidr_blocks = [local.everything_cidr_block]
   }
 

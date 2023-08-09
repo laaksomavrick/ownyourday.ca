@@ -7,12 +7,12 @@ variable "image_uri" {
   type        = string
 }
 
-variable "public_subnet_ids" {
+variable "app_server_subnet_ids" {
   description = ""
   type        = list(string)
 }
 
-variable "public_security_group_ids" {
+variable "app_server_security_group_ids" {
   description = ""
   type        = list(string)
 }
@@ -31,4 +31,13 @@ variable "db_password" {
 
 variable "db_host" {
   type = string
+}
+
+variable "target_group_arn" {
+  type = string
+}
+
+variable "container_port" {
+  type    = number
+  default = 3000
 }

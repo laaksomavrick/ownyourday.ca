@@ -333,6 +333,7 @@ GEM
     zeitwerk (2.6.10)
 
 PLATFORMS
+  x86_64-darwin-21
   x86_64-darwin-22
 
 DEPENDENCIES
@@ -360,7 +361,7 @@ DEPENDENCIES
   rspec-rails (~> 6.0.0)
   rubocop-rails
   rubocop-rspec
-  selenium-webdriver
+  selenium-webdriver (~> 4.10)
   sprockets-rails
   stackprof
   stimulus-rails
