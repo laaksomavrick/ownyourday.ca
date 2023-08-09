@@ -34,9 +34,7 @@ resource "aws_lb_target_group" "app_lb_target_group" {
   vpc_id   = var.app_vpc_id
 
   health_check {
-    enabled  = false # TODO!!!
     protocol = "HTTP"
-    matcher  = "200-299"
-    path     = "/"
+    path     = "/users/sign_in" # TODO health check endpoint
   }
 }
