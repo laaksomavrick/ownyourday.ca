@@ -10,6 +10,10 @@ output "app_server_security_group_id" {
   value = aws_security_group.app_server_security_group.id
 }
 
+output "app_server_cidr_block" {
+  value = local.app_server_cidr_block
+}
+
 output "lb_subnet_id" {
   value = aws_subnet.load_balancer_subnet.id
 }

@@ -16,6 +16,21 @@ terraform {
   required_version = ">= 1.2.0"
 }
 
+module "network" {
+  source   = "../../modules/network"
+  app_name = var.app_name
+}
+
+module "load-balancer" {
+  source   = "../../modules/load-balancer"
+  app_name = var.app_name
+
+  app_server_cidr_block = module.network.app_server_cidr_block
+  app_vpc_id            = module.network.vpc_id
+  lb_security_group_ids = [module.network.lb_security_group_id]
+  lb_subnet_ids         = [module.network.lb_subnet_id]
+}
+
 module "app-server" {
   source = "../../modules/app-server"
 
@@ -42,7 +57,3 @@ module "database" {
   db_subnet_group   = module.network.db_subnet_group
 }
 
-module "network" {
-  source   = "../../modules/network"
-  app_name = var.app_name
-}
