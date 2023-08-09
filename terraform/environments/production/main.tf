@@ -28,7 +28,7 @@ module "load-balancer" {
   app_server_cidr_block = module.network.app_server_cidr_block
   app_vpc_id            = module.network.vpc_id
   lb_security_group_ids = [module.network.lb_security_group_id]
-  lb_subnet_ids         = [module.network.lb_subnet_id]
+  lb_subnet_ids         = module.network.lb_subnet_ids
 }
 
 module "app-server" {
@@ -39,6 +39,8 @@ module "app-server" {
   app_server_security_group_ids = [module.network.app_server_security_group_id]
   app_server_subnet_ids         = [module.network.app_server_subnet_id]
   public_ssh_key_file_path      = var.public_ssh_key_file_path
+
+  target_group_arn = module.load-balancer.target_group_arn
 
   db_host     = module.database.db_host
   db_username = var.db_username

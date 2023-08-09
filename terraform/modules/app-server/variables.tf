@@ -32,3 +32,7 @@ variable "db_password" {
 variable "db_host" {
   type = string
 }
+
+variable "target_group_arn" {
+  type = string
+}

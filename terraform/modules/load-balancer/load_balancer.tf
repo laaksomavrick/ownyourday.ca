@@ -34,11 +34,9 @@ resource "aws_lb_target_group" "app_lb_target_group" {
   vpc_id   = var.app_vpc_id
 
   health_check {
-    healthy_threshold   = "3"
-    interval            = "30"
-    protocol            = "HTTP"
-    timeout             = "5"
-    path                = "/"
-    unhealthy_threshold = "2"
+    enabled  = false # TODO!!!
+    protocol = "HTTP"
+    matcher  = "200-299"
+    path     = "/"
   }
 }

@@ -1,5 +1,3 @@
-data "aws_availability_zones" "available" {}
-
 resource "aws_subnet" "db_subnet" {
   count             = length(data.aws_availability_zones.available.names)
   vpc_id            = aws_vpc.app_vpc.id
@@ -20,20 +18,11 @@ resource "aws_security_group" "db_subnet_security_group" {
   vpc_id = aws_vpc.app_vpc.id
 
   ingress {
-    description = "Allow inbound traffic on port 5432 from public subnet"
+    description = "Allow inbound traffic on port 5432 from app server subnet"
     from_port   = 5432
     to_port     = 5432
     protocol    = "tcp"
-    cidr_blocks = [aws_subnet.public_subnet.cidr_block]
-  }
-
-  # TODO: can this be locked down more?
-  egress {
-    description = "Allow all outbound traffic"
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [local.app_server_cidr_block]
   }
 
   lifecycle {

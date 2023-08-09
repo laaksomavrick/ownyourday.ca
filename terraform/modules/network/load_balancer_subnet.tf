@@ -1,10 +1,13 @@
 resource "aws_subnet" "load_balancer_subnet" {
-  vpc_id                  = aws_vpc.app_vpc.id
-  cidr_block              = local.app_server_cidr_block
+  count             = length(data.aws_availability_zones.available.names)
+  vpc_id            = aws_vpc.app_vpc.id
+  cidr_block        = "10.0.${length(data.aws_availability_zones.available.names) + count.index + local.lb_subnet_cidr_tertiary_block}.0/24"
+  availability_zone = element(data.aws_availability_zones.available.names, count.index)
+
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "${var.app_name}-lb_subnet-1"
+    Name = "${var.app_name}-lb_subnet-${element(data.aws_availability_zones.available.names, count.index)}"
   }
 }
 
@@ -18,7 +21,9 @@ resource "aws_route_table" "load_balancer_route_table" {
 }
 
 resource "aws_route_table_association" "load_balancer_route_table_association" {
-  subnet_id      = aws_subnet.load_balancer_subnet.id
+  count = length(data.aws_availability_zones.available.names)
+
+  subnet_id      = element(aws_subnet.load_balancer_subnet.*.id, count.index)
   route_table_id = aws_route_table.load_balancer_route_table.id
 }
 

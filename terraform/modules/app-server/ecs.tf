@@ -30,13 +30,21 @@ resource "aws_ecs_service" "svc" {
   cluster         = aws_ecs_cluster.app_cluster.arn
   task_definition = aws_ecs_task_definition.service.arn
   desired_count   = 1
+
+  deployment_maximum_percent         = 200
+  deployment_minimum_healthy_percent = 100
+
   capacity_provider_strategy {
     capacity_provider = aws_ecs_capacity_provider.app_capacity_provider.name
     weight            = 100
   }
 
-  deployment_maximum_percent         = 200
-  deployment_minimum_healthy_percent = 100
+  load_balancer {
+    target_group_arn = var.target_group_arn
+    container_name   = var.app_name
+    container_port   = 3000
+  }
+
 }
 
 resource "aws_ecs_task_definition" "service" {
