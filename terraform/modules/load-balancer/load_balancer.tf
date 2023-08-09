@@ -36,5 +36,7 @@ resource "aws_lb_target_group" "app_lb_target_group" {
   health_check {
     protocol = "HTTP"
     path     = "/users/sign_in" # TODO health check endpoint
+    timeout  = 5
+    interval = 15
   }
 }

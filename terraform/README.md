@@ -32,15 +32,18 @@ Investigate New Relic versus AWS offerings for the above. TBD.
 
 ### Execution strategy
 
-- Get load balancer running (need to refactor subnets a bit)
-- Revisit security (sg, nacl)
+- Revisit network security (sg, nacl)
 - Setup SSL + move over domain (ownyourday.ca)
 - Logging, monitoring, alerting setup
   - Can I check logs for errors when they occur?
+    - ALB logs
+    - Application logs
   - Can I check metrics for performance stats?
     - Request latency
     - CPU utilization
     - Memory utilization
     - 2xx rate
     - non-2xx rate
+    - Would be cool to have a dashboard for this
+    - Identify key metrics
   - Do I get notified when an error happens?

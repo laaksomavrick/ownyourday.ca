@@ -2,7 +2,7 @@ resource "aws_subnet" "app_server_subnet" {
   vpc_id     = aws_vpc.app_vpc.id
   cidr_block = local.app_server_cidr_block
 
-  # TODO THIS SHOULDNT BE NECESSARY
+  # TODO: is this necessary? Can't ssh without it into EC2 box to diagnose issues
   map_public_ip_on_launch = true
 
   tags = {
@@ -11,8 +11,8 @@ resource "aws_subnet" "app_server_subnet" {
 
 }
 
-# TODO: IS IGW ROUTE TABLE NECESSARY?
-# SHOULD IT BE SOMETHING WITH LB?
+# TODO: investigate using VPC endpoint to avoid routing to public internet for image pulls
+# https://docs.aws.amazon.com/AmazonECS/latest/developerguide/vpc-endpoints.html
 resource "aws_route_table" "app_server_route_table" {
   vpc_id = aws_vpc.app_vpc.id
 
@@ -22,7 +22,6 @@ resource "aws_route_table" "app_server_route_table" {
   }
 }
 
-# TODO: SEE ABOVE
 resource "aws_route_table_association" "app_server_route_table_association" {
   subnet_id      = aws_subnet.app_server_subnet.id
   route_table_id = aws_route_table.app_server_route_table.id

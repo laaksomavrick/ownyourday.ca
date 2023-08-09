@@ -38,21 +38,11 @@ resource "aws_security_group" "load_balancer_security_group" {
     cidr_blocks = [local.everything_cidr_block]
   }
 
-  # TODO: only 443
   ingress {
     description = ""
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = [local.everything_cidr_block]
-  }
-
-  # TODO: can this be locked down more?
-  egress {
-    description = "Allow all outbound traffic"
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
     cidr_blocks = [local.everything_cidr_block]
   }
 

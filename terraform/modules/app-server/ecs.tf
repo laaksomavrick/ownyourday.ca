@@ -42,7 +42,7 @@ resource "aws_ecs_service" "svc" {
   load_balancer {
     target_group_arn = var.target_group_arn
     container_name   = var.app_name
-    container_port   = 3000
+    container_port   = var.container_port
   }
 
 }
@@ -56,7 +56,7 @@ resource "aws_ecs_task_definition" "service" {
         retries : 3,
         command : [
           "CMD-SHELL",
-          "curl -f http://0.0.0.0:3000/ || exit 1"
+          "curl -f http://0.0.0.0:${var.container_port}/ || exit 1"
         ],
         timeout : 5,
         interval : 30,
@@ -74,7 +74,7 @@ resource "aws_ecs_task_definition" "service" {
       },
       portMappings = [
         {
-          containerPort = 3000
+          containerPort = var.container_port
           hostPort      = 0
         },
       ],
