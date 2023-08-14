@@ -47,3 +47,5 @@ Investigate New Relic versus AWS offerings for the above. TBD.
     - Would be cool to have a dashboard for this
     - Identify key metrics
   - Do I get notified when an error happens?
+  - Can I see a trace (with a user id) flowing through the system?
+    - LB, app, db, ..., ? 

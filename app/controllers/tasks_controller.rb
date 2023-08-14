@@ -45,14 +45,16 @@ class TasksController < ApplicationController
     hash = {}
 
     if params[:task_list_id].nil?
-      date = date_from_params || current_user.beginning_of_day
+      date = date_from_params.try(:utc) || DateTime.current.utc.beginning_of_day
+      user_date = date_from_params || current_user.beginning_of_day
       hash[:task_list] = task_list_from_date(date:)
       hash[:date] = date
+      hash[:user_date] = user_date
     else
       task_list = task_list_from_id(id: params[:task_list_id])
 
       hash[:task_list] = task_list
-      hash[:date] = task_list.date if task_list
+      hash[:date] = current_user.beginning_of_day(today: task_list.date) if task_list
     end
 
     hash
@@ -86,6 +88,8 @@ class TasksController < ApplicationController
 
     return nil if year.zero? || month.zero? || date.zero?
 
-    Date.new(year, month, date)
+    user_tz = current_user.time_zone
+
+    DateTime.new(year, month, date).in_time_zone(user_tz)
   end
 end

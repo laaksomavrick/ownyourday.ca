@@ -6,11 +6,9 @@ class RetrieveTodaysTaskListAction
   end
 
   def call(today: DateTime.current.utc)
-    user_date = @user.beginning_of_day(today:)
-
     @user.task_lists
          .with_tasks
-         .where(date: user_date)
+         .where(date: today)
          .first
   end
 end

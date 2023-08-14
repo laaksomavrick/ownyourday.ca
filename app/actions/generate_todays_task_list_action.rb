@@ -7,9 +7,7 @@ class GenerateTodaysTaskListAction
 
   def call(today: DateTime.current.utc)
     TaskList.transaction do
-      user_date = @user.beginning_of_day(today:)
-
-      task_list = TaskList.create(user: @user, date: user_date)
+      task_list = TaskList.create(user: @user, date: today)
 
       daily_tasks = daily_goals_to_schedule(task_list:)
       day_of_week_tasks = days_of_week_goals_to_schedule(task_list:, today:)
