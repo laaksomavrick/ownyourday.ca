@@ -124,30 +124,47 @@ RSpec.describe 'Tasks' do
       end
 
       describe 'task list item context' do
-        let!(:goal) { create(:times_per_week_goal, user:, metadata: { 'times_per_week' => 3 }) }
+        SpecConstants::TIME_ZONES.each do |time_zone|
+          let!(:user) { create(:user, time_zone:) }
+          let!(:goal) { create(:times_per_week_goal, user:, metadata: { 'times_per_week' => 3 }) }
 
-        it 'shows task context when there are no completions this week' do
-          visit tasks_path
-          expect(page).to have_content('0 / 3')
-        end
+          it "shows task context when there are no completions this week for timezone #{time_zone}" do
+            visit tasks_path
+            expect(page).to have_content('0 / 3')
+          end
 
-        it 'shows task context when there are some completions this week' do
-          monday = user.beginning_of_day.monday
-          tuesday = monday + 1.day
-          wednesday = monday + 2.days
+          it "shows task context when there are some completions this week for timezone #{time_zone}" do
+            monday = user.beginning_of_day.monday
+            tuesday = monday + 1.day
+            wednesday = monday + 2.days
 
-          monday_task_list = GenerateTodaysTaskListAction
-                             .new(user:)
-                             .call(today: monday)
-          tuesday_task_list = GenerateTodaysTaskListAction
-                              .new(user:)
-                              .call(today: tuesday)
-          monday_task_list.tasks.find_by(goal_id: goal.id).update(completed: true)
-          tuesday_task_list.tasks.find_by(goal_id: goal.id).update(completed: true)
+            monday_task_list = GenerateTodaysTaskListAction
+                               .new(user:)
+                               .call(today: monday)
+            tuesday_task_list = GenerateTodaysTaskListAction
+                                .new(user:)
+                                .call(today: tuesday)
+            monday_task_list.tasks.find_by(goal_id: goal.id).update(completed: true)
+            tuesday_task_list.tasks.find_by(goal_id: goal.id).update(completed: true)
 
-          visit tasks_path(date: wednesday)
+            visit tasks_path(task_list: { 'date(1i)' => wednesday.year, 'date(2i)' => wednesday.month,
+                                          'date(3i)' => wednesday.day })
 
-          expect(page).to have_content('2 / 3')
+            expect(page).to have_content('2 / 3')
+          end
+
+          it "shows task completion when task was completed today for timezone #{time_zone}" do
+            monday = user.beginning_of_day.monday
+            monday_task_list = GenerateTodaysTaskListAction
+                               .new(user:)
+                               .call(today: monday)
+            monday_task_list.tasks.find_by(goal_id: goal.id).update(completed: true)
+
+            visit tasks_path(task_list: { 'date(1i)' => monday.year, 'date(2i)' => monday.month,
+                                          'date(3i)' => monday.day })
+
+            expect(page).to have_content('1 / 3')
+          end
         end
       end
 
