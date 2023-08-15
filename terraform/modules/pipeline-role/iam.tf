@@ -56,7 +56,9 @@ data "aws_iam_policy_document" "pipeline_role_policy_doc" {
       "ecs:*",
       "logs:*",
       "iam:*",
-      "autoscaling:*"
+      "autoscaling:*",
+      "rds:*",
+      "elasticloadbalancing:*",
     ]
     resources = [
       "*"
