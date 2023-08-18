@@ -2,8 +2,8 @@ resource "aws_subnet" "app_server_subnet" {
   vpc_id     = aws_vpc.app_vpc.id
   cidr_block = local.app_server_cidr_block
 
-  # TODO: is this necessary? Can't ssh without it into EC2 box to diagnose issues
-  map_public_ip_on_launch = true
+  # Re-enable if needing to SSH into an EC2 instance
+  map_public_ip_on_launch = false
 
   tags = {
     Name = "${var.app_name}-app_server_subnet-1"

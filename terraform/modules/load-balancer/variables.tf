@@ -20,3 +20,7 @@ variable "app_server_cidr_block" {
 variable "app_vpc_id" {
   type = string
 }
+
+variable "ssl_certificate_arn" {
+  type = string
+}

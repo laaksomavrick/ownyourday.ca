@@ -25,3 +25,7 @@ module "pipeline_role" {
   container_registry_arn = module.container_registry.container_registry_arn
   github_repo_path       = var.github_repo_path
 }
+
+module "dns" {
+  source = "../../modules/dns"
+}

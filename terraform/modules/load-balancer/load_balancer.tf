@@ -14,12 +14,28 @@ resource "aws_lb" "app_load_balancer" {
   #  }
 }
 
-resource "aws_lb_listener" "app_listener" {
+resource "aws_lb_listener" "app_listener_http_redirect" {
   load_balancer_arn = aws_lb.app_load_balancer.arn
   port              = "80"
   protocol          = "HTTP"
-  #  ssl_policy        = "ELBSecurityPolicy-2016-08"
-  #  certificate_arn   = "arn:aws:iam::187416307283:server-certificate/test_cert_rab3wuqwgja25ct3n4jdj2tzu4"
+
+  default_action {
+    type = "redirect"
+
+    redirect {
+      port        = "443"
+      protocol    = "HTTPS"
+      status_code = "HTTP_301"
+    }
+  }
+}
+
+resource "aws_lb_listener" "app_listener" {
+  load_balancer_arn = aws_lb.app_load_balancer.arn
+  port              = "443"
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
+  certificate_arn   = var.ssl_certificate_arn
 
   default_action {
     type             = "forward"
