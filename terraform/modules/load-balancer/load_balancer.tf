@@ -14,7 +14,7 @@ resource "aws_lb" "app_load_balancer" {
   #  }
 }
 
-resource "aws_lb_listener" "app_listener_http_redirect" {
+resource "aws_lb_listener" "app_listener" {
   load_balancer_arn = aws_lb.app_load_balancer.arn
   port              = "80"
   protocol          = "HTTP"
@@ -30,7 +30,7 @@ resource "aws_lb_listener" "app_listener_http_redirect" {
   }
 }
 
-resource "aws_lb_listener" "app_listener" {
+resource "aws_lb_listener" "app_listener_ssl" {
   load_balancer_arn = aws_lb.app_load_balancer.arn
   port              = "443"
   protocol          = "HTTPS"

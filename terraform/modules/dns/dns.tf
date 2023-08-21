@@ -1,7 +1,5 @@
-# TODO: alias to load balancer
-
 resource "aws_route53_zone" "main" {
-  name = "ownyourday.ca" # TODO: import into terraform via COMMON
+  name = var.domain_name
 }
 
 resource "aws_route53_record" "root-a" {
@@ -9,11 +7,11 @@ resource "aws_route53_record" "root-a" {
   name    = var.domain_name
   type    = "A"
 
-  #  alias {
-  #    name                   = aws_cloudfront_distribution.root_s3_distribution.domain_name
-  #    zone_id                = aws_cloudfront_distribution.root_s3_distribution.hosted_zone_id
-  #    evaluate_target_health = false
-  #  }
+  alias {
+    name                   = var.alb_dns_name
+    zone_id                = var.alb_zone_id
+    evaluate_target_health = true
+  }
 }
 
 resource "aws_route53_record" "www-a" {
@@ -21,11 +19,12 @@ resource "aws_route53_record" "www-a" {
   name    = "www.${var.domain_name}"
   type    = "A"
 
-  #  alias {
-  #    name                   = aws_cloudfront_distribution.www_s3_distribution.domain_name
-  #    zone_id                = aws_cloudfront_distribution.www_s3_distribution.hosted_zone_id
-  #    evaluate_target_health = false
-  #  }
+  alias {
+    name                   = aws_route53_record.root-a.fqdn
+    zone_id                = aws_route53_record.root-a.zone_id
+    evaluate_target_health = true
+  }
+
 }
 
 resource "aws_route53_record" "main" {
@@ -45,7 +44,6 @@ resource "aws_route53_record" "main" {
 }
 
 resource "aws_acm_certificate" "ssl_certificate" {
-  provider                  = aws.acm_provider
   domain_name               = var.domain_name
   subject_alternative_names = ["*.${var.domain_name}"]
   validation_method         = "DNS"
@@ -56,7 +54,6 @@ resource "aws_acm_certificate" "ssl_certificate" {
 }
 
 resource "aws_acm_certificate_validation" "cert_validation" {
-  provider                = aws.acm_provider
   certificate_arn         = aws_acm_certificate.ssl_certificate.arn
   validation_record_fqdns = [for record in aws_route53_record.main : record.fqdn]
 }
