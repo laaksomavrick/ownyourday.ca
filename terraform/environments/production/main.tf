@@ -25,7 +25,7 @@ module "dns" {
   source = "../../modules/dns"
 
   alb_dns_name = module.load-balancer.alb_dns_name
-  alb_zone_id = module.load-balancer.alb_zone_id
+  alb_zone_id  = module.load-balancer.alb_zone_id
 }
 
 module "load-balancer" {
