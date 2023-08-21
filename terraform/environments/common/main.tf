@@ -26,6 +26,3 @@ module "pipeline_role" {
   github_repo_path       = var.github_repo_path
 }
 
-module "dns" {
-  source = "../../modules/dns"
-}

@@ -21,9 +21,18 @@ module "network" {
   app_name = var.app_name
 }
 
+module "dns" {
+  source = "../../modules/dns"
+
+  alb_dns_name = module.load-balancer.alb_dns_name
+  alb_zone_id = module.load-balancer.alb_zone_id
+}
+
 module "load-balancer" {
   source   = "../../modules/load-balancer"
   app_name = var.app_name
+
+  ssl_certificate_arn = module.dns.ssl_certificate_arn
 
   app_server_cidr_block = module.network.app_server_cidr_block
   app_vpc_id            = module.network.vpc_id
