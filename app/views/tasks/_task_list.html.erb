@@ -1,5 +1,5 @@
 <%= turbo_frame_tag "task-list-turbo-frame" do %>
-  <div class="space-y-4" data-controller="task-list">
+  <div class="space-y-6 pb-4" data-controller="task-list">
     <% @task_list.tasks.each do |vm| %>
       <div
         id="task-list-item-<%= vm.task.id %>"
