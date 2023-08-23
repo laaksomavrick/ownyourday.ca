@@ -1,8 +1,10 @@
-VERSION=latest
-
 .PHONY: up
 up:
 	@docker-compose -f docker-compose.local.yml up -d
+
+.PHONY: down
+down:
+	@docker-compose -f docker-compose.local.yml down -d
 
 .PHONY: serve
 serve:
@@ -30,4 +32,4 @@ check-format:
 
 .PHONY: build
 build:
-	@docker build -f Dockerfile -t ownyourday:$(VERSION) .
+	@docker build --build-arg RAILS_MASTER_KEY=$(cat config/master.key) -f Dockerfile -t ownyourday:latest .

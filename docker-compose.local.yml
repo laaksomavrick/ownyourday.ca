@@ -9,3 +9,14 @@ services:
       POSTGRES_PASSWORD: 'docker'
     volumes:
       - ./tmp/db:/var/lib/postgresql/data
+  # Only use when testing docker build locally
+#  app:
+#    image: ownyourday:latest
+#    ports:
+#      - '3000:3000'
+#    environment:
+#      OWNYOURDAY_DATABASE_HOST: db
+#      OWNYOURDAY_DATABASE_NAME: ownyourday_production
+#      OWNYOURDAY_DATABASE_USERNAME: docker
+#      OWNYOURDAY_DATABASE_PASSWORD: docker
+#      RAILS_SERVE_STATIC_FILES: 'true'
