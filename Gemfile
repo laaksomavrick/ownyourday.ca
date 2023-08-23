@@ -42,6 +42,7 @@ gem 'jbuilder'
 # gem "bcrypt", "~> 3.1.7"
 
 gem 'devise'
+gem 'lograge'
 gem 'omniauth'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-rails_csrf_protection'

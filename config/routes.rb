@@ -13,5 +13,5 @@ Rails.application.routes.draw do
   resources :goal_position, only: [:update]
 
   root to: redirect('/tasks')
-  match '*path' => redirect('/tasks'), via: :get
+  get '*path' => redirect('/tasks')
 end
