@@ -24,4 +24,8 @@ Rails.application.configure do
       user_id: event.payload[:user_id]
     }.compact
   end
+
+  config.lograge.ignore_custom = lambda do |event|
+    event.payload[:user_id].nil?
+  end
 end
