@@ -149,6 +149,33 @@ RSpec.describe RetrieveGoalsStreakAction do
 
       expect(goal_streak).to eq 3
     end
+
+    it 'retrieves streak when some completed tasks last week but overall failed and some completed tasks this week' do
+      monday = user.beginning_of_day.monday
+      monday_one_week_ago = monday - 7.days
+      tuesday_one_week_ago = monday_one_week_ago + 1.day
+
+      goal_id = goal.id
+
+      one_week_ago_task_list = GenerateTodaysTaskListAction
+                               .new(user:)
+                               .call(today: monday_one_week_ago)
+      another_one_week_ago_task_list = GenerateTodaysTaskListAction
+                                       .new(user:)
+                                       .call(today: tuesday_one_week_ago)
+
+      today_task_list = GenerateTodaysTaskListAction.new(user:).call
+
+      one_week_ago_task_list.tasks.first.update(completed: true)
+      another_one_week_ago_task_list.tasks.first.update(completed: false)
+
+      today_task_list.tasks.first.update(completed: false)
+
+      streaks = described_class.new(user:, goals: [goal]).call
+      goal_streak = streaks[goal_id]
+
+      expect(goal_streak).to eq 0
+    end
   end
 
   context 'when the goal is a days of week goal' do

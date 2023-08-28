@@ -90,7 +90,7 @@ class RetrieveGoalStreakAction
       ) tasks
       ON year_weeks.year_week = tasks.year_week
       WHERE completed_tasks_that_week != :times_per_week
-      AND year_weeks.week_end < :task_list_date::DATE
+      AND year_weeks.week_end <= :task_list_date::DATE
       ORDER BY year_weeks.year_week desc
     SQL
 
