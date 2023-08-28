@@ -11,7 +11,7 @@ RSpec.describe 'TaskPosition' do
     # Need to figure out how to emulate click-and-hold for 500ms
     # rubocop:disable RSpec/PendingWithoutReason
     xit 'can update a task position' do
-    # rubocop:enable RSpec/PendingWithoutReason
+      # rubocop:enable RSpec/PendingWithoutReason
       sign_in user
       visit tasks_path
 
