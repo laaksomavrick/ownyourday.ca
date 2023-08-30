@@ -8,10 +8,11 @@ RSpec.describe RetrieveGoalsStreakAction do
   context 'when the goal is a times per week goal' do
     let!(:goal) { create(:times_per_week_goal, user:, metadata: { 'times_per_week' => 2 }) }
 
+    let!(:monday) { user.beginning_of_day.monday }
+    let!(:monday_one_week_ago) { monday - 7.days }
+    let!(:monday_two_weeks_ago) { monday - 14.days }
+
     it 'retrieves streak when all prior weeks tasks have been completed' do
-      monday = user.beginning_of_day.monday
-      monday_one_week_ago = monday - 7.days
-      monday_two_weeks_ago = monday - 14.days
       goal_id = goal.id
 
       two_weeks_ago_task_list = GenerateTodaysTaskListAction
@@ -41,9 +42,6 @@ RSpec.describe RetrieveGoalsStreakAction do
     end
 
     it 'retrieves streak when all prior weeks tasks and some tasks this week have been completed' do
-      monday = user.beginning_of_day.monday
-      monday_one_week_ago = monday - 7.days
-      monday_two_weeks_ago = monday - 14.days
       goal_id = goal.id
 
       two_weeks_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday_two_weeks_ago)
@@ -71,9 +69,6 @@ RSpec.describe RetrieveGoalsStreakAction do
     end
 
     it 'retrieves streak when no prior tasks have been completed' do
-      monday = user.beginning_of_day.monday
-      monday_one_week_ago = monday - 7.days
-      monday_two_weeks_ago = monday - 14.days
       goal_id = goal.id
 
       GenerateTodaysTaskListAction.new(user:).call(today: monday_two_weeks_ago)
@@ -89,9 +84,6 @@ RSpec.describe RetrieveGoalsStreakAction do
     end
 
     it 'retrieves streak when some prior tasks were not completed' do
-      monday = user.beginning_of_day.monday
-      monday_one_week_ago = monday - 7.days
-      monday_two_weeks_ago = monday - 14.days
       goal_id = goal.id
 
       two_weeks_ago_task_list = GenerateTodaysTaskListAction.new(user:).call(today: monday_two_weeks_ago)
@@ -108,8 +100,10 @@ RSpec.describe RetrieveGoalsStreakAction do
 
       two_weeks_ago_task_list.tasks.first.update(completed: true)
       another_two_weeks_ago_task_list.tasks.first.update(completed: false)
+
       one_week_ago_task_list.tasks.first.update(completed: true)
       another_one_week_ago_task_list.tasks.first.update(completed: true)
+
       today_task_list.tasks.first.update(completed: false)
 
       streaks = described_class.new(user:, goals: [goal]).call
@@ -119,9 +113,6 @@ RSpec.describe RetrieveGoalsStreakAction do
     end
 
     it 'retrieves streak when some prior tasks were not completed and today is completed' do
-      monday = user.beginning_of_day.monday
-      monday_one_week_ago = monday - 7.days
-      monday_two_weeks_ago = monday - 14.days
       goal_id = goal.id
 
       two_weeks_ago_task_list = GenerateTodaysTaskListAction
@@ -151,8 +142,6 @@ RSpec.describe RetrieveGoalsStreakAction do
     end
 
     it 'retrieves streak when some completed tasks last week but overall failed and some completed tasks this week' do
-      monday = user.beginning_of_day.monday
-      monday_one_week_ago = monday - 7.days
       tuesday_one_week_ago = monday_one_week_ago + 1.day
 
       goal_id = goal.id

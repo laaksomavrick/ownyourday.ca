@@ -32,11 +32,11 @@ class RetrieveGoalStreakAction
                      .where(goal_id:, completed: true)
                      .count
     else
-      week_start = last_failed_week[0]['week_start']
+      week_end = last_failed_week[0]['week_end']
       streak_count = Tasks::GoalTask
                      .joins(:task_list)
                      .where(goal_id:, completed: true)
-                     .where('task_lists.date > ?', week_start)
+                     .where('task_lists.date >= ?', week_end)
                      .count
     end
 
@@ -65,8 +65,8 @@ class RetrieveGoalStreakAction
   end
 
   def find_most_recent_days_per_week_failure(goal:, task_list_date:)
-    start_date = @user.beginning_of_day(today: @user.created_at)
-    end_date = @user.beginning_of_day
+    start_date = @user.beginning_of_day(today: @user.created_at).monday
+    end_date = @user.beginning_of_day.sunday
     user_id = @user.id
     times_per_week = goal.times_per_week
 
@@ -90,7 +90,7 @@ class RetrieveGoalStreakAction
       ) tasks
       ON year_weeks.year_week = tasks.year_week
       WHERE completed_tasks_that_week != :times_per_week
-      AND year_weeks.week_end <= :task_list_date::DATE
+      AND year_weeks.week_end < :task_list_date::DATE
       ORDER BY year_weeks.year_week desc
     SQL
 
