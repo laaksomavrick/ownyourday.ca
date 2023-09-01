@@ -59,6 +59,8 @@ gem 'pundit', '~> 2.3'
 
 gem 'acts_as_list'
 
+gem 'heroicon'
+
 # Use Sass to process CSS
 # gem "sassc-rails"
 

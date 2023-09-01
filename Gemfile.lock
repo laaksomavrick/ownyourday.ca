@@ -115,6 +115,8 @@ GEM
     globalid (1.1.0)
       activesupport (>= 5.0)
     hashie (5.0.0)
+    heroicon (1.0.0)
+      rails (>= 5.2)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     importmap-rails (1.2.1)
@@ -358,6 +360,7 @@ DEPENDENCIES
   faker
   flamegraph
   foreman
+  heroicon
   importmap-rails
   jbuilder
   lograge
