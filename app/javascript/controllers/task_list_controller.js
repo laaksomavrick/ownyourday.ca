@@ -50,7 +50,7 @@ export default class extends Sortable {
   get defaultOptions() {
     return {
       animation: 125,
-      delay: 500,
+      delay: 25,
       onChoose: this.onChoose,
       onUnchoose: this.onUnchoose,
     };
