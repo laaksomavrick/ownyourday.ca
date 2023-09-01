@@ -4,6 +4,27 @@ export default class extends Sortable {
   connect() {
     super.connect();
   }
+  async onChoose(e) {
+    const goalDiv = e.item;
+
+    if (!goalDiv) {
+      return;
+    }
+
+    goalDiv.classList.add('border-blue-300');
+    goalDiv.classList.remove('border-gray-300');
+  }
+
+  async onUnchoose(e) {
+    const taskDiv = e.item;
+
+    if (!taskDiv) {
+      return;
+    }
+
+    taskDiv.classList.add('border-gray-300');
+    taskDiv.classList.remove('border-blue-300');
+  }
 
   async onUpdate({ item, newIndex }) {
     // https://github.com/stimulus-components/stimulus-sortable/blob/master/src/index.ts
@@ -28,6 +49,9 @@ export default class extends Sortable {
   get defaultOptions() {
     return {
       animation: 125,
+      delay: 25,
+      onChoose: this.onChoose,
+      onUnchoose: this.onUnchoose,
     };
   }
 }

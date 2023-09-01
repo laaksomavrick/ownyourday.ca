@@ -2,6 +2,8 @@
 
 is_ci = ENV.fetch('IS_CI', false)
 
+Capybara.enable_aria_label = true
+
 Capybara.register_driver :headless_chrome do |app|
   options = Selenium::WebDriver::Chrome::Options.new(
     args: %w[headless no-sandbox disable-gpu disable-dev-shm-usage],
