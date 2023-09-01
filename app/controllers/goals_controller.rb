@@ -31,7 +31,7 @@ class GoalsController < ApplicationController
     end
 
     flash[:notice] = t('helpers.alert.create_successful', name: @goal.name)
-    redirect_to edit_goal_path(@goal.id)
+    redirect_to goals_path
   end
 
   def update

@@ -171,11 +171,14 @@ RSpec.describe 'Goals' do
         submit_button.click
 
         expect(page).to have_content(I18n.t('helpers.alert.create_successful', name: goal_name))
-        expect(find_field('Name').value).to eq goal_name
-        expect(find_by_id('goal_type_goalsdaily')).to be_checked
 
         goal = Goals::Daily.find_by(name: goal_name)
         expect(goal.position).to be(2)
+
+        visit edit_goal_path(goal)
+
+        expect(find_field('Name').value).to eq goal_name
+        expect(find_by_id('goal_type_goalsdaily')).to be_checked
       end
 
       it 'creates a times_per_week goal' do
@@ -189,11 +192,14 @@ RSpec.describe 'Goals' do
         submit_button.click
 
         expect(page).to have_content(I18n.t('helpers.alert.create_successful', name: goal_name))
-        expect(find_field('Name').value).to eq goal_name
-        expect(find_by_id('goal_times_per_week').value).to eq select_option
 
         goal = Goals::TimesPerWeek.find_by(name: goal_name)
         expect(goal.position).to be(2)
+
+        visit edit_goal_path(goal)
+
+        expect(find_field('Name').value).to eq goal_name
+        expect(find_by_id('goal_times_per_week').value).to eq select_option
       end
 
       it 'creates a days_of_week goal' do
@@ -207,13 +213,16 @@ RSpec.describe 'Goals' do
         submit_button.click
 
         expect(page).to have_content(I18n.t('helpers.alert.create_successful', name: goal_name))
+
+        goal = Goals::DaysOfWeek.find_by(name: goal_name)
+        expect(goal.position).to be(2)
+
+        visit edit_goal_path(goal)
+
         expect(find_field('Name').value).to eq goal_name
         expect(find_by_id('goal_days_of_week_0')).to be_checked
         expect(find_by_id('goal_days_of_week_1')).to be_checked
         expect(find_by_id('goal_days_of_week_2')).not_to be_checked
-
-        goal = Goals::DaysOfWeek.find_by(name: goal_name)
-        expect(goal.position).to be(2)
       end
     end
 
