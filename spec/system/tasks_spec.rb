@@ -39,14 +39,11 @@ RSpec.describe 'Tasks' do
           visit tasks_path
 
           task = user.tasks.first
+          task.update(completed: true)
           task_id = task.id
-
-          task_check_box = find("input[data-task-id='#{task_id}']")
-          task_check_box.click
 
           visit tasks_path
           task_check_box = find("input[data-task-id='#{task_id}']")
-
           task_check_box.click
 
           visit tasks_path
@@ -71,7 +68,7 @@ RSpec.describe 'Tasks' do
             expect(page).to have_current_path(tasks_path)
 
             expect(page).to have_content(today.year)
-            expect(page).to have_content(today.strftime('%B'))
+            expect(page).to have_content(today.strftime('%b'))
             expect(page).to have_content(today.day)
           end
 
@@ -81,7 +78,7 @@ RSpec.describe 'Tasks' do
             expect(page).to have_current_path(tasks_path(task_list_id: task_list.id))
 
             expect(page).to have_content(yesterday.year)
-            expect(page).to have_content(yesterday.strftime('%B'))
+            expect(page).to have_content(yesterday.strftime('%b'))
             expect(page).to have_content(yesterday.day)
           end
         end
@@ -91,7 +88,7 @@ RSpec.describe 'Tasks' do
             visit tasks_path
 
             expect(page).to have_content(today.year)
-            expect(page).to have_content(today.strftime('%B'))
+            expect(page).to have_content(today.strftime('%b'))
             expect(page).to have_content(today.day)
           end
 
@@ -104,17 +101,17 @@ RSpec.describe 'Tasks' do
 
             visit tasks_path
 
-            click_button user.beginning_of_day.strftime('%B %d, %Y')
+            click_button user.beginning_of_day.strftime('%b %d, %Y')
 
             select monday.year.to_s, from: 'task_list[date(1i)]'
-            select monday.strftime('%B'), from: 'task_list[date(2i)]'
+            select monday.strftime('%b'), from: 'task_list[date(2i)]'
             select monday.day.to_s, from: 'task_list[date(3i)]'
             click_button I18n.t('tasks.date.button')
 
-            find_button(text: monday.strftime('%B %d, %Y'))
+            find_button(text: monday.strftime('%b %d, %Y'))
 
             expect(page).to have_content(monday.year)
-            expect(page).to have_content(monday.strftime('%B'))
+            expect(page).to have_content(monday.strftime('%b'))
             expect(page).to have_content(monday.day)
 
             expect(page).to have_content(monday_only_goal.name)
