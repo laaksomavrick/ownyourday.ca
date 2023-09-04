@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe RetrieveGoalsStreakAction do
-  let!(:user) { create(:user, created_at: 14.days.ago) }
+  let!(:user) { create(:user, created_at: DateTime.current.monday - 14.days) }
 
   context 'when the goal is a times per week goal' do
     let!(:goal) { create(:times_per_week_goal, user:, metadata: { 'times_per_week' => 2 }) }
