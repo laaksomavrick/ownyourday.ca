@@ -65,10 +65,11 @@ class RetrieveGoalStreakAction
   end
 
   def find_most_recent_days_per_week_failure(goal:, task_list_date:)
-    start_date = @user.beginning_of_day(today: @user.created_at).monday
+    start_date = @user.beginning_of_day(today: @user.created_at).monday - 7.days
     end_date = @user.beginning_of_day.sunday
     user_id = @user.id
     times_per_week = goal.times_per_week
+    goal_id = goal.id
 
     query = <<-SQL.squish
       SELECT * FROM (
@@ -86,6 +87,7 @@ class RetrieveGoalStreakAction
         FROM  tasks inner join task_lists tl on tasks.task_list_id = tl.id
         WHERE tl.user_id = :user_id
         AND completed = true
+        AND goal_id = :goal_id
         GROUP  BY year_week
       ) tasks
       ON year_weeks.year_week = tasks.year_week
@@ -95,7 +97,9 @@ class RetrieveGoalStreakAction
     SQL
 
     ActiveRecord::Base.connection.execute(
-      ActiveRecord::Base.sanitize_sql([query, { start_date:, end_date:, user_id:, times_per_week:, task_list_date: }])
+      ActiveRecord::Base.sanitize_sql([query,
+                                       { start_date:, end_date:, user_id:, times_per_week:, task_list_date:,
+                                         goal_id: }])
     )
   end
 
