@@ -20,6 +20,6 @@ module ApplicationHelper
   # rubocop:enable Layout/LineLength
 
   def human_date_string(datetime: DateTime.current.utc)
-    datetime.strftime('%B %d, %Y')
+    datetime.strftime('%b %d, %Y')
   end
 end
