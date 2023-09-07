@@ -24,3 +24,7 @@ variable "environment" {
   default = "production"
 }
 
+variable "error_event_email" {
+  type = string
+}
+

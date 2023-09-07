@@ -68,3 +68,10 @@ module "database" {
   db_subnet_group   = module.network.db_subnet_group
 }
 
+module "alarms" {
+  source = "../../modules/alarms"
+
+  app_name          = var.app_name
+  error_event_email = var.error_event_email
+  log_group_name    = module.app-server.log_group_name
+}
