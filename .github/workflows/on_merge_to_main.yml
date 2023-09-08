@@ -86,6 +86,7 @@ jobs:
             -var public_ssh_key_file_path=public_ssh_key.pub \
             -var db_username=${{ vars.DB_USERNAME }} \
             -var db_password=${{ secrets.DB_PASSWORD }} \
+            -var error_event_email=${{ vars.ERROR_EVENT_EMAIL }} \
             -input=false \
             -no-color \
             -out tf.plan
