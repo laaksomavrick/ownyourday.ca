@@ -5,5 +5,9 @@ module Alerts
     def color
       'red'
     end
+
+    def context
+      'Error'
+    end
   end
 end

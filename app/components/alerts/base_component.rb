@@ -7,6 +7,10 @@ module Alerts
       @message = message
     end
 
+    def context
+      raise "Expected #{self.class} to implement context"
+    end
+
     def color
       raise "Expected #{self.class} to implement color"
     end

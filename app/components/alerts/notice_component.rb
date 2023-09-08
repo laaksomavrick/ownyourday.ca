@@ -5,5 +5,9 @@ module Alerts
     def color
       'blue'
     end
+
+    def context
+      'Info'
+    end
   end
 end

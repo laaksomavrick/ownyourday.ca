@@ -13,10 +13,13 @@ module.exports = {
       pattern: /bg-/,
     },
     {
-      pattern: /text-teal/, // TODO: change this if brand_color is ever changed
+      pattern: /text-/,
     },
     {
-      pattern: /border-blue/, // TODO: change this if brand_color is ever changed
+      pattern: /border-/,
+    },
+    {
+      pattern: /border-red/,
     },
   ],
   theme: {
