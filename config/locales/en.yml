@@ -31,6 +31,9 @@ en:
       new: 'Add'
     create:
       header: 'Adhoc Task'
+  milestones:
+    navigation: 'Milestones'
+    no_active: 'No active milestone'
   goals:
     navigation: "Goals"
     header: "My Goals"

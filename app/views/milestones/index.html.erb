@@ -1,0 +1,15 @@
+<% header = "#{@goal.name} #{t('milestones.navigation')}" %>
+
+<div class="flex justify-between">
+  <%= render 'layouts/page_header', header: header %>
+  <%= link_to t('goals.new_button'), new_goal_milestone_path(@goal), class: primary_button  %>
+</div>
+
+
+<div class="text-2xl font-medium pb-4 select-none">
+  Active Milestone
+</div>
+
+<div class="text-2xl font-medium pb-4 select-none">
+  Completed Milestones
+</div>
