@@ -33,7 +33,10 @@ en:
       header: 'Adhoc Task'
   milestones:
     navigation: 'Milestones'
+    header: 'Milestone'
     no_active: 'No active milestone'
+    active_header: 'Active'
+    inactive_header: 'Completed'
   goals:
     navigation: "Goals"
     header: "My Goals"

@@ -2,14 +2,59 @@
 
 <div class="flex justify-between">
   <%= render 'layouts/page_header', header: header %>
-  <%= link_to t('goals.new_button'), new_goal_milestone_path(@goal), class: primary_button  %>
+  <%= link_to t('goals.new_button'), new_goal_milestone_path(@goal), class: primary_button %>
 </div>
 
+<div class="flex flex-col">
+  <div class="text-2xl font-medium pb-4 select-none">
+    <%= t('milestones.active_header') %>
+  </div>
 
-<div class="text-2xl font-medium pb-4 select-none">
-  Active Milestone
-</div>
+  <div class="pb-4">
+    <% if @active_milestone %>
+      <div
+        class="flex border rounded p-4 cursor-pointer border-gray-300 select-none"
+        id="inactive-milestone-list-item-<%= @active_milestone.id %>"
+      >
+        <div class="w-full">
+          <%= link_to edit_goal_milestone_path(@active_milestone, goal_id: @goal.id) do %>
+            <p class="text-2xl cursor-pointer select-none w-full">
+              <%= @active_milestone.name %>
+            </p>
+          <% end %>
+        </div>
+      </div>
+      <% else %>
+      <div class="text-2xl p-4 border rounded-md border-gray-200">
+        <%= t('milestones.no_active') %>
+      </div>
+    <% end %>
+  </div>
 
-<div class="text-2xl font-medium pb-4 select-none">
-  Completed Milestones
+  <div class="text-2xl font-medium pb-4 select-none">
+    <%= t('milestones.inactive_header') %>
+  </div>
+
+  <div class="space-y-4">
+    <% @inactive_milestones.each do |milestone| %>
+      <div
+        class="flex border rounded p-4 cursor-pointer border-gray-300 select-none"
+        id="inactive-milestone-list-item-<%= milestone.id %>"
+      >
+        <div class="w-full">
+          <%= link_to edit_goal_milestone_path(milestone, goal_id: @goal.id) do %>
+            <p class="text-2xl cursor-pointer select-none w-full">
+              <%= milestone.name %>
+            </p>
+          <% end %>
+        </div>
+
+        <div class="flex justify-center items-center text-gray-400 w-36">
+          <div class="flex text-gray-400 w-full">
+            <%= human_date_string(datetime: milestone.completed_at) %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>

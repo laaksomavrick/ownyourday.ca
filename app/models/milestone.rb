@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Milestone < ApplicationRecord
   belongs_to :goal, class_name: 'Goals::Goal'
   validates :name, :description, presence: true

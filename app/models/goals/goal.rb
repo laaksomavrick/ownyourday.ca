@@ -38,7 +38,7 @@ module Goals
     end
 
     def inactive_milestones
-      milestones.where(completed: true).to_a
+      milestones.where(completed: true).order(completed_at: :desc).to_a
     end
 
     class << self

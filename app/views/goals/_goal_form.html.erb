@@ -16,8 +16,8 @@
 
   <% if show_milestones %>
     <div class="flex flex-col pb-4">
-      <div class="text-2xl font-medium pb-4 select-none"><%= t('milestones.navigation') %></div>
-      <%= link_to t('milestones.no_active'), goal_milestones_path(@goal), class: "text-2xl p-4 border rounded-md border-gray-200" %>
+      <div class="text-2xl font-medium pb-4 select-none"><%= t('milestones.header') %></div>
+        <%= link_to @goal.active_milestone.nil? ? t('milestones.no_active') : @goal.active_milestone.name, goal_milestones_path(@goal), class: "text-2xl p-4 border rounded-md border-gray-200" %>
     </div>
   <% end %>
 

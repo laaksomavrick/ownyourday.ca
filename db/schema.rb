@@ -30,6 +30,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_10_132215) do
     t.string "name", default: "", null: false
     t.string "description", default: "", null: false
     t.boolean "completed", default: false, null: false
+    t.datetime "completed_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["goal_id"], name: "index_milestones_on_goal_id"
