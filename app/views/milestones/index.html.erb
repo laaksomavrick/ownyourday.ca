@@ -1,8 +1,10 @@
 <% header = "#{@goal.name} #{t('milestones.navigation')}" %>
+<% new_button_disabled = !@active_milestone.nil? %>
+<% new_button_class = new_button_disabled ? primary_button_disabled : primary_button %>
 
 <div class="flex justify-between">
   <%= render 'layouts/page_header', header: header %>
-  <%= link_to t('goals.new_button'), new_goal_milestone_path(@goal), class: primary_button %>
+  <%= button_to t('common.new'), new_goal_milestone_path(@goal), class: new_button_class, method: :get, disabled: new_button_disabled %>
 </div>
 
 <div class="flex flex-col">
