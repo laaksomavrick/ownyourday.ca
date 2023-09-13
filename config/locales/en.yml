@@ -42,6 +42,7 @@ en:
     new:
       name_label: 'Name'
       description_label: 'Description'
+      active_milestone_error: 'Cannot create a milestone when an active milestone already exists'
   goals:
     navigation: "Goals"
     header: "My Goals"

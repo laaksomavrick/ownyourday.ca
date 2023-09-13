@@ -18,17 +18,26 @@ class MilestonesController < ApplicationController
 
   def edit; end
 
+  # TODO: extract service class
   def create
     goal_id = params[:goal_id]
     params = create_milestone_params
 
     @goal = Goals::Goal.find_by(id: goal_id)
 
+    active_milestone = @goal.active_milestone
+
     @milestone = Milestone.new
     @milestone.goal = @goal
     @milestone.name = params[:name]
     @milestone.description = params[:description]
     @milestone.completed = false
+
+    if active_milestone
+      flash.now[:alert] = t('milestones.new.active_milestone_error')
+      render 'new', status: :unprocessable_entity
+      return
+    end
 
     @milestone.save
 
