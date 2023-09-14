@@ -3,5 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Milestone do
-  pending "add some examples to (or delete) #{__FILE__}"
+  pending 'validates name'
+  pending 'validates description'
+  pending 'validates completed_at when completed is true'
 end

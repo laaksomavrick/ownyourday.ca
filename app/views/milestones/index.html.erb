@@ -44,11 +44,9 @@
         id="inactive-milestone-list-item-<%= milestone.id %>"
       >
         <div class="w-full">
-          <%= link_to edit_goal_milestone_path(milestone, goal_id: @goal.id) do %>
-            <p class="text-2xl cursor-pointer select-none w-full">
-              <%= milestone.name %>
-            </p>
-          <% end %>
+          <p class="text-2xl select-none w-full">
+            <%= milestone.name %>
+          </p>
         </div>
 
         <div class="flex justify-center items-center text-gray-400 w-36">
