@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class GoalPolicy < ApplicationPolicy
+class MilestonePolicy < ApplicationPolicy
   class Scope
     def initialize(user, scope)
       @user  = user
@@ -8,7 +8,7 @@ class GoalPolicy < ApplicationPolicy
     end
 
     def resolve
-      scope.where(user_id: user.id)
+      scope.includes(:goal).where(goal: { user_id: user.id })
     end
 
     private
@@ -17,7 +17,7 @@ class GoalPolicy < ApplicationPolicy
   end
 
   def update?
-    user.id == record.user_id
+    user.id == record.goal.user_id
   end
 
   def create?
@@ -25,14 +25,10 @@ class GoalPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user.id == record.user_id
+    user.id == record.goal.user_id
   end
 
   def show?
-    user.id == record.user_id
-  end
-
-  def index?
-    user.id == record.user_id
+    user.id == record.goal.user_id
   end
 end

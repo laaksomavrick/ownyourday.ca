@@ -35,6 +35,36 @@ RSpec.describe 'Goals' do
       expect(page).to have_content(I18n.t('goal.header'))
     end
 
+    context 'when goal has an active milestone' do
+      let!(:milestone) { create(:milestone, goal:, completed: false) }
+
+      it 'shows the milestone name' do
+        sign_in user
+        visit edit_goal_path(goal.id)
+        expect(page).to have_content(milestone.name)
+      end
+    end
+
+    context 'when goal has no active milestone' do
+      before do
+        create(:milestone, goal:, completed: true)
+      end
+
+      it 'shows no_active milestone message' do
+        sign_in user
+        visit edit_goal_path(goal.id)
+        expect(page).to have_content(I18n.t('milestones.no_active'))
+      end
+    end
+
+    context 'when goal has no milestone' do
+      it 'shows no_active milestone message' do
+        sign_in user
+        visit edit_goal_path(goal.id)
+        expect(page).to have_content(I18n.t('milestones.no_active'))
+      end
+    end
+
     context 'when updating a goal' do
       before do
         sign_in user

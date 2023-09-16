@@ -7,6 +7,7 @@ module Goals
 
     belongs_to :user
     has_many :tasks, class_name: 'Tasks::GoalTask', dependent: :destroy
+    has_many :milestones, dependent: :destroy
 
     validates :name, presence: true
     validates :type, inclusion: GOAL_TYPES
@@ -31,6 +32,14 @@ module Goals
       type == Goals::DaysOfWeek.name
     end
     # rubocop:enable Naming/PredicateName
+
+    def active_milestone
+      milestones.where(completed: false).first
+    end
+
+    def inactive_milestones
+      milestones.where(completed: true).order(completed_at: :desc).to_a
+    end
 
     class << self
       def policy_class

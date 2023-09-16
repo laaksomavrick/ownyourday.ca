@@ -19,7 +19,7 @@ module.exports = {
       pattern: /border-/,
     },
     {
-      pattern: /border-red/,
+      pattern: /border-red-500/,
     },
   ],
   theme: {

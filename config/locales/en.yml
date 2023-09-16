@@ -13,6 +13,7 @@ en:
     times: "times"
     and: "and"
     adhoc_task: 'Adhoc Task'
+    new: 'New'
   days_of_week:
     monday: "Monday"
     tuesday: "Tuesday"
@@ -31,6 +32,23 @@ en:
       new: 'Add'
     create:
       header: 'Adhoc Task'
+  milestones:
+    milestone: 'Milestone'
+    navigation: 'Milestones'
+    header: 'Milestone'
+    new_header: 'New %{goal_name} Milestone'
+    update_header: 'Update %{goal_name} Milestone'
+    no_active: 'No active milestone'
+    active_header: 'Active'
+    inactive_header: 'Completed'
+    new:
+      name_label: 'Name'
+      completed_label: 'Completed'
+      description_label: 'Description'
+      active_milestone_error: 'Cannot create a milestone when an active milestone already exists'
+    destroy:
+      confirmation: 'Are you sure you want to delete %{name}?'
+      success: 'Successfully deleted %{name}'
   goals:
     navigation: "Goals"
     header: "My Goals"

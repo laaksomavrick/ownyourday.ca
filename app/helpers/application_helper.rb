@@ -9,6 +9,10 @@ module ApplicationHelper
     "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded cursor-pointer h-fit #{css}"
   end
 
+  def primary_button_disabled(css = '')
+    "bg-green-200 text-white font-bold py-2 px-4 rounded cursor-not-allowed h-fit #{css}"
+  end
+
   def destroy_button(css = '')
     "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded cursor-pointer #{css}"
   end

@@ -1,0 +1,60 @@
+<% header = "#{@goal.name} #{t('milestones.navigation')}" %>
+<% new_button_disabled = !@active_milestone.nil? %>
+<% new_button_class = new_button_disabled ? primary_button_disabled : primary_button %>
+
+<div class="flex justify-between">
+  <%= render 'layouts/page_header', header: header %>
+  <%= button_to t('common.new'), new_goal_milestone_path(@goal), class: new_button_class, method: :get, disabled: new_button_disabled %>
+</div>
+
+<div class="flex flex-col">
+  <div class="text-2xl font-medium pb-4 select-none">
+    <%= t('milestones.active_header') %>
+  </div>
+
+  <div class="pb-4">
+    <% if @active_milestone %>
+      <div
+        class="flex border rounded p-4 cursor-pointer border-gray-300 select-none"
+        id="inactive-milestone-list-item-<%= @active_milestone.id %>"
+      >
+        <div class="w-full">
+          <%= link_to edit_goal_milestone_path(@active_milestone, goal_id: @goal.id) do %>
+            <p class="text-2xl cursor-pointer select-none w-full">
+              <%= @active_milestone.name %>
+            </p>
+          <% end %>
+        </div>
+      </div>
+      <% else %>
+      <div class="text-2xl p-4 border rounded-md border-gray-200">
+        <%= t('milestones.no_active') %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="text-2xl font-medium pb-4 select-none">
+    <%= t('milestones.inactive_header') %>
+  </div>
+
+  <div class="space-y-4">
+    <% @inactive_milestones.each do |milestone| %>
+      <div
+        class="flex border rounded p-4 cursor-pointer border-gray-300 select-none"
+        id="inactive-milestone-list-item-<%= milestone.id %>"
+      >
+        <div class="w-full">
+          <p class="text-2xl select-none w-full">
+            <%= milestone.name %>
+          </p>
+        </div>
+
+        <div class="flex justify-center items-center text-gray-400 w-36">
+          <div class="flex text-gray-400 w-full">
+            <%= human_date_string(datetime: milestone.completed_at) %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

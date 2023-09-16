@@ -23,6 +23,9 @@
             <% else  %>
               <%= t('common.adhoc_task') %>
             <% end %>
+            <% if vm.show_milestone? %>
+              | <%= t('milestones.milestone') %>: <%= vm.milestone.name %>
+            <% end %>
           </div>
         </div>
         <% if vm.show_context? %>
