@@ -33,6 +33,7 @@ en:
     create:
       header: 'Adhoc Task'
   milestones:
+    milestone: 'Milestone'
     navigation: 'Milestones'
     header: 'Milestone'
     new_header: 'New %{goal_name} Milestone'

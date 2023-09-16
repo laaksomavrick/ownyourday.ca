@@ -63,4 +63,20 @@ class TaskViewModel
 
     @task.goal.type == Goals::TimesPerWeek.name
   end
+
+  def show_milestone?
+    goal = @task.try(:goal)
+
+    return false if goal.nil?
+
+    milestone = goal.active_milestone
+
+    return false if milestone.nil?
+
+    true
+  end
+
+  def milestone
+    @task.try(:goal).try(:active_milestone)
+  end
 end
