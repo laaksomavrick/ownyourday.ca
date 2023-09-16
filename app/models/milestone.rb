@@ -11,4 +11,10 @@ class Milestone < ApplicationRecord
   def inactive?
     completed == false
   end
+
+  class << self
+    def policy_class
+      MilestonePolicy
+    end
+  end
 end

@@ -5,14 +5,14 @@
 class MilestonesController < ApplicationController
   def index
     goal_id = params[:goal_id]
-    @goal = Goals::Goal.find_by(id: goal_id)
+    @goal = authorize Goals::Goal.find_by(id: goal_id)
     @active_milestone = @goal.active_milestone
     @inactive_milestones = @goal.inactive_milestones
   end
 
   def new
     goal_id = params[:goal_id]
-    @goal = Goals::Goal.find_by(id: goal_id)
+    @goal = authorize Goals::Goal.find_by(id: goal_id)
     @milestone = Milestone.new(goal: @goal, completed: false)
   end
 
@@ -20,7 +20,7 @@ class MilestonesController < ApplicationController
     goal_id = params[:goal_id]
     milestone_id = params[:id]
 
-    @goal = Goals::Goal.find_by(id: goal_id)
+    @goal = authorize Goals::Goal.find_by(id: goal_id)
     @milestone = @goal.active_milestone
 
     if @milestone.nil?
@@ -38,7 +38,7 @@ class MilestonesController < ApplicationController
     goal_id = params[:goal_id]
     params = create_milestone_params
 
-    @goal = Goals::Goal.find_by(id: goal_id)
+    @goal = authorize Goals::Goal.find_by(id: goal_id)
 
     active_milestone = @goal.active_milestone
 
@@ -70,7 +70,7 @@ class MilestonesController < ApplicationController
     milestone_id = params[:id]
     params = update_milestone_params
 
-    @goal = Goals::Goal.find_by(id: goal_id)
+    @goal = authorize Goals::Goal.find_by(id: goal_id)
     @milestone = Milestone.find_by(id: milestone_id)
 
     @milestone.name = params[:name]
@@ -93,7 +93,7 @@ class MilestonesController < ApplicationController
     milestone_id = params[:id].to_i
 
     @milestone = Milestone.find_by(id: milestone_id)
-    goal = @milestone.goal
+    goal = authorize @milestone.goal
     @milestone.destroy
 
     flash[:notice] = t('.success', name: @milestone.name)
