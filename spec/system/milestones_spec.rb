@@ -107,4 +107,68 @@ RSpec.describe 'Milestones' do
       end
     end
   end
+
+  describe 'edit page' do
+    let(:milestone) { create(:milestone, goal:, completed: false) }
+
+    context 'when unauthenticated' do
+      it 'redirects to sign in' do
+        visit edit_goal_milestone_path(goal, milestone)
+        expect(page).to have_current_path('/users/sign_in')
+      end
+    end
+
+    context 'when authenticated' do
+      before do
+        sign_in user
+      end
+
+      it 'can edit a milestone' do
+        visit edit_goal_milestone_path(goal, milestone)
+
+        fill_in I18n.t('milestones.new.name_label'), with: 'name'
+        fill_in I18n.t('milestones.new.description_label'), with: 'description'
+        submit_button = find('input[name="commit"]')
+        submit_button.click
+
+        expect(page).to have_content(I18n.t('helpers.alert.update_successful', name: 'name'))
+        expect(page).to have_content('name')
+      end
+
+      it 'can complete a milestone' do
+        visit edit_goal_milestone_path(goal, milestone)
+
+        task_check_box = find('input[name="milestone[completed]"]')
+        task_check_box.click
+
+        submit_button = find('input[name="commit"]')
+        submit_button.click
+
+        expect(page).to have_content(I18n.t('helpers.alert.update_successful', name: milestone.name))
+        expect(page).to have_content(I18n.t('milestones.no_active'))
+      end
+
+      it 'causes an error when name is not set' do
+        visit edit_goal_milestone_path(goal, milestone)
+
+        fill_in I18n.t('milestones.new.name_label'), with: ''
+        submit_button = find('input[name="commit"]')
+        submit_button.click
+
+        expect(page).not_to have_content(I18n.t('helpers.alert.update_successful', name: 'name'))
+        expect(page).to have_content("Name can't be blank")
+      end
+
+      it 'causes an error when description is not set' do
+        visit edit_goal_milestone_path(goal, milestone)
+
+        fill_in I18n.t('milestones.new.description_label'), with: ''
+        submit_button = find('input[name="commit"]')
+        submit_button.click
+
+        expect(page).not_to have_content(I18n.t('helpers.alert.update_successful', name: 'name'))
+        expect(page).to have_content("Description can't be blank")
+      end
+    end
+  end
 end

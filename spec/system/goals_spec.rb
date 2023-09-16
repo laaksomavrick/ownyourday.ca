@@ -46,7 +46,9 @@ RSpec.describe 'Goals' do
     end
 
     context 'when goal has no active milestone' do
-      let!(:milestone) { create(:milestone, goal:, completed: true) }
+      before do
+        create(:milestone, goal:, completed: true)
+      end
 
       it 'shows no_active milestone message' do
         sign_in user

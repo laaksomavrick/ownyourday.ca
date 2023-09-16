@@ -18,7 +18,7 @@ class MilestonesController < ApplicationController
 
   def edit
     goal_id = params[:goal_id]
-    milestone_id = params[:milestone_id]
+    milestone_id = params[:id]
 
     @goal = Goals::Goal.find_by(id: goal_id)
     @milestone = @goal.active_milestone
@@ -28,7 +28,7 @@ class MilestonesController < ApplicationController
       return
     end
 
-    return unless @milestone.try(:id) != milestone_id
+    return unless @milestone.try(:id) != milestone_id.to_i
 
     redirect_to edit_goal_milestone_path(@goal, @milestone)
     nil
