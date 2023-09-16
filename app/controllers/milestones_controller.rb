@@ -89,6 +89,17 @@ class MilestonesController < ApplicationController
     redirect_to goal_milestones_path(@goal)
   end
 
+  def destroy
+    milestone_id = params[:id].to_i
+
+    @milestone = Milestone.find_by(id: milestone_id)
+    goal = @milestone.goal
+    @milestone.destroy
+
+    flash[:notice] = t('.success', name: @milestone.name)
+    redirect_to edit_goal_path(goal)
+  end
+
   private
 
   def create_milestone_params

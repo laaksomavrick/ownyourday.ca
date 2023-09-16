@@ -45,6 +45,9 @@ en:
       completed_label: 'Completed'
       description_label: 'Description'
       active_milestone_error: 'Cannot create a milestone when an active milestone already exists'
+    destroy:
+      confirmation: 'Are you sure you want to delete %{name}?'
+      success: 'Successfully deleted %{name}'
   goals:
     navigation: "Goals"
     header: "My Goals"

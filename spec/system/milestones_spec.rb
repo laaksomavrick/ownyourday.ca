@@ -171,4 +171,19 @@ RSpec.describe 'Milestones' do
       end
     end
   end
+
+  describe 'deletion' do
+    let(:milestone) { create(:milestone, goal:, completed: false) }
+
+    it 'can delete a milestone' do
+      sign_in user
+      visit edit_goal_milestone_path(goal, milestone)
+
+      accept_confirm do
+        click_button 'Delete'
+      end
+
+      expect(page).to have_content(I18n.t('milestones.destroy.success', name: milestone.name))
+    end
+  end
 end
