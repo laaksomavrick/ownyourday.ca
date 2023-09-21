@@ -9,22 +9,22 @@
   <%= f.hidden_field :position, :value => @goal.position %>
 
   <div class="flex flex-col pb-4">
-    <%= f.label :name, t('goal.name_label'), class: "text-2xl font-medium pb-4 select-none" %>
-    <%= f.text_field :name, class: "text-2xl p-4 rounded-md border-gray-200", autofocus: true %>
+    <%= f.label :name, t('goal.name_label'), class: label_class("text-xl") %>
+    <%= f.text_field :name, class: text_field_class("text-xl"), autofocus: true %>
     <%= render 'layouts/forms/input_error', model: @goal, field: :name %>
   </div>
 
   <% if show_milestones %>
     <div class="flex flex-col pb-4">
-      <div class="text-2xl font-medium pb-4 select-none"><%= t('milestones.header') %></div>
-        <%= link_to @goal.active_milestone.nil? ? t('milestones.no_active') : @goal.active_milestone.name, goal_milestones_path(@goal), class: "text-2xl p-4 border rounded-md border-gray-200" %>
+      <div class="<%= label_class("text-xl") %>"><%= t('milestones.header') %></div>
+        <%= link_to @goal.active_milestone.nil? ? t('milestones.no_active') : @goal.active_milestone.name, goal_milestones_path(@goal), class: "text-xl p-2 border rounded-md border-gray-300 shadow hover:shadow-md mt-2" %>
     </div>
   <% end %>
 
   <div class="flex flex-col pb-4">
     <%= f.label :name, t('goal.schedule_label'), class: "text-2xl font-medium pb-4 select-none" %>
 
-    <div data-controller="goal-schedule" class="flex flex-col	border p-4 rounded-md border-gray-200">
+    <div data-controller="goal-schedule" class="flex flex-col	border p-4 rounded-md border-gray-200 shadow">
       <button
         formmethod="get"
         formaction="<%= view_path %>"
@@ -35,15 +35,15 @@
       </button>
       <div class="flex justify-start space-x-4">
         <div class="flex items-center">
-          <%= f.radio_button :type, Goals::Daily.name, class: "mr-2", data: { action: "click->goal-schedule#changeGoalSchedule" } %>
+          <%= f.radio_button :type, Goals::Daily.name, class: "mr-2 text-indigo-500 cursor-pointer", data: { action: "click->goal-schedule#changeGoalSchedule" } %>
           <div class="text-xl"><%= t('goal.schedule.daily_label') %> </div>
         </div>
         <div class="flex items-center">
-          <%= f.radio_button :type, Goals::TimesPerWeek.name, class: "mr-2", data: { action: "click->goal-schedule#changeGoalSchedule" } %>
+          <%= f.radio_button :type, Goals::TimesPerWeek.name, class: "mr-2 text-indigo-500 cursor-pointer", data: { action: "click->goal-schedule#changeGoalSchedule" } %>
           <div class="text-xl"><%= t('goal.schedule.times_per_week_label') %> </div>
         </div>
         <div class="flex items-center">
-          <%= f.radio_button :type, Goals::DaysOfWeek.name, class: "mr-2", data: { action: "click->goal-schedule#changeGoalSchedule" } %>
+          <%= f.radio_button :type, Goals::DaysOfWeek.name, class: "mr-2 text-indigo-500 cursor-pointer", data: { action: "click->goal-schedule#changeGoalSchedule" } %>
           <div class="text-xl"><%= t('goal.schedule.days_of_week_label') %></div>
         </div>
       </div>
@@ -75,7 +75,7 @@
                     <%= dow_form.check_box key,
                                            {
                                              checked: @goal.days_of_week.include?(key),
-                                             class: "mr-2",
+                                             class: "mr-2 text-indigo-500",
                                              data: { action: "change->goal-schedule#changeGoalSchedule" }
                                            } %>
                     <div class="text-md"><%= value %></div>
