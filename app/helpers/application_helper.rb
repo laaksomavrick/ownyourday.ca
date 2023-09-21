@@ -6,7 +6,7 @@ module ApplicationHelper
   end
 
   def primary_button(css = '')
-    "bg-indigo-500 hover:bg-indigo-400 text-white font-bold py-2 px-4 rounded shadow hover:shadow-md #{css}"
+    "bg-indigo-500 hover:bg-indigo-400 text-white font-bold py-2 px-4 rounded shadow hover:shadow-md cursor-pointer #{css}"
   end
 
   def primary_button_disabled(css = '')
