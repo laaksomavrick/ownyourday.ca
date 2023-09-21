@@ -2,10 +2,10 @@
 <% new_button_disabled = !@active_milestone.nil? %>
 <% new_button_class = new_button_disabled ? primary_button_disabled : primary_button %>
 
-<div class="flex justify-between">
-  <%= render 'layouts/page_header', header: header %>
+<%= render 'layouts/page_header', header: header, class: "w-full" do %>
   <%= button_to t('common.new'), new_goal_milestone_path(@goal), class: new_button_class, method: :get, disabled: new_button_disabled %>
-</div>
+<% end %>
+
 
 <div class="flex flex-col">
   <div class="text-2xl font-medium pb-4 select-none">
