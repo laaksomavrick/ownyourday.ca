@@ -21,6 +21,9 @@ module.exports = {
     {
       pattern: /border-red-500/,
     },
+    {
+      pattern: /placeholder-gray-400/,
+    },
   ],
   theme: {
     extend: {

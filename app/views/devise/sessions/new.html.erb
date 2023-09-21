@@ -1,20 +1,21 @@
 <div class="flex items-center content-center h-full max-w-lg m-auto">
   <div class="w-full p-4 m-auto flex flex-col items-center">
     <p class="align-center mb-6 font-semibold tracking-wide text-4xl">
+      <%= image_tag('logo192.png', class: 'max-w-[48px]') %>
+    </p>
+    <p class="align-center mb-6 font-semibold tracking-wide text-4xl">
       <%= t("ownyourday") %>
     </p>
     <%= form_for(resource, as: resource_name, url: session_path(resource_name),
     html: { class: "w-full space-y-4" }) do |f| %>
     <div class="w-full">
-      <%= f.label :email, class: label_class %><br />
       <%= f.email_field :email, autofocus: true, autocomplete: "email", class:
-      text_field_class %>
+      text_field_class, placeholder: t('global.email_address') %>
     </div>
 
     <div class="w-full">
-      <%= f.label :password, class: label_class %><br />
       <%= f.password_field :password, autocomplete: "current-password", class:
-      text_field_class %>
+      text_field_class, placeholder: t('global.password') %>
     </div>
 
     <% if devise_mapping.rememberable? %>
@@ -23,14 +24,12 @@
       bg-gray-100 border-gray-300 rounded focus:ring-blue-500
       dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2
       dark:bg-gray-700 dark:border-gray-600" %> <%= f.label :remember_me, class:
-      label_class %>
+      "w-full text-md" %>
     </div>
     <% end %>
 
     <div class="w-full">
-      <%= f.submit "Log in", class: "bg-#{brand_color}-500
-      hover:bg-#{brand_color}-700 text-white font-bold py-2 px-4 rounded
-      w-full", role: "button" %>
+      <%= f.submit "Log in", class: "bg-indigo-500 hover:bg-indigo-400 text-white font-bold py-2 px-4 rounded w-full shadow hover:shadow-md", role: "button" %>
     </div>
     <% end %>
 

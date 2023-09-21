@@ -6,6 +6,6 @@ module FormHelper
   end
 
   def text_field_class
-    'w-full mt-2 outline-none rounded-md border-gray-400'
+    'shadow hover:shadow-md w-full mt-2 outline-none rounded-md border-gray-300 placeholder-gray-300 focus:border-indigo-500'
   end
 end

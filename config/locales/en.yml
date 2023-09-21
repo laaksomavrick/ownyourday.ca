@@ -1,4 +1,7 @@
 en:
+  global:
+    email_address: 'Email address'
+    password: 'Password'
   helpers:
     submit:
       create: "Create"
