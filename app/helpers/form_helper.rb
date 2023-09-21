@@ -5,7 +5,9 @@ module FormHelper
     "w-full text-md font-medium #{css}"
   end
 
+  # rubocop:disable Layout/LineLength
   def text_field_class(css = '')
     "shadow hover:shadow-md w-full mt-2 outline-none rounded-md border-gray-300 placeholder-gray-300 focus:border-indigo-500 #{css}"
   end
+  # rubocop:enable Layout/LineLength
 end

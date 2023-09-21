@@ -5,9 +5,11 @@ module ApplicationHelper
     'indigo'
   end
 
+  # rubocop:disable Layout/LineLength
   def primary_button(css = '')
     "bg-indigo-500 hover:bg-indigo-400 text-white font-bold py-2 px-4 rounded shadow hover:shadow-md cursor-pointer #{css}"
   end
+  # rubocop:enable Layout/LineLength
 
   def primary_button_disabled(css = '')
     "bg-indigo-200 text-white font-bold py-2 px-4 rounded cursor-not-allowed h-fit shadow #{css}"
