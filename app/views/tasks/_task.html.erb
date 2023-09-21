@@ -3,10 +3,10 @@
     data-controller="task"
     data-action="click->task#toggleGoalCompletion"
     data-task-target="listItem"
-    class="flex items-center border rounded border-gray-300 p-4 cursor-pointer select-none <%= vm.task.completed ? "opacity-50" : nil %>">
+    class="flex items-center border rounded border-gray-300 p-4 cursor-pointer select-none shadow hover:shadow-md <%= vm.task.completed ? "opacity-50" : nil %>">
     <div class="max-w-sm mr-2 mr-4">
       <%= form_with model: vm.task, url: task_path(vm.task), method: "patch", scope: :task do |f| %>
-        <%= f.check_box :completed, { checked: vm.task.completed, data: { task_target: "checkbox", task_id: vm.task.id } } %>
+        <%= f.check_box :completed, { checked: vm.task.completed, data: { task_target: "checkbox", task_id: vm.task.id }, class: "text-indigo-500" } %>
         <% # Reload the task-#{id}-turbo-frame after completion %>
         <%= f.submit nil, { hidden: true, data: { task_target: "submit" } } %>
       <% end %>
