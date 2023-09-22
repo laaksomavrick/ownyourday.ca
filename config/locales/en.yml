@@ -2,6 +2,7 @@ en:
   global:
     email_address: 'Email address'
     password: 'Password'
+    application_version: "app version: %{version} "
   helpers:
     submit:
       create: "Create"
