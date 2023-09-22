@@ -11,7 +11,7 @@ resource "aws_sns_topic_subscription" "error_event_to_email" {
 resource "aws_cloudwatch_log_metric_filter" "error_event_in_logs_metric_filter" {
   name           = "${var.app_name}-error-event-in-logs-metric-filter"
   log_group_name = var.log_group_name
-  pattern        = "{$.status = 5*}"
+  pattern        = "{ $.level = ERROR }"
 
   metric_transformation {
     name      = "${var.app_name}-error-event-in-logs-metric-filter"
