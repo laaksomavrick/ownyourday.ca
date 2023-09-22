@@ -14,8 +14,6 @@ Rails.application.routes.draw do
   resources :task_position, only: [:update]
   resources :goal_position, only: [:update]
 
-  resources :errors, only: [:index]
-
   root to: redirect('/tasks')
   get '*path' => redirect('/tasks')
 end
