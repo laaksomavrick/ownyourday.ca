@@ -63,7 +63,7 @@ resource "aws_ecs_task_definition" "service" {
         startPeriod : null
       },
       essential : true,
-      image : var.image_uri,
+      image : "${var.app_image_repo}:${var.app_image_version}",
       logConfiguration : {
         logDriver : "awslogs",
         options : {
@@ -102,6 +102,10 @@ resource "aws_ecs_task_definition" "service" {
         {
           name : "RAILS_SERVE_STATIC_FILES" // TODO: serve these with CDN at some point
           value : "true"
+        },
+        {
+          name : "APPLICATION_VERSION",
+          value : var.app_image_version
         }
       ]
     }

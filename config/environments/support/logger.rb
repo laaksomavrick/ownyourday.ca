@@ -11,6 +11,8 @@ Rails.application.configure do
   config.lograge.custom_options = lambda do |event|
     {
       exception: event.payload[:exception]&.first,
+      exception_message: event.payload[:exception_object]&.message,
+      exception_trace: event.payload[:exception_object]&.backtrace&.first(3),
       host: event.payload[:host],
       ip: event.payload[:ip],
       level: event.payload[:level],
@@ -21,7 +23,8 @@ Rails.application.configure do
       request_id: event.payload[:headers]['action_dispatch.request_id'],
       request_time: Time.zone.now,
       x_forwarded_for: event.payload[:x_forwarded_for],
-      user_id: event.payload[:user_id]
+      user_id: event.payload[:user_id],
+      application_version: ApplicationVersion.version
     }.compact
   end
 

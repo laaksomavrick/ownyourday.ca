@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 class ErrorsController < ApplicationController
   def index
-    # TODO: cause an error
     foo = params[:foo]
     hash = {}
     hash[:foo] = foo

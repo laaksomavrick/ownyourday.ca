@@ -2,9 +2,12 @@ variable "app_name" {
   type = string
 }
 
-variable "image_uri" {
-  description = "The URI of the image to run in the task definition"
-  type        = string
+variable "app_image_repo" {
+  type = string
+}
+
+variable "app_image_version" {
+  type = string
 }
 
 variable "app_server_subnet_ids" {
