@@ -1,4 +1,8 @@
-variable "app_image_uri" {
+variable "app_image_repo" {
+  type = string
+}
+
+variable "app_image_version" {
   type = string
 }
 

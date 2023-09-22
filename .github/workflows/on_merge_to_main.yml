@@ -82,7 +82,8 @@ jobs:
       - name: Terraform Plan
         run: |
           terraform plan \
-            -var app_image_uri=${{ env.DOCKER_REPO_URL }}:${{ env.DOCKER_IMAGE_TAG }} \
+            -var app_image_repo=${{ env.DOCKER_REPO_URL }} \
+            -var app_image_version=${{ env.DOCKER_IMAGE_TAG }} \
             -var public_ssh_key_file_path=public_ssh_key.pub \
             -var db_username=${{ vars.DB_USERNAME }} \
             -var db_password=${{ secrets.DB_PASSWORD }} \
