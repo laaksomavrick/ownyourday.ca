@@ -5,8 +5,8 @@
   <%= f.hidden_field :task_list_id, value: params[:task_list_id] %>
 
   <div class="flex flex-col pb-4">
-    <%= f.label :name, t('goal.name_label'), class: "text-2xl font-medium pb-4 select-none" %>
-    <%= f.text_field :name, class: "text-2xl p-4 rounded-md border-gray-200", autofocus: true %>
+    <%= f.label :name, t('goal.name_label'), class: label_class("text-xl") %>
+    <%= f.text_field :name, class: text_field_class("text-xl"), autofocus: true %>
     <%= render 'layouts/forms/input_error', model: @adhoc_task, field: :name %>
   </div>
 
