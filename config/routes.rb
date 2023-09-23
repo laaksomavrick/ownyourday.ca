@@ -14,6 +14,10 @@ Rails.application.routes.draw do
   resources :task_position, only: [:update]
   resources :goal_position, only: [:update]
 
+  scope 'api' do
+    get 'health_check', to: 'health_check#index'
+  end
+
   root to: redirect('/tasks')
   get '*path' => redirect('/tasks')
 end
