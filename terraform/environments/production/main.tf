@@ -76,3 +76,9 @@ module "alarms" {
   error_event_email = var.error_event_email
   log_group_name    = module.app-server.log_group_name
 }
+
+module "metrics" {
+  source = "../../modules/metrics"
+
+  app_name = var.app_name
+}
