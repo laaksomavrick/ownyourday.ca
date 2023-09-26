@@ -1,40 +1,39 @@
-<div class="flex items-center content-center h-full max-w-lg m-auto">
+<div class="flex items-center content-center h-full m-auto w-full max-w-sm">
   <div class="w-full p-4 m-auto flex flex-col items-center">
     <p class="align-center mb-6 font-semibold tracking-wide text-4xl">
-      <%= t("users.registrations.create.header") %>
+      <%= image_tag('logo192.png', class: 'max-w-[48px]') %>
+    </p>
+    <p class="align-center mb-6 font-semibold tracking-wide text-4xl">
+      <%= t("ownyourday") %>
     </p>
 
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "w-full space-y-4"}) do |f| %>
       <div class="w-full">
-        <%= f.label :email, class: label_class %><br />
-        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: text_field_class %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", class:
+          text_field_class, placeholder: t('global.email_address') %>
         <%= render 'layouts/forms/input_error', model: resource, field: :email %>
       </div>
 
       <div class="w-full">
-        <%= f.label :password, class: label_class %> <% if @minimum_password_length %>
-        <em>(<%= @minimum_password_length %> characters minimum)</em>
-        <% end %><br />
-        <%= f.password_field :password, autocomplete: "new-password", class: text_field_class %>
+        <%= f.password_field :password, autocomplete: "new-password", class:
+          text_field_class, placeholder: t('global.password') %>
         <%= render 'layouts/forms/input_error', model: resource, field: :password %>
       </div>
 
       <div class="w-full">
-        <%= f.label :password_confirmation, class: label_class %><br />
-        <%= f.password_field :password_confirmation, autocomplete: "new-password", class: text_field_class %>
+        <%= f.password_field :password_confirmation, autocomplete: "new-password", class:
+          text_field_class, placeholder: t('global.password_confirmation') %>
         <%= render 'layouts/forms/input_error', model: resource, field: :password_confirmation %>
       </div>
 
       <%= f.hidden_field(:time_zone, value: nil) %>
 
-      <div class="actions"><%= f.submit t('users.registrations.create.header'), class: "bg-#{brand_color}-500
-      hover:bg-#{brand_color}-700 text-white font-bold py-2 px-4 rounded
-      w-full" %></div>
+      <div class="actions"><%= f.submit t('users.registrations.create.header'), class: "bg-indigo-500 hover:bg-indigo-400 text-white font-bold py-2 px-4 rounded w-full shadow hover:shadow-md cursor-pointer" %></div>
     <% end %>
   </div>
 </div>
 
-<%= render "devise/shared/links" %>
+<%#= render "devise/shared/links" %>
 
 <script type="text/javascript">
   // TODO: refactor this into an actual js view
