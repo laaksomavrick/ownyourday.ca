@@ -1,21 +1,21 @@
-# https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Statistics-definitions.html
-# https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/search-expression-syntax.html
-# https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/CloudWatch-Dashboard-Body-Structure.html#CloudWatch-Dashboard-Properties-Metric-Widget-Object
-
 # TODO:
-# DB cpu, memory, disc
+# DB:
+  # cpu,
+  # memory
+  # disc
 
-# request latencies
-# 2xx, 4xx, 5xx rates
-# GET, POST, ... counts
-# Payload size (data transfer over time)?
-# Uptime
+# ALB:
+  # GET, POST, ... counts
+  # Payload size (data transfer over time)?
+  # Uptime (health check success)
 
-# Number of Successful deployments
-# Time to deploy
+# Operations
+  # Number of Successful deployments
+  # Avg time to deploy
 
 locals {
   five_minutes = 300
+  one_hour = 3600
   one_day      = 86400
   seven_days   = 604800
 }
@@ -83,7 +83,7 @@ resource "aws_cloudwatch_dashboard" "main" {
         height = 6
         properties = {
           metrics = [
-            [ "AWS/ApplicationELB", "RequestCountPerTarget", "TargetGroup", "targetgroup/ownyourday-lb-target-group/d980f1d5be1a8460", { visible : false } ],
+            [ "AWS/ApplicationELB", "RequestCountPerTarget", "TargetGroup", "targetgroup/ownyourday-lb-target-group/d980f1d5be1a8460", { "visible": false } ],
             [ ".", "RequestCount", ".", ".", "LoadBalancer", "app/ownyourday-app-load-balancer/bae0e3e1c8bd45fb" ]
           ],
           stat = "Sum"
@@ -92,6 +92,45 @@ resource "aws_cloudwatch_dashboard" "main" {
           region = data.aws_region.current.name
           view = "timeSeries"
           title   = "Request frequency"
+        }
+      },
+      {
+        type = "metric"
+        x = 6
+        y = 6
+        width = 6
+        height = 6
+        properties = {
+          metrics = [
+            [ "AWS/ApplicationELB", "HTTPCode_Target_2XX_Count", "TargetGroup", "targetgroup/ownyourday-lb-target-group/d980f1d5be1a8460", "LoadBalancer", "app/ownyourday-app-load-balancer/bae0e3e1c8bd45fb" ],
+            [ ".", "HTTPCode_Target_4XX_Count", ".", ".", ".", "." ],
+            [ ".", "HTTPCode_Target_5XX_Count", ".", ".", ".", "." ]
+          ],
+          stat = "Sum"
+          period = local.seven_days
+          stacked = false
+          region = data.aws_region.current.name
+          view = "singleValue"
+          title   = "Response status codes"
+        }
+      },
+      {
+        type = "metric"
+        x = 12
+        y = 0
+        width = 6
+        height = 6
+        properties = {
+          metrics = [
+            [ "AWS/ApplicationELB", "TargetResponseTime", "TargetGroup", "targetgroup/ownyourday-lb-target-group/d980f1d5be1a8460", "LoadBalancer", "app/ownyourday-app-load-balancer/bae0e3e1c8bd45fb", { stat : "p50" } ],
+            [ "..." ]
+          ],
+          stat = "p99"
+          period = local.one_hour
+          stacked = true
+          region = data.aws_region.current.name
+          view = "timeSeries"
+          title   = "Request latency"
         }
       }
     ]
