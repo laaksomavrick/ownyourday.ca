@@ -1,11 +1,11 @@
-export default () => {
+const addReloadToTasksOnActive = () => {
   const taskListPage = document.getElementById('task-list');
 
   if (!taskListPage) {
     return;
   }
 
-  document.addEventListener('visibilitychange', function () {
+  document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
       return;
     }
@@ -13,3 +13,6 @@ export default () => {
     location.reload();
   });
 };
+
+export default (() =>
+  document.addEventListener('turbo:load', addReloadToTasksOnActive))();
