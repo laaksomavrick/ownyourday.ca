@@ -76,3 +76,13 @@ module "alarms" {
   error_event_email = var.error_event_email
   log_group_name    = module.app-server.log_group_name
 }
+
+module "metrics" {
+  source = "../../modules/metrics"
+
+  app_name                 = var.app_name
+  cluster_name             = module.app-server.cluster_name
+  target_group_arn_suffix  = module.load-balancer.target_group_arn_suffix
+  load_balancer_arn_suffix = module.load-balancer.load_balancer_arn_suffix
+  db_identifier            = module.database.db_identifier
+}
