@@ -25,6 +25,11 @@ module ApplicationHelper
   end
   # rubocop:enable Layout/LineLength
 
+  def date_is_user_today?(datetime: DateTime.current.utc)
+    user_date = datetime.in_time_zone(current_user.time_zone)
+    user_date.today?
+  end
+
   def human_date_string(datetime: DateTime.current.utc)
     datetime.strftime('%b %d, %Y')
   end
