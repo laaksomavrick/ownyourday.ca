@@ -20,6 +20,10 @@ terraform/
 !.env.example
 config/master.key
 docker-compose.yml
+docker-compose.local.yml
 yarn-error.log
 yarn-debug.log*
 .yarn-integrity
+Dockerfile
+README.md
+flake.*

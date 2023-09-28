@@ -4,7 +4,7 @@ up:
 
 .PHONY: down
 down:
-	@docker-compose -f docker-compose.local.yml down -d
+	@docker-compose -f docker-compose.local.yml down
 
 .PHONY: serve
 serve:
