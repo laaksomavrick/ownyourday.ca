@@ -11,9 +11,14 @@
         class="text-3xl font-semibold cursor-pointer select-none">
         <%= human_date_string(datetime: @date) %>
       </button>
-      <%= link_to new_adhoc_task_path(task_list_id: @task_list.id), class: 'ml-auto' do %>
-        <button class="<%= primary_button %>"><%= t('tasks.adhoc.new') %></button>
-      <% end %>
+      <div class="ml-auto flex space-x-2 w-auto items-center">
+        <%= link_to tasks_path, class: neutral_button("w-[64.3px] h-[40px]"), 'aria-label': 'Today' do %>
+          <%= heroicon "home",  variant: "solid", options: { class: "w-full h-full"}  %>
+        <% end %>
+        <%= link_to new_adhoc_task_path(task_list_id: @task_list.id), class: '' do %>
+          <button class="<%= primary_button %>"><%= t('tasks.adhoc.new') %></button>
+        <% end %>
+      </div>
     </div>
     <div id="date_select_picker" data-date-select-picker-target="dateSelectPicker" class="hidden">
       <%= form_with path: tasks_path, scope: :task_list do |f| %>
