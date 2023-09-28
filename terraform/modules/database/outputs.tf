@@ -5,3 +5,7 @@ output "db_host" {
 output "db_arn" {
   value = aws_db_instance.database.arn
 }
+
+output "db_identifier" {
+  value = aws_db_instance.database.identifier
+}

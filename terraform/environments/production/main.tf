@@ -80,5 +80,9 @@ module "alarms" {
 module "metrics" {
   source = "../../modules/metrics"
 
-  app_name = var.app_name
+  app_name                 = var.app_name
+  cluster_name             = module.app-server.cluster_name
+  target_group_arn_suffix  = module.load-balancer.target_group_arn_suffix
+  load_balancer_arn_suffix = module.load-balancer.load_balancer_arn_suffix
+  db_identifier            = module.database.db_identifier
 }

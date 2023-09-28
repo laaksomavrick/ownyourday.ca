@@ -1,13 +1,3 @@
-# TODO:
-# DB:
-# cpu,
-# memory
-# disc
-
-# Operations
-# Number of Successful deployments
-# Avg time to deploy
-
 locals {
   five_minutes = 300
   one_hour     = 3600
@@ -30,9 +20,9 @@ resource "aws_cloudwatch_dashboard" "main" {
         height = local.height
         properties = {
           metrics = [
-            ["AWS/ECS", "CPUUtilization", "ClusterName", "ownyourday-cluster", { stat : "Minimum", region : data.aws_region.current.name }],
-            ["AWS/ECS", "CPUUtilization", "ClusterName", "ownyourday-cluster", { stat : "Maximum", region : data.aws_region.current.name }],
-            ["AWS/ECS", "CPUUtilization", "ClusterName", "ownyourday-cluster", { stat : "Average", region : data.aws_region.current.name }]
+            ["AWS/ECS", "CPUUtilization", "ClusterName", var.cluster_name, { stat : "Minimum", region : data.aws_region.current.name }],
+            ["AWS/ECS", "CPUUtilization", "ClusterName", var.cluster_name, { stat : "Maximum", region : data.aws_region.current.name }],
+            ["AWS/ECS", "CPUUtilization", "ClusterName", var.cluster_name, { stat : "Average", region : data.aws_region.current.name }]
           ]
           period  = local.five_minutes
           stacked = false
@@ -55,9 +45,9 @@ resource "aws_cloudwatch_dashboard" "main" {
 
         properties = {
           metrics = [
-            ["AWS/ECS", "MemoryUtilization", "ClusterName", "ownyourday-cluster", { stat : "Minimum", region : data.aws_region.current.name }],
-            ["AWS/ECS", "MemoryUtilization", "ClusterName", "ownyourday-cluster", { stat : "Maximum", region : data.aws_region.current.name }],
-            ["AWS/ECS", "MemoryUtilization", "ClusterName", "ownyourday-cluster", { stat : "Average", region : data.aws_region.current.name }]
+            ["AWS/ECS", "MemoryUtilization", "ClusterName", var.cluster_name, { stat : "Minimum", region : data.aws_region.current.name }],
+            ["AWS/ECS", "MemoryUtilization", "ClusterName", var.cluster_name, { stat : "Maximum", region : data.aws_region.current.name }],
+            ["AWS/ECS", "MemoryUtilization", "ClusterName", var.cluster_name, { stat : "Average", region : data.aws_region.current.name }]
           ]
           period  = local.five_minutes
           stacked = false
@@ -79,8 +69,7 @@ resource "aws_cloudwatch_dashboard" "main" {
         height = local.height
         properties = {
           metrics = [
-            ["AWS/ApplicationELB", "RequestCountPerTarget", "TargetGroup", "targetgroup/ownyourday-lb-target-group/d980f1d5be1a8460", { "visible" : false }],
-            [".", "RequestCount", ".", ".", "LoadBalancer", "app/ownyourday-app-load-balancer/bae0e3e1c8bd45fb"]
+            ["AWS/ApplicationELB", "RequestCountPerTarget", "TargetGroup", var.target_group_arn_suffix],
           ],
           stat    = "Sum"
           period  = local.five_minutes
@@ -98,7 +87,7 @@ resource "aws_cloudwatch_dashboard" "main" {
         height = local.height
         properties = {
           metrics = [
-            ["AWS/ApplicationELB", "HTTPCode_Target_2XX_Count", "TargetGroup", "targetgroup/ownyourday-lb-target-group/d980f1d5be1a8460", "LoadBalancer", "app/ownyourday-app-load-balancer/bae0e3e1c8bd45fb"],
+            ["AWS/ApplicationELB", "HTTPCode_Target_2XX_Count", "TargetGroup", var.target_group_arn_suffix, "LoadBalancer", var.load_balancer_arn_suffix],
             [".", "HTTPCode_Target_4XX_Count", ".", ".", ".", "."],
             [".", "HTTPCode_Target_5XX_Count", ".", ".", ".", "."]
           ],
@@ -118,7 +107,7 @@ resource "aws_cloudwatch_dashboard" "main" {
         height = local.height
         properties = {
           metrics = [
-            ["AWS/ApplicationELB", "TargetResponseTime", "TargetGroup", "targetgroup/ownyourday-lb-target-group/d980f1d5be1a8460", "LoadBalancer", "app/ownyourday-app-load-balancer/bae0e3e1c8bd45fb", { stat : "p50" }],
+            ["AWS/ApplicationELB", "TargetResponseTime", "TargetGroup", var.target_group_arn_suffix, "LoadBalancer", var.load_balancer_arn_suffix, { stat : "p50" }],
             ["..."]
           ],
           stat    = "p99"
@@ -139,17 +128,17 @@ resource "aws_cloudwatch_dashboard" "main" {
           metrics = [
             [
               {
-                "expression" : "m1 * 100", "label" : "Uptime %", "id" : "e1",
-                "period" : 300
+                expression : "m1 * 100", label : "Uptime %", id : "e1",
+                period : 300
               }
             ],
             [
               "AWS/ApplicationELB", "HealthyHostCount", "TargetGroup",
-              "targetgroup/ownyourday-lb-target-group/d980f1d5be1a8460",
+              var.target_group_arn_suffix,
               "LoadBalancer",
-              "app/ownyourday-app-load-balancer/bae0e3e1c8bd45fb", {
-                "id" : "m1", "label" : "HealthyHostCount", "stat" : "Average",
-                "visible" : false
+              var.load_balancer_arn_suffix, {
+                id : "m1", label : "HealthyHostCount", stat : "Average",
+                visible : false
               }
             ]
           ],
@@ -169,9 +158,9 @@ resource "aws_cloudwatch_dashboard" "main" {
         height = local.height
         properties = {
           metrics = [
-            ["AWS/RDS", "CPUUtilization", "DBInstanceIdentifier", "terraform-20230809012043187400000006"],
-            ["...", { "stat" : "Minimum" }],
-            ["...", { "stat" : "Maximum" }]
+            ["AWS/RDS", "CPUUtilization", "DBInstanceIdentifier", var.db_identifier],
+            ["...", { stat : "Minimum" }],
+            ["...", { stat : "Maximum" }]
           ],
           stat    = "Average"
           period  = local.one_hour
@@ -189,7 +178,7 @@ resource "aws_cloudwatch_dashboard" "main" {
         height = local.height
         properties = {
           metrics = [
-            ["AWS/RDS", "FreeStorageSpace", "DBInstanceIdentifier", "terraform-20230809012043187400000006"]
+            ["AWS/RDS", "FreeStorageSpace", "DBInstanceIdentifier", var.db_identifier]
           ],
           stat    = "Maximum"
           period  = local.one_hour
