@@ -9,7 +9,8 @@ on:
     branches: [ main ]
     paths:
       - '**.rb'
-      - '**.yml'
+      - 'db/**.yml'
+      - 'config/**.yml'
       - 'Dockerfile'
 
 
