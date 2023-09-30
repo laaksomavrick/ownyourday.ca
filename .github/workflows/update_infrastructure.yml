@@ -8,8 +8,8 @@ on:
   pull_request:
     branches: [ main ]
     paths:
-      - '!**.{rb,yml}'
-      - '!Dockerfile'
+      - '**.tf'
+      - '!**.rb'
 
 
 env:
