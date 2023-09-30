@@ -9,6 +9,14 @@ on:
     branches: [ main ]
     paths:
       - 'terraform/**'
+      - '!app/**'
+      - '!bin/**'
+      - '!config/**'
+      - '!db/**'
+      - '!lib/**'
+      - '!public/**'
+      - '!Dockerfile'
+      - '!Gemfile.lock'
 
 
 env:
