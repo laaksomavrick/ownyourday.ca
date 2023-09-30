@@ -7,13 +7,27 @@ on:
 env:
   DOCKER_REGISTRY_URL: ${{ vars.AWS_ACCOUNT_ID }}.dkr.ecr.${{ vars.AWS_REGION }}.amazonaws.com
   DOCKER_REPO_URL: ${{ vars.AWS_ACCOUNT_ID }}.dkr.ecr.${{ vars.AWS_REGION }}.amazonaws.com/${{ vars.ECR_REPO_NAME }}
-  DOCKER_IMAGE_TAG: ${{ github.sha }}
-
-# TODO: only build image if something has changed requiring a new image build
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    outputs:
+      version: ${{ steps.filter.outputs.version }}
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v2
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            version:
+              - 'version'
+
   build-and-push-docker-image:
-    name: Build and push docker image
+    needs: [changes]
+    if: ${{ needs.changes.outputs.version == 'true' }}
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -22,6 +36,9 @@ jobs:
     steps:
       - name: Checkout main
         uses: actions/checkout@v2
+
+      - name: Set DOCKER_IMAGE_TAG environment variable
+        run: echo "DOCKER_IMAGE_TAG=$(cat version)" >> $GITHUB_ENV
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -49,8 +66,8 @@ jobs:
             "RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }}"
 
   update-infrastructure:
-    name: Apply infrastructure updates
-    needs: [build-and-push-docker-image]
+    needs: [changes, build-and-push-docker-image]
+    if: ${{ always() }}
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -61,6 +78,9 @@ jobs:
     steps:
       - name: Checkout main
         uses: actions/checkout@v2
+
+      - name: Set DOCKER_IMAGE_TAG environment variable
+        run: echo "DOCKER_IMAGE_TAG=$(cat version)" >> $GITHUB_ENV
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
