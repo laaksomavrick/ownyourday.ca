@@ -2,7 +2,7 @@ name: On pull request to main
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [ foo ]
 
 env:
   IS_CI: true
