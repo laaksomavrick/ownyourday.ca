@@ -10,7 +10,6 @@ on:
     paths:
       - '**.tf'
       - '!**.{rb,yml}'
-      - '!Dockerfile'
 
 
 env:
