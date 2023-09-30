@@ -8,15 +8,9 @@ on:
   pull_request:
     branches: [ main ]
     paths:
-      - 'terraform/**'
-      - '!app/**'
-      - '!bin/**'
-      - '!config/**'
-      - '!db/**'
-      - '!lib/**'
-      - '!public/**'
+      - '**.tf'
+      - '!**.{rb,yml}'
       - '!Dockerfile'
-      - '!Gemfile.lock'
 
 
 env:
