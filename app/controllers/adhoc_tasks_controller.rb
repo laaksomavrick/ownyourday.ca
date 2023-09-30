@@ -3,6 +3,7 @@
 class AdhocTasksController < ApplicationController
   def new
     @adhoc_task = authorize Tasks::AdhocTask.new
+
   end
 
   def create
