@@ -16,6 +16,8 @@ on:
       - 'public/**'
       - 'Dockerfile'
       - 'Gemfile.lock'
+      - '!terraform/**'
+
 
 env:
   DOCKER_REGISTRY_URL: ${{ vars.AWS_ACCOUNT_ID }}.dkr.ecr.${{ vars.AWS_REGION }}.amazonaws.com
