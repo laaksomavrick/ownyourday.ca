@@ -96,9 +96,10 @@ jobs:
       - name: Setup assets
         run: nix --store ${{ env.NIX_STORE_PATH }} develop . --command bundler exec rails assets:clean assets:precompile
 
-      - uses: gitleaks/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+# Commented while repo is private
+#      - uses: gitleaks/gitleaks-action@v2
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Check Ruby formatting
         run: nix --store ${{ env.NIX_STORE_PATH }} develop . --command bundler exec rubocop --fail-level=warning

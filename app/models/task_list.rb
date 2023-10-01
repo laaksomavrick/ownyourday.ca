@@ -14,6 +14,15 @@ class TaskList < ApplicationRecord
     includes(goal_tasks: :goal).includes(:adhoc_tasks)
   }
 
+  def tasks?
+    tasks.any?
+  end
+
+  def completed?
+    completed = tasks.where(completed: true).count
+    tasks.count == completed
+  end
+
   private
 
   def validate_date

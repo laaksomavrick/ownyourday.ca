@@ -10,6 +10,14 @@ class TaskListPresenter
     @task_list.id
   end
 
+  def tasks?
+    @task_list.tasks?
+  end
+
+  def completed?
+    @task_list.completed?
+  end
+
   def tasks
     task_vms = @task_list.tasks.map do |task|
       TaskPresenter.new(user: @user, task:).call

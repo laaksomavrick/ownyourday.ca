@@ -21,6 +21,37 @@ RSpec.describe 'Tasks' do
         sign_in user
       end
 
+      describe 'prompts' do
+        it 'shows no goals message when user has no goals' do
+          user.goals = []
+          user.save
+
+          visit tasks_path
+
+          expect(page).to have_content(I18n.t('goals.no_goals'))
+        end
+
+        it 'shows no tasks message when user has no tasks' do
+          not_today = DateTime.current.day == 7 ? 1 : DateTime.current.day + 1
+          goal = create(:days_of_week_goal, metadata: { 'days_of_week' => [not_today] })
+          user.goals = [goal]
+          user.save
+
+          visit tasks_path
+
+          expect(page).to have_content(I18n.t('tasks.no_tasks'))
+        end
+
+        it 'shows day complete message when all tasks completed' do
+          GenerateTodaysTaskListAction.new(user:).call
+          user.task_lists.where(date: user.beginning_of_day).first.tasks.update(completed: true)
+
+          visit tasks_path
+
+          expect(page).to have_content(I18n.t('tasks.all_completed'))
+        end
+      end
+
       describe 'task completion' do
         it 'can complete a task' do
           visit tasks_path

@@ -1,20 +1,28 @@
-<%= turbo_frame_tag "task-list-turbo-frame" do %>
-  <div class="space-y-4 pb-4" data-controller="task-list">
-    <% @task_list.tasks.each do |vm| %>
-      <div
-        id="task-list-item-<%= vm.task.id %>"
-        data-task-id="<%= vm.task.id %>"
-      >
-        <div class="hidden" >
-          <% # Reload the task-list-turbo-frame after sorting %>
-          <%= form_with model: vm.task, url: task_position_path(vm.task), method: :patch, scope: :task_position, id: "task-#{vm.task.id}-position-form" do |f| %>
-            <%= f.text_field :type %>
-            <%= f.text_field :position %>
-            <%= f.submit nil, { hidden: true, data: { task_list_target: "submit" }, id: "task-#{vm.task.id}-position-form-submit" } %>
-          <% end %>
+<% if @task_list.tasks? %>
+  <%= turbo_frame_tag "task-list-turbo-frame" do %>
+    <div class="space-y-4 pb-4" data-controller="task-list">
+      <% @task_list.tasks.each do |vm| %>
+        <div
+          id="task-list-item-<%= vm.task.id %>"
+          data-task-id="<%= vm.task.id %>"
+        >
+          <div class="hidden" >
+            <% # Reload the task-list-turbo-frame after sorting %>
+            <%= form_with model: vm.task, url: task_position_path(vm.task), method: :patch, scope: :task_position, id: "task-#{vm.task.id}-position-form" do |f| %>
+              <%= f.text_field :type %>
+              <%= f.text_field :position %>
+              <%= f.submit nil, { hidden: true, data: { task_list_target: "submit" }, id: "task-#{vm.task.id}-position-form-submit" } %>
+            <% end %>
+          </div>
+          <%= render 'tasks/task', vm: vm %>
         </div>
-        <%= render 'tasks/task', vm: vm %>
-      </div>
-    <% end %>
-  </div>
+      <% end %>
+      <% if @task_list.completed? %>
+        <%= render 'tasks_completed_prompt' %>
+      <% end %>
+    </div>
+  <% end %>
+<% else %>
+  <%= render 'no_tasks_prompt' %>
 <% end %>
+

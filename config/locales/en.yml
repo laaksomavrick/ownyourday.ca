@@ -31,6 +31,8 @@ en:
   tasks:
     navigation: "Tasks"
     streak: "Streak"
+    no_tasks: 'No tasks scheduled for today.'
+    all_completed: 'Day completed.'
     date:
       label: 'Select a date'
       button: "Select"
@@ -59,6 +61,8 @@ en:
     navigation: "Goals"
     header: "My Goals"
     new_button: "New"
+    no_goals: 'You currently have no goals.'
+    create_a_goal: 'Click %{link} to create one.'
   goal:
     header: "Goal Details"
     schedule_label: "Schedule"
