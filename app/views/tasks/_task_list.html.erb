@@ -1,4 +1,4 @@
-<% if current_user.tasks? %>
+<% if @task_list.tasks? %>
   <%= turbo_frame_tag "task-list-turbo-frame" do %>
     <div class="space-y-4 pb-4" data-controller="task-list">
       <% @task_list.tasks.each do |vm| %>
@@ -16,6 +16,9 @@
           </div>
           <%= render 'tasks/task', vm: vm %>
         </div>
+      <% end %>
+      <% if @task_list.completed? %>
+        <%= render 'tasks_completed_prompt' %>
       <% end %>
     </div>
   <% end %>

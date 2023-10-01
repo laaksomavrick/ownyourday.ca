@@ -25,10 +25,6 @@ class User < ApplicationRecord
     goals.any?
   end
 
-  def tasks?
-    task_lists.where(date: beginning_of_day).first.try(:tasks).try(:any?)
-  end
-
   def self.from_omniauth(auth)
     # TODO: if we ever want multiple oauth providers, this logic will have to change to support same email
     # across multiple providers
