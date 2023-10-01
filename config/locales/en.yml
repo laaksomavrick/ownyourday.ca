@@ -31,6 +31,7 @@ en:
   tasks:
     navigation: "Tasks"
     streak: "Streak"
+    no_tasks: 'No tasks scheduled for today.'
     date:
       label: 'Select a date'
       button: "Select"

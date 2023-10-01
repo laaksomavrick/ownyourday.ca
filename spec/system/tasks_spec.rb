@@ -30,6 +30,17 @@ RSpec.describe 'Tasks' do
         expect(page).to have_content(I18n.t('goals.no_goals'))
       end
 
+      it 'shows no tasks message when user has no tasks' do
+        not_today = DateTime.current.day == 7 ? 1 : DateTime.current.day + 1
+        goal = create(:days_of_week_goal, metadata: { 'days_of_week' => [not_today] })
+        user.goals = [goal]
+        user.save
+
+        visit tasks_path
+
+        expect(page).to have_content(I18n.t('tasks.no_tasks'))
+      end
+
       describe 'task completion' do
         it 'can complete a task' do
           visit tasks_path

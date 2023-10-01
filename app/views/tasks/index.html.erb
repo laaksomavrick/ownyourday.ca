@@ -38,7 +38,7 @@
       <% end %>
       </div>
 
-  <% if current_user.has_goals? %>
+  <% if current_user.goals? %>
     <%= render 'tasks/task_list' %>
   <% else %>
     <%= render 'create_goal_prompt' %>
