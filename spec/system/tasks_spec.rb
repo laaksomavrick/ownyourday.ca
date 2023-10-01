@@ -21,6 +21,15 @@ RSpec.describe 'Tasks' do
         sign_in user
       end
 
+      it 'shows no goals message when user has no goals' do
+        user.goals = []
+        user.save
+
+        visit tasks_path
+
+        expect(page).to have_content(I18n.t('goals.no_goals'))
+      end
+
       describe 'task completion' do
         it 'can complete a task' do
           visit tasks_path

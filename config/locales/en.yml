@@ -59,6 +59,8 @@ en:
     navigation: "Goals"
     header: "My Goals"
     new_button: "New"
+    no_goals: 'You currently have no goals.'
+    create_a_goal: 'Click %{link} to create one.'
   goal:
     header: "Goal Details"
     schedule_label: "Schedule"

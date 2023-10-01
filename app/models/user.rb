@@ -21,6 +21,10 @@ class User < ApplicationRecord
     user_today.beginning_of_day.utc
   end
 
+  def has_goals?
+    goals.any?
+  end
+
   def self.from_omniauth(auth)
     # TODO: if we ever want multiple oauth providers, this logic will have to change to support same email
     # across multiple providers
