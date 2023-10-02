@@ -90,6 +90,7 @@ resource "aws_autoscaling_group" "asg" {
   vpc_zone_identifier = var.app_server_subnet_ids
   max_size            = 2
   min_size            = 0
+  desired_capacity = 1
 
   health_check_grace_period = 300
   health_check_type         = "EC2"
