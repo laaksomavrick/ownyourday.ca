@@ -108,7 +108,7 @@ resource "aws_autoscaling_group" "asg" {
 resource "aws_launch_template" "instance" {
   name_prefix            = "${var.app_name}-lt"
   image_id               = data.aws_ami.ecs.id
-  instance_type          = "t4g.micro"
+  instance_type          = "t4g.micro" # TODO smaller instance...?
   user_data              = base64encode(templatefile("${path.module}/user_data.sh", { log_group = aws_cloudwatch_log_group.instance.name, ecs_cluster = "${var.app_name}-cluster" }))
   vpc_security_group_ids = var.app_server_security_group_ids
   key_name               = aws_key_pair.deployer.key_name
@@ -116,6 +116,8 @@ resource "aws_launch_template" "instance" {
   iam_instance_profile {
     arn = aws_iam_instance_profile.instance.arn
   }
+
+  # TODO: remove ebs from AMI
 
   lifecycle {
     create_before_destroy = true
