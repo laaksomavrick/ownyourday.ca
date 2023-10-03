@@ -3,7 +3,7 @@ data "aws_ami" "ecs" {
 
   filter {
     name   = "name"
-    values = ["al2023-ami-ecs-hvm-*-arm64"]
+    values = ["al2023-ami-ecs-hvm-*-x86_64"]
   }
 
   owners = ["amazon"]
@@ -90,6 +90,7 @@ resource "aws_autoscaling_group" "asg" {
   vpc_zone_identifier = var.app_server_subnet_ids
   max_size            = 2
   min_size            = 0
+  desired_capacity    = 1
 
   health_check_grace_period = 300
   health_check_type         = "EC2"
@@ -107,7 +108,7 @@ resource "aws_autoscaling_group" "asg" {
 resource "aws_launch_template" "instance" {
   name_prefix            = "${var.app_name}-lt"
   image_id               = data.aws_ami.ecs.id
-  instance_type          = "t4g.micro"
+  instance_type          = "t2.micro"
   user_data              = base64encode(templatefile("${path.module}/user_data.sh", { log_group = aws_cloudwatch_log_group.instance.name, ecs_cluster = "${var.app_name}-cluster" }))
   vpc_security_group_ids = var.app_server_security_group_ids
   key_name               = aws_key_pair.deployer.key_name
