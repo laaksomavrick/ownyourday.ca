@@ -16,8 +16,8 @@ resource "aws_ecs_capacity_provider" "app_capacity_provider" {
     managed_termination_protection = "DISABLED"
 
     managed_scaling {
-      status                    = "ENABLED"
-      target_capacity           = 100
+      status          = "ENABLED"
+      target_capacity = 100
     }
   }
 }
@@ -77,8 +77,8 @@ resource "aws_ecs_task_definition" "service" {
         },
       ],
       name : var.app_name,
-      cpu : 1024
-      memory : 512,
+      memory : 1024,
+      memoryReservation : 512,
       // TODO: these are being passed in plaintext - refactor to use docker secrets or parameter store
       environment : [
         {
