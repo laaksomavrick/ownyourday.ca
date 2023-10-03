@@ -14,6 +14,11 @@ resource "aws_ecs_capacity_provider" "app_capacity_provider" {
   auto_scaling_group_provider {
     auto_scaling_group_arn         = aws_autoscaling_group.asg.arn
     managed_termination_protection = "DISABLED"
+
+    managed_scaling {
+      status                    = "DISABLED"
+      target_capacity           = 100
+    }
   }
 }
 
@@ -72,8 +77,8 @@ resource "aws_ecs_task_definition" "service" {
         },
       ],
       name : var.app_name,
-      cpu : 1000
-      memory : 400, # Not 512 since host uses some memory
+      cpu : 1024
+      memory : 1024,
       // TODO: these are being passed in plaintext - refactor to use docker secrets or parameter store
       environment : [
         {
