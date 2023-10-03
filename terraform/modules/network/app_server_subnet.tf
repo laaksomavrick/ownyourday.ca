@@ -3,7 +3,7 @@ resource "aws_subnet" "app_server_subnet" {
   cidr_block = local.app_server_cidr_block
 
   # Re-enable if needing to SSH into an EC2 instance
-  map_public_ip_on_launch = false
+  map_public_ip_on_launch = true # TODO should be false
 
   tags = {
     Name = "${var.app_name}-app_server_subnet-1"

@@ -1,7 +1,7 @@
 name: On merge to main
 
 on:
-  push:
+  pull_request:
     branches: [ main ]
 
 env:
@@ -60,7 +60,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          platforms: linux/arm64
+          platforms: linux/amd64
           tags: ${{ env.DOCKER_REPO_URL }}:${{ env.DOCKER_IMAGE_TAG }}
           push: true
           build-args: |
