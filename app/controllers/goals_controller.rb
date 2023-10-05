@@ -10,6 +10,9 @@ class GoalsController < ApplicationController
     @goal.position = Goals::Goal.where(user: current_user).count
     update_goal_action = UpdateGoalAction.new(@goal)
     @goal = update_goal_action.call(goal_params)
+
+    add_breadcrumb(I18n.t('goals.navigation'), goals_path)
+    add_breadcrumb(I18n.t('common.new'), new_goal_path)
   end
 
   def edit
@@ -17,6 +20,9 @@ class GoalsController < ApplicationController
     @goal = authorize Goals::Goal.find_by(id: goal_id)
     update_goal_action = UpdateGoalAction.new(@goal)
     @goal = update_goal_action.call(goal_params)
+
+    add_breadcrumb(I18n.t('goals.navigation'), goals_path)
+    add_breadcrumb(@goal.name, edit_goal_path(@goal))
   end
 
   def create

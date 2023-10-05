@@ -1,7 +1,5 @@
-<% header = t('milestones.new_header', goal_name: @goal.name) %>
-
 <div class="flex justify-between">
-  <%= render 'layouts/page_header', header: header %>
+  <%= render 'layouts/page_header', header: render(Breadcrumbs::BreadcrumbsComponent.new(breadcrumbs: @breadcrumbs)) %>
 </div>
 
 <div class="flex flex-col">
