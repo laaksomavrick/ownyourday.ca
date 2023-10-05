@@ -1,8 +1,7 @@
-<% header = "#{@goal.name} #{t('milestones.navigation')}" %>
 <% new_button_disabled = !@active_milestone.nil? %>
 <% new_button_class = new_button_disabled ? primary_button_disabled : primary_button %>
 
-<%= render 'layouts/page_header', header: header, class: "w-full" do %>
+<%= render 'layouts/page_header', header: render(Breadcrumbs::BreadcrumbsComponent.new(breadcrumbs: @breadcrumbs)), class: "w-full" do %>
   <%= button_to t('common.new'), new_goal_milestone_path(@goal), class: new_button_class, method: :get, disabled: new_button_disabled %>
 <% end %>
 

@@ -1,7 +1,8 @@
-<%= render 'layouts/page_header', header: t('goal.header') do %>
+<%= render 'layouts/page_header', header: render(Breadcrumbs::BreadcrumbsComponent.new(breadcrumbs: @breadcrumbs)) do %>
   <%= button_to goal_path(@goal), method: :delete, form: { data: { turbo_confirm: t('goal.destroy.confirmation', name: @goal.name) } }, class: destroy_button("ml-auto"), 'aria-label': 'Delete' do %>
     <%= heroicon "trash",  variant: "solid", options: { class: "w-5 h-5" }  %>
   <% end %>
 <% end %>
+
 
 <%= render 'goal_form', model: @goal, view_path: edit_goal_path(@goal.id), action_path: goal_path(@goal.id), show_milestones: true %>

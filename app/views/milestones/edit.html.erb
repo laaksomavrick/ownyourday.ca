@@ -1,4 +1,4 @@
-<%= render 'layouts/page_header', header: t('milestones.update_header', goal_name: @goal.name) do %>
+<%= render 'layouts/page_header', header: render(Breadcrumbs::BreadcrumbsComponent.new(breadcrumbs: @breadcrumbs)) do %>
   <%= button_to goal_milestone_path(@milestone), method: :delete, form: { data: { turbo_confirm: t('milestones.destroy.confirmation', name: @milestone.name) } }, class: destroy_button("ml-auto"), 'aria-label': 'Delete' do %>
     <%= heroicon "trash", variant: "solid", options: { class: "w-5 h-5" } %>
   <% end %>

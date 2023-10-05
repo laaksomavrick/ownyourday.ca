@@ -1,2 +1,2 @@
-<%= render 'layouts/page_header', header: t('goal.create.header') %>
+<%= render 'layouts/page_header', header: render(Breadcrumbs::BreadcrumbsComponent.new(breadcrumbs: @breadcrumbs)) %>
 <%= render 'goal_form', model: @goal, view_path: new_goal_path, action_path: goals_path %>

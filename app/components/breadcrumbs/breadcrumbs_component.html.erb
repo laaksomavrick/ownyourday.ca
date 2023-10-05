@@ -1,0 +1,6 @@
+<% @breadcrumbs.each do |breadcrumb| %>
+  <%= link_to breadcrumb.name, breadcrumb.path %>
+  <% unless breadcrumb == @breadcrumbs.last %>
+    <span>/</span>
+  <% end %>
+<% end %>

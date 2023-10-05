@@ -5,6 +5,8 @@ class ApplicationController < ActionController::Base
 
   before_action :authenticate_user!
 
+  helper_method :breadcrumbs
+
   # Here so Rubymine stops complaining
   def current_user # rubocop:disable Lint/UselessMethodDefinition
     super
@@ -12,6 +14,14 @@ class ApplicationController < ActionController::Base
 
   def authenticate_user! # rubocop:disable Lint/UselessMethodDefinition
     super
+  end
+
+  def breadcrumbs
+    @breadcrumbs ||= []
+  end
+
+  def add_breadcrumb(name, path = nil)
+    breadcrumbs << Breadcrumb.new(name, path)
   end
 
   private

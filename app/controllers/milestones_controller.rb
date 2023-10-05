@@ -8,12 +8,18 @@ class MilestonesController < ApplicationController
     @goal = authorize Goals::Goal.find_by(id: goal_id)
     @active_milestone = @goal.active_milestone
     @inactive_milestones = @goal.inactive_milestones
+    add_breadcrumb(@goal.name, edit_goal_path(@goal))
+    add_breadcrumb(I18n.t('milestones.navigation'), goal_milestones_path(@goal))
   end
 
   def new
     goal_id = params[:goal_id]
     @goal = authorize Goals::Goal.find_by(id: goal_id)
     @milestone = Milestone.new(goal: @goal, completed: false)
+
+    add_breadcrumb(@goal.name, edit_goal_path(@goal))
+    add_breadcrumb(I18n.t('milestones.navigation'), goal_milestones_path(@goal))
+    add_breadcrumb(I18n.t('common.new'), new_goal_milestone_path(@goal))
   end
 
   def edit
@@ -27,6 +33,10 @@ class MilestonesController < ApplicationController
       redirect_to goal_milestones_path(@goal)
       return
     end
+
+    add_breadcrumb(@goal.name, edit_goal_path(@goal))
+    add_breadcrumb(I18n.t('milestones.navigation'), goal_milestones_path(@goal))
+    add_breadcrumb(@milestone.name, edit_goal_milestone_path(@goal, @milestone))
 
     return unless @milestone.try(:id) != milestone_id.to_i
 
