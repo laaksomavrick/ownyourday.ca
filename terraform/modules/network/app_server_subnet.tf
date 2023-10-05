@@ -3,7 +3,7 @@ resource "aws_subnet" "app_server_subnet" {
   cidr_block = local.app_server_cidr_block
 
   # Re-enable if needing to SSH into an EC2 instance
-  map_public_ip_on_launch = false
+  map_public_ip_on_launch = true
 
   tags = {
     Name = "${var.app_name}-app_server_subnet-1"
@@ -36,6 +36,15 @@ resource "aws_security_group" "app_server_security_group" {
     to_port     = 65535
     protocol    = "tcp"
     cidr_blocks = aws_subnet.load_balancer_subnet.*.cidr_block
+  }
+
+  # TODO: this allows image pulls...?
+  ingress {
+    description = ""
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = [local.everything_cidr_block]
   }
 
   ingress {
