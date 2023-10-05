@@ -32,7 +32,8 @@ RSpec.describe 'Goals' do
     it 'shows a goal' do
       sign_in user
       visit edit_goal_path(goal.id)
-      expect(page).to have_content(I18n.t('goal.header'))
+      expect(page).to have_content(I18n.t('goals.navigation'))
+      expect(page).to have_content(goal.name)
     end
 
     context 'when goal has an active milestone' do
