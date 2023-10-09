@@ -55,6 +55,16 @@ resource "aws_security_group" "app_server_security_group" {
     cidr_blocks = [local.everything_cidr_block]
   }
 
+  egress {
+    description = ""
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "tcp"
+    cidr_blocks = [local.everything_cidr_block]
+  }
+
+
+
   ingress {
     description = ""
     from_port   = 22
