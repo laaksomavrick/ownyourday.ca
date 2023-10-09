@@ -87,7 +87,7 @@ resource "aws_iam_instance_profile" "instance" {
 resource "aws_autoscaling_group" "asg" {
   name = "${var.app_name}-asg"
 
-  vpc_zone_identifier = var.app_server_subnet_ids
+  vpc_zone_identifier = var.app_subnet_ids
   max_size            = 2
   min_size            = 0
   desired_capacity    = 1
@@ -110,7 +110,7 @@ resource "aws_launch_template" "instance" {
   image_id               = data.aws_ami.ecs.id
   instance_type          = "t2.micro"
   user_data              = base64encode(templatefile("${path.module}/user_data.sh", { log_group = aws_cloudwatch_log_group.instance.name, ecs_cluster = "${var.app_name}-cluster" }))
-  vpc_security_group_ids = var.app_server_security_group_ids
+  vpc_security_group_ids = var.ecs_security_group_ids
   key_name               = aws_key_pair.deployer.key_name
 
   iam_instance_profile {

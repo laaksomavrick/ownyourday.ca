@@ -24,33 +24,33 @@ module "network" {
 module "dns" {
   source = "../../modules/dns"
 
-  alb_dns_name = module.load-balancer.alb_dns_name
-  alb_zone_id  = module.load-balancer.alb_zone_id
+  apigw_dns_name = module.api_gateway.apigw_dns_name
+  apigw_zone_id  = module.api_gateway.apigw_zone_id
 }
 
-module "load-balancer" {
-  source   = "../../modules/load-balancer"
-  app_name = var.app_name
+module "api_gateway" {
+  source = "../../modules/api-gateway"
+
+  app_name             = var.app_name
+  cloudmap_service_arn = module.network.cloudmap_service_arn
+
+  vpc_link_security_group_ids = [module.network.vpc_link_security_group_id]
+  app_subnet_ids              = module.network.app_subnet_ids
 
   ssl_certificate_arn = module.dns.ssl_certificate_arn
-
-  app_server_cidr_block = module.network.app_server_cidr_block
-  app_vpc_id            = module.network.vpc_id
-  lb_security_group_ids = [module.network.lb_security_group_id]
-  lb_subnet_ids         = module.network.lb_subnet_ids
 }
 
 module "app-server" {
   source = "../../modules/app-server"
 
-  app_name                      = var.app_name
-  app_image_repo                = var.app_image_repo
-  app_image_version             = var.app_image_version
-  app_server_security_group_ids = [module.network.app_server_security_group_id]
-  app_server_subnet_ids         = [module.network.app_server_subnet_id]
-  public_ssh_key_file_path      = var.public_ssh_key_file_path
+  app_name                 = var.app_name
+  app_image_repo           = var.app_image_repo
+  app_image_version        = var.app_image_version
+  ecs_security_group_ids   = [module.network.ecs_security_group_id]
+  app_subnet_ids           = module.network.app_subnet_ids
+  public_ssh_key_file_path = var.public_ssh_key_file_path
 
-  target_group_arn = module.load-balancer.target_group_arn
+  cloudmap_service_arn = module.network.cloudmap_service_arn
 
   db_host     = module.database.db_host
   db_username = var.db_username
@@ -77,12 +77,12 @@ module "alarms" {
   log_group_name    = module.app-server.log_group_name
 }
 
-module "metrics" {
-  source = "../../modules/metrics"
-
-  app_name                 = var.app_name
-  cluster_name             = module.app-server.cluster_name
-  target_group_arn_suffix  = module.load-balancer.target_group_arn_suffix
-  load_balancer_arn_suffix = module.load-balancer.load_balancer_arn_suffix
-  db_identifier            = module.database.db_identifier
-}
+#module "metrics" {
+#  source = "../../modules/metrics"
+#
+#  app_name                 = var.app_name
+#  cluster_name             = module.app-server.cluster_name
+#  target_group_arn_suffix  = module.load-balancer.target_group_arn_suffix
+#  load_balancer_arn_suffix = module.load-balancer.load_balancer_arn_suffix
+#  db_identifier            = module.database.db_identifier
+#}

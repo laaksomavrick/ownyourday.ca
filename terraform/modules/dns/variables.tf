@@ -3,10 +3,10 @@ variable "domain_name" {
   default = "ownyourday.ca"
 }
 
-variable "alb_dns_name" {
+variable "apigw_dns_name" {
   type = string
 }
 
-variable "alb_zone_id" {
+variable "apigw_zone_id" {
   type = string
 }

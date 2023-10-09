@@ -2,6 +2,10 @@ variable "app_name" {
   type = string
 }
 
+variable "cloudmap_service_arn" {
+  type = string
+}
+
 variable "app_image_repo" {
   type = string
 }
@@ -10,12 +14,12 @@ variable "app_image_version" {
   type = string
 }
 
-variable "app_server_subnet_ids" {
+variable "app_subnet_ids" {
   description = ""
   type        = list(string)
 }
 
-variable "app_server_security_group_ids" {
+variable "ecs_security_group_ids" {
   description = ""
   type        = list(string)
 }
@@ -33,10 +37,6 @@ variable "db_password" {
 }
 
 variable "db_host" {
-  type = string
-}
-
-variable "target_group_arn" {
   type = string
 }
 

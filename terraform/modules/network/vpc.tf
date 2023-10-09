@@ -1,5 +1,8 @@
 resource "aws_vpc" "app_vpc" {
   cidr_block = local.vpc_cidr_block
+
+  enable_dns_hostnames = true
+  enable_dns_support   = true
 }
 
 resource "aws_internet_gateway" "app_gw" {

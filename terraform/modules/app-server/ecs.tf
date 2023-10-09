@@ -32,15 +32,20 @@ resource "aws_ecs_service" "svc" {
   deployment_maximum_percent         = 200
   deployment_minimum_healthy_percent = 100
 
+  #  network_configuration {
+  #    subnets = var.app_subnet_ids
+  #    security_groups = var.ecs_security_group_ids
+  #  }
+
   capacity_provider_strategy {
     capacity_provider = aws_ecs_capacity_provider.app_capacity_provider.name
     weight            = 100
   }
 
-  load_balancer {
-    target_group_arn = var.target_group_arn
-    container_name   = var.app_name
-    container_port   = var.container_port
+  service_registries {
+    registry_arn   = var.cloudmap_service_arn
+    container_name = var.app_name
+    container_port = var.container_port
   }
 
 }
@@ -51,13 +56,13 @@ resource "aws_ecs_task_definition" "service" {
   container_definitions = jsonencode([
     {
       healthCheck : {
-        retries : 3,
+        retries : 5,
         command : [
           "CMD-SHELL",
           "curl -f http://0.0.0.0:${var.container_port}/ || exit 1"
         ],
         timeout : 5,
-        interval : 30,
+        interval : 60,
         startPeriod : null
       },
       essential : true,
@@ -73,10 +78,10 @@ resource "aws_ecs_task_definition" "service" {
       portMappings = [
         {
           containerPort = var.container_port
-          hostPort      = 0
-        },
+        }
       ],
       name : var.app_name,
+      cpu : 512,
       memory : 1024,
       memoryReservation : 512,
       // TODO: these are being passed in plaintext - refactor to use docker secrets or parameter store

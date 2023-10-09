@@ -1,11 +1,11 @@
 resource "aws_subnet" "db_subnet" {
-  count             = length(data.aws_availability_zones.available.names)
+  count             = length(data.aws_availability_zones.vpc_link_enabled.names)
   vpc_id            = aws_vpc.app_vpc.id
-  cidr_block        = "10.0.${length(data.aws_availability_zones.available.names) + count.index + local.db_subnet_cidr_tertiary_block}.0/24"
-  availability_zone = element(data.aws_availability_zones.available.names, count.index)
+  cidr_block        = "10.0.${length(data.aws_availability_zones.vpc_link_enabled.names) + count.index + local.db_subnet_cidr_tertiary_block}.0/24"
+  availability_zone = element(data.aws_availability_zones.vpc_link_enabled.names, count.index)
 
   tags = {
-    Name = "${var.app_name}-db_subnet-${element(data.aws_availability_zones.available.names, count.index)}"
+    Name = "${var.app_name}-db_subnet-${element(data.aws_availability_zones.vpc_link_enabled.names, count.index)}"
   }
 }
 
@@ -22,7 +22,7 @@ resource "aws_security_group" "db_subnet_security_group" {
     from_port   = 5432
     to_port     = 5432
     protocol    = "tcp"
-    cidr_blocks = [local.app_server_cidr_block]
+    cidr_blocks = [local.everything_cidr_block] # TODO: lock this down
   }
 
   lifecycle {

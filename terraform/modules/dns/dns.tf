@@ -8,8 +8,8 @@ resource "aws_route53_record" "root-a" {
   type    = "A"
 
   alias {
-    name                   = var.alb_dns_name
-    zone_id                = var.alb_zone_id
+    name                   = var.apigw_dns_name
+    zone_id                = var.apigw_zone_id
     evaluate_target_health = true
   }
 }
@@ -24,7 +24,6 @@ resource "aws_route53_record" "www-a" {
     zone_id                = aws_route53_record.root-a.zone_id
     evaluate_target_health = true
   }
-
 }
 
 resource "aws_route53_record" "main" {
@@ -47,6 +46,11 @@ resource "aws_acm_certificate" "ssl_certificate" {
   domain_name               = var.domain_name
   subject_alternative_names = ["*.${var.domain_name}"]
   validation_method         = "DNS"
+
+  validation_option {
+    domain_name       = ""
+    validation_domain = ""
+  }
 
   lifecycle {
     create_before_destroy = true
