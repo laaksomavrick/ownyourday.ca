@@ -14,6 +14,17 @@ resource "aws_db_subnet_group" "db_subnet_group" {
   subnet_ids = aws_subnet.db_subnet.*.id
 }
 
+# Only if you need to access via local
+#resource "aws_route_table_association" "db_route_table_association-a" {
+#  subnet_id      = aws_subnet.db_subnet.0.id
+#  route_table_id = aws_route_table.app_route_table.id
+#}
+#
+#resource "aws_route_table_association" "db_route_table_association-b" {
+#  subnet_id      = aws_subnet.db_subnet.1.id
+#  route_table_id = aws_route_table.app_route_table.id
+#}
+
 resource "aws_security_group" "db_subnet_security_group" {
   vpc_id = aws_vpc.app_vpc.id
 

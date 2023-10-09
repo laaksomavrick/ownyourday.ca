@@ -62,7 +62,9 @@ data "aws_iam_policy_document" "pipeline_role_policy_doc" {
       "acm:*",
       "route53:*",
       "sns:*",
-      "cloudwatch:*"
+      "cloudwatch:*",
+      "apigateway:*",
+      "servicediscovery:*"
 
     ]
     resources = [

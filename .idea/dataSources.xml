@@ -15,5 +15,12 @@
       <jdbc-url>jdbc:postgresql://localhost:5432/ownyourday_test</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="ownyourday@terraform-20231009000834546200000003.c6o7sgjvvwxx.ca-central-1.rds.amazonaws.com" uuid="46d216df-b815-450e-8d2b-caa779f18e3d">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://terraform-20231009000834546200000003.c6o7sgjvvwxx.ca-central-1.rds.amazonaws.com:5432/ownyourday</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

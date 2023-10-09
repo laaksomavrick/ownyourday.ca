@@ -49,6 +49,7 @@ module "app-server" {
   ecs_security_group_ids   = [module.network.ecs_security_group_id]
   app_subnet_ids           = module.network.app_subnet_ids
   public_ssh_key_file_path = var.public_ssh_key_file_path
+  container_port = 80
 
   cloudmap_service_arn = module.network.cloudmap_service_arn
 

@@ -3,9 +3,11 @@ FROM ruby:3.1.2 AS builder
 WORKDIR /builder
 
 ARG RAILS_MASTER_KEY
+ARG PORT
 ARG RAILS_ENV="production"
 
 ENV RAILS_ENV="${RAILS_ENV}" \
+    PORT="${PORT}" \
     RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
 
 RUN apt-get update \
@@ -27,6 +29,7 @@ ARG UID=1000
 ARG GID=1000
 
 ARG RAILS_MASTER_KEY
+ARG PORT
 ARG RAILS_ENV="production"
 
 RUN groupadd -g "${GID}" ruby \
@@ -36,6 +39,7 @@ RUN groupadd -g "${GID}" ruby \
 USER ruby
 
 ENV RAILS_ENV="${RAILS_ENV}" \
+    PORT="${PORT}" \
     USER="ruby" \
     RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
 
@@ -45,6 +49,6 @@ COPY --chown=ruby:ruby --from=builder /builder ./
 
 ENTRYPOINT ["/app/bin/docker-entrypoint-web"]
 
-EXPOSE 3000
+EXPOSE ${PORT}
 
-CMD rails s
+CMD PORT=${PORT} rails s

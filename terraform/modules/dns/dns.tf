@@ -47,11 +47,6 @@ resource "aws_acm_certificate" "ssl_certificate" {
   subject_alternative_names = ["*.${var.domain_name}"]
   validation_method         = "DNS"
 
-  validation_option {
-    domain_name       = ""
-    validation_domain = ""
-  }
-
   lifecycle {
     create_before_destroy = true
   }

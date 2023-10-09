@@ -32,11 +32,6 @@ resource "aws_ecs_service" "svc" {
   deployment_maximum_percent         = 200
   deployment_minimum_healthy_percent = 100
 
-  #  network_configuration {
-  #    subnets = var.app_subnet_ids
-  #    security_groups = var.ecs_security_group_ids
-  #  }
-
   capacity_provider_strategy {
     capacity_provider = aws_ecs_capacity_provider.app_capacity_provider.name
     weight            = 100
@@ -109,6 +104,10 @@ resource "aws_ecs_task_definition" "service" {
         {
           name : "APPLICATION_VERSION",
           value : var.app_image_version
+        },
+        {
+          name: "PORT",
+          value: var.container_port
         }
       ]
     }
