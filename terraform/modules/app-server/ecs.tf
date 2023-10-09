@@ -22,7 +22,6 @@ resource "aws_ecs_capacity_provider" "app_capacity_provider" {
   }
 }
 
-
 resource "aws_ecs_service" "svc" {
   name            = "${var.app_name}-svc"
   cluster         = aws_ecs_cluster.app_cluster.arn
@@ -98,16 +97,16 @@ resource "aws_ecs_task_definition" "service" {
           value : var.db_password
         },
         {
+          name: "PORT",
+          value: tostring(var.container_port)
+        },
+        {
           name : "RAILS_SERVE_STATIC_FILES" // TODO: serve these with CDN at some point
           value : "true"
         },
         {
           name : "APPLICATION_VERSION",
           value : var.app_image_version
-        },
-        {
-          name: "PORT",
-          value: var.container_port
         }
       ]
     }
