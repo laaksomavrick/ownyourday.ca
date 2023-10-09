@@ -16,6 +16,10 @@ resource "aws_apigatewayv2_integration" "app_api_gw_integration" {
   integration_method = "ANY"
   integration_type   = "HTTP_PROXY"
   integration_uri    = var.cloudmap_service_arn
+
+  request_parameters = {
+    "append:header.authforintegration" = "$context.authorizer.authorizerResponse"
+  }
 }
 
 resource "aws_apigatewayv2_stage" "app_api_gw_stage" {
