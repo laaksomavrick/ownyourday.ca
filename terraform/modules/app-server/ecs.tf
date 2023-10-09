@@ -79,6 +79,7 @@ resource "aws_ecs_task_definition" "service" {
       name : var.app_name,
       memory : 1024,
       memoryReservation : 512,
+      cpu: 512,
       // TODO: these are being passed in plaintext - refactor to use docker secrets or parameter store
       environment : [
         {

@@ -1,7 +1,7 @@
 name: On merge to main
 
 on:
-  push:
+  pull_request:
     branches: [ main ]
 
 env:
