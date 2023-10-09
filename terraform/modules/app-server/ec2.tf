@@ -65,7 +65,7 @@ data "aws_iam_policy_document" "instance_policy" {
 }
 
 resource "aws_iam_policy" "instance_policy" {
-  name   = "${var.app_name}-ecs-instance"
+  name   = "${var.app_name}-ecs-instance-policy"
   path   = "/"
   policy = data.aws_iam_policy_document.instance_policy.json
 }
@@ -81,7 +81,7 @@ resource "aws_iam_role_policy_attachment" "instance_policy" {
 }
 
 resource "aws_iam_instance_profile" "instance" {
-  name = "${var.app_name}-instance-profile"
+  name = "${var.app_name}-iam-instance-profile"
   role = aws_iam_role.instance.name
 }
 resource "aws_autoscaling_group" "asg" {

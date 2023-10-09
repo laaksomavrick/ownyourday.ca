@@ -51,13 +51,13 @@ resource "aws_ecs_task_definition" "service" {
   container_definitions = jsonencode([
     {
       healthCheck : {
-        retries : 3,
+        retries : 5,
         command : [
           "CMD-SHELL",
           "curl -f http://0.0.0.0:${var.container_port}/ || exit 1"
         ],
         timeout : 5,
-        interval : 30,
+        interval : 60,
         startPeriod : null
       },
       essential : true,
@@ -79,6 +79,7 @@ resource "aws_ecs_task_definition" "service" {
       name : var.app_name,
       memory : 1024,
       memoryReservation : 512,
+      cpu : 1024,
       // TODO: these are being passed in plaintext - refactor to use docker secrets or parameter store
       environment : [
         {
