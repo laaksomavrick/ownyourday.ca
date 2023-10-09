@@ -32,20 +32,24 @@ ARG RAILS_MASTER_KEY
 ARG PORT
 ARG RAILS_ENV="production"
 
-RUN groupadd -g "${GID}" ruby \
-  && useradd --create-home --no-log-init -u "${UID}" -g "${GID}" ruby \
-  && chown ruby:ruby -R /app
-
-USER ruby
+#RUN groupadd -g "${GID}" ruby \
+#  && useradd --create-home --no-log-init -u "${UID}" -g "${GID}" ruby \
+#  && chown ruby:ruby -R /app
+#
+#USER ruby
 
 ENV RAILS_ENV="${RAILS_ENV}" \
     PORT="${PORT}" \
-    USER="ruby" \
+#    USER="ruby" \
     RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
 
-COPY --chown=ruby:ruby --from=builder /usr/local/bundle /usr/local/bundle
-COPY --chown=ruby:ruby --from=builder /builder/public /public
-COPY --chown=ruby:ruby --from=builder /builder ./
+#COPY --chown=ruby:ruby --from=builder /usr/local/bundle /usr/local/bundle
+#COPY --chown=ruby:ruby --from=builder /builder/public /public
+#COPY --chown=ruby:ruby --from=builder /builder ./
+
+COPY --from=builder /usr/local/bundle /usr/local/bundle
+COPY --from=builder /builder/public /public
+COPY --from=builder /builder ./
 
 ENTRYPOINT ["/app/bin/docker-entrypoint-web"]
 

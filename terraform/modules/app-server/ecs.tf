@@ -1,52 +1,62 @@
 resource "aws_ecs_cluster" "app_cluster" {
   name               = "${var.app_name}-cluster"
-  capacity_providers = [aws_ecs_capacity_provider.app_capacity_provider.name]
-  default_capacity_provider_strategy {
-    capacity_provider = aws_ecs_capacity_provider.app_capacity_provider.name
-    weight            = 1
-    base              = 0
-  }
+#  capacity_providers = [aws_ecs_capacity_provider.app_capacity_provider.name]
+#  default_capacity_provider_strategy {
+#    capacity_provider = aws_ecs_capacity_provider.app_capacity_provider.name
+#    weight            = 1
+#    base              = 0
+#  }
 }
-
-resource "aws_ecs_capacity_provider" "app_capacity_provider" {
-  name = "${var.app_name}-capacity-provider"
-
-  auto_scaling_group_provider {
-    auto_scaling_group_arn         = aws_autoscaling_group.asg.arn
-    managed_termination_protection = "DISABLED"
-
-    managed_scaling {
-      status          = "ENABLED"
-      target_capacity = 100
-    }
-  }
-}
+#
+#resource "aws_ecs_capacity_provider" "app_capacity_provider" {
+#  name = "${var.app_name}-capacity-provider"
+#
+#  auto_scaling_group_provider {
+#    auto_scaling_group_arn         = aws_autoscaling_group.asg.arn
+#    managed_termination_protection = "DISABLED"
+#
+#    managed_scaling {
+#      status          = "ENABLED"
+#      target_capacity = 100
+#    }
+#  }
+#}
 
 resource "aws_ecs_service" "svc" {
   name            = "${var.app_name}-svc"
   cluster         = aws_ecs_cluster.app_cluster.arn
   task_definition = aws_ecs_task_definition.service.arn
   desired_count   = 1
+  launch_type = "FARGATE"
 
   deployment_maximum_percent         = 200
   deployment_minimum_healthy_percent = 100
 
-  capacity_provider_strategy {
-    capacity_provider = aws_ecs_capacity_provider.app_capacity_provider.name
-    weight            = 100
+#  capacity_provider_strategy {
+#    capacity_provider = aws_ecs_capacity_provider.app_capacity_provider.name
+#    weight            = 100
+#  }
+  network_configuration {
+    subnets = var.app_subnet_ids
+    security_groups = var.ecs_security_group_ids
+    assign_public_ip = true
   }
 
   service_registries {
     registry_arn   = var.cloudmap_service_arn
-    container_name = var.app_name
-    container_port = var.container_port
+    port = var.container_port
   }
 
 }
 
 resource "aws_ecs_task_definition" "service" {
   family                   = "${var.app_name}-task-definition"
-  requires_compatibilities = ["EC2"]
+  requires_compatibilities = ["FARGATE"]
+  task_role_arn = aws_iam_role.instance.arn
+  execution_role_arn = aws_iam_role.instance.arn
+  cpu = 256
+  memory = 512
+  network_mode = "awsvpc"
   container_definitions = jsonencode([
     {
       healthCheck : {
@@ -72,12 +82,10 @@ resource "aws_ecs_task_definition" "service" {
       portMappings = [
         {
           containerPort = var.container_port
+          hostPort = var.container_port
         }
       ],
       name : var.app_name,
-      cpu : 512,
-      memory : 1024,
-      memoryReservation : 512,
       // TODO: these are being passed in plaintext - refactor to use docker secrets or parameter store
       environment : [
         {
