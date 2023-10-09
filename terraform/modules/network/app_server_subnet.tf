@@ -32,10 +32,26 @@ resource "aws_security_group" "app_server_security_group" {
 
   ingress {
     description = ""
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = [local.everything_cidr_block]
+  }
+
+  ingress {
+    description = ""
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = [local.everything_cidr_block]
+  }
+
+  ingress {
+    description = ""
     from_port   = 1024
     to_port     = 65535
     protocol    = "tcp"
-    cidr_blocks = aws_subnet.load_balancer_subnet.*.cidr_block
+    cidr_blocks = [local.everything_cidr_block]
   }
 
   # TODO: this allows image pulls...?
