@@ -90,11 +90,15 @@ Rails.application.configure do
 
   config.middleware.insert_before 0, Rack::Cors do
     allow do
-      origins ENV.fetch('CLOUDFRONT_ENDPOINT', '/')
-      resource '/assets/*',
-               headers: :any,
-               methods: [:get],
-               expose: ['Access-Control-Allow-Origin']
+      config.middleware.insert_before 0, Rack::Cors do
+        allow do
+          origins [
+            "http://#{ENV.fetch('DOMAIN_NAME', '/')}",
+            "https://#{ENV.fetch('DOMAIN_NAME', '/')}"
+          ]
+          resource '/assets/*', headers: :any, methods: %i[get post options]
+        end
+      end
     end
   end
 end

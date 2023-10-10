@@ -109,6 +109,10 @@ resource "aws_ecs_task_definition" "service" {
         {
           name : "CLOUDFRONT_ENDPOINT",
           value : var.cloudfront_endpoint
+        },
+        {
+          name : "DOMAIN_NAME",
+          value : var.domain_name
         }
       ]
     }
