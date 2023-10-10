@@ -26,6 +26,7 @@ module "dns" {
 
   alb_dns_name = module.load-balancer.alb_dns_name
   alb_zone_id  = module.load-balancer.alb_zone_id
+  domain_name  = var.domain_name
 }
 
 module "load-balancer" {
@@ -52,6 +53,8 @@ module "app-server" {
 
   target_group_arn = module.load-balancer.target_group_arn
 
+  cloudfront_endpoint = module.cdn.cloudfront_endpoint
+
   db_host     = module.database.db_host
   db_username = var.db_username
   db_password = var.db_password
@@ -67,6 +70,13 @@ module "database" {
   password          = var.db_password
   db_security_group = module.network.db_security_group
   db_subnet_group   = module.network.db_subnet_group
+}
+
+module "cdn" {
+  source = "../../modules/cdn"
+
+  app_name    = var.app_name
+  domain_name = var.domain_name
 }
 
 module "alarms" {

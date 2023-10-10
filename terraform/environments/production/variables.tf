@@ -32,3 +32,7 @@ variable "error_event_email" {
   type = string
 }
 
+variable "domain_name" {
+  type    = string
+  default = "ownyourday.ca"
+}
