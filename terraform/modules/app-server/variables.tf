@@ -48,3 +48,8 @@ variable "container_port" {
 variable "cloudfront_endpoint" {
   type = string
 }
+
+variable "domain_name" {
+  type    = string
+  default = "ownyourday.ca"
+}
