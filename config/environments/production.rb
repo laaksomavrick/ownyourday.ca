@@ -34,7 +34,7 @@ Rails.application.configure do
   config.assets.compile = false
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
-  config.asset_host = ENV.fetch('CLOUDFRONT_ENDPOINT', nil)
+  config.asset_host = ENV.fetch('CLOUDFRONT_ENDPOINT', '/')
 
   # Specifies the header that your server uses for sending files.
   # config.action_dispatch.x_sendfile_header = "X-Sendfile" # for Apache
@@ -90,7 +90,7 @@ Rails.application.configure do
 
   config.middleware.insert_before 0, Rack::Cors do
     allow do
-      origins ENV.fetch('CLOUDFRONT_ENDPOINT', nil)
+      origins ENV.fetch('CLOUDFRONT_ENDPOINT', '/')
       resource '/assets/*',
                headers: :any,
                methods: [:get],
