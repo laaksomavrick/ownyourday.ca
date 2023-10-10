@@ -17,6 +17,15 @@ resource "aws_cloudfront_distribution" "asset_cache" {
     cached_methods         = ["GET", "HEAD", "OPTIONS"]
     target_origin_id       = "${var.app_name}-origin"
     viewer_protocol_policy = "allow-all"
+
+    forwarded_values {
+      query_string = false
+      headers      = ["Origin"]
+
+      cookies {
+        forward = "none"
+      }
+    }
   }
 
   restrictions {
