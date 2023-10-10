@@ -105,6 +105,10 @@ resource "aws_ecs_task_definition" "service" {
         {
           name : "APPLICATION_VERSION",
           value : var.app_image_version
+        },
+        {
+          name : "CLOUDFRONT_ENDPOINT",
+          value : var.cloudfront_endpoint
         }
       ]
     }
