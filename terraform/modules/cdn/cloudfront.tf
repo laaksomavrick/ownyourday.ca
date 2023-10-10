@@ -12,11 +12,14 @@ resource "aws_cloudfront_distribution" "asset_cache" {
   }
 
   default_cache_behavior {
-    cache_policy_id        = "658327ea-f89d-4fab-a63d-7e88639e58f6"
     allowed_methods        = ["GET", "HEAD", "OPTIONS"]
     cached_methods         = ["GET", "HEAD", "OPTIONS"]
     target_origin_id       = "${var.app_name}-origin"
     viewer_protocol_policy = "allow-all"
+
+    min_ttl                = 0
+    default_ttl            = 3600
+    max_ttl                = 86400
 
     forwarded_values {
       query_string = false
