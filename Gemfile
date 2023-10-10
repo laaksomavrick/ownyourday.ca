@@ -61,6 +61,8 @@ gem 'acts_as_list'
 
 gem 'heroicon'
 
+gem 'rack-cors'
+
 # Use Sass to process CSS
 # gem "sassc-rails"
 
