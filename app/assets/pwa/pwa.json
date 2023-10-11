@@ -1,20 +1,28 @@
 {
   "short_name": "ownyourday",
   "name": "ownyourday",
+  "description": "Minimal and streamlined daily task and goal tracking application.",
   "icons": [
-    {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
-    },
     {
       "src": "logo192white.png",
       "type": "image/png",
       "sizes": "192x192"
     }
   ],
-  "start_url": ".",
-  "display": "minimal-ui",
-  "theme_color": "#fff",
-  "background_color": "#ffffff"
+  "start_url": "https://ownyourday.ca",
+  "display": "fullscreen",
+  "theme_color": "#585bef",
+  "background_color": "#ffffff",
+  "shortcuts" : [
+    {
+      "name": "Today's tasks",
+      "url": "/tasks",
+      "description": "List of tasks planned for today"
+    },
+    {
+      "name": "New goal",
+      "url": "/goals/new",
+      "description": "Create a new goal and schedule it"
+    }
+  ]
 }

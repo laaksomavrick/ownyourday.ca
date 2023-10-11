@@ -17,9 +17,9 @@ resource "aws_cloudfront_distribution" "asset_cache" {
     target_origin_id       = "${var.app_name}-origin"
     viewer_protocol_policy = "allow-all"
 
-    min_ttl                = 0
-    default_ttl            = 3600
-    max_ttl                = 86400
+    min_ttl     = 0
+    default_ttl = 3600
+    max_ttl     = 86400
 
     forwarded_values {
       query_string = false
