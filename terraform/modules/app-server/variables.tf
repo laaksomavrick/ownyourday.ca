@@ -53,3 +53,15 @@ variable "domain_name" {
   type    = string
   default = "ownyourday.ca"
 }
+
+variable "new_relic_license_key" {
+  type = string
+}
+
+variable "new_relic_api_key" {
+  type = string
+}
+
+variable "new_relic_account_id" {
+  type = number
+}

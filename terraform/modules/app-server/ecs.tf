@@ -113,6 +113,10 @@ resource "aws_ecs_task_definition" "service" {
         {
           name : "DOMAIN_NAME",
           value : var.domain_name
+        },
+        {
+          name : "NEW_RELIC_LICENSE_KEY",
+          value : var.new_relic_license_key
         }
       ]
     }

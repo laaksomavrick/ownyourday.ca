@@ -60,6 +60,10 @@ if [ $? -ne 0 ]; then
     chkconfig awslogs on
 fi
 
+# Install new relic agent
+curl -Ls https://download.newrelic.com/install/newrelic-cli/scripts/install.sh | bash && \
+  sudo NEW_RELIC_API_KEY=${new_relic_api_key} NEW_RELIC_ACCOUNT_ID=${new_relic_account_id} /usr/local/bin/newrelic install -n logs-integration
+
 # Reclaim unused Docker disk space
 cat << "EOF" > /usr/local/bin/claimspace.sh
 #!/bin/bash
