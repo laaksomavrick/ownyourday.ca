@@ -108,6 +108,9 @@ jobs:
             -var public_ssh_key_file_path=public_ssh_key.pub \
             -var db_username=${{ vars.DB_USERNAME }} \
             -var db_password=${{ secrets.DB_PASSWORD }} \
+            -var new_relic_license_key=${{ secrets.NEW_RELIC_LICENSE_KEY }} \
+            -var new_relic_api_key=${{ secrets.NEW_RELIC_API_KEY }} \
+            -var new_relic_account_id=${{ vars.NEW_RELIC_ACCOUNT_ID }} \
             -var error_event_email=${{ vars.ERROR_EVENT_EMAIL }} \
             -input=false \
             -no-color \

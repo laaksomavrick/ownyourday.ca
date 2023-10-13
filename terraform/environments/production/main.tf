@@ -55,6 +55,10 @@ module "app-server" {
 
   cloudfront_endpoint = module.cdn.cloudfront_endpoint
 
+  new_relic_license_key = var.new_relic_license_key
+  new_relic_api_key     = var.new_relic_api_key
+  new_relic_account_id  = var.new_relic_account_id
+
   db_host     = module.database.db_host
   db_username = var.db_username
   db_password = var.db_password

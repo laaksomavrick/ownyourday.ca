@@ -32,7 +32,7 @@ RSpec.describe 'Tasks' do
         end
 
         it 'shows no tasks message when user has no tasks' do
-          not_today = DateTime.current.day == 7 ? 1 : DateTime.current.day + 1
+          not_today = DateTime.current.wday == 6 ? 0 : DateTime.current.wday + 1
           goal = create(:days_of_week_goal, metadata: { 'days_of_week' => [not_today] })
           user.goals = [goal]
           user.save

@@ -165,6 +165,7 @@ GEM
       timeout
     net-smtp (0.3.3)
       net-protocol
+    newrelic_rpm (9.5.0)
     nio4r (2.5.9)
     nokogiri (1.15.3-arm64-darwin)
       racc (~> 1.4)
@@ -372,6 +373,7 @@ DEPENDENCIES
   jbuilder
   lograge
   memory_profiler
+  newrelic_rpm
   omniauth
   omniauth-google-oauth2
   omniauth-rails_csrf_protection
