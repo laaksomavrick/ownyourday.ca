@@ -72,6 +72,8 @@ jobs:
     runs-on: ubuntu-latest
     name: Tag deployment in New Relic
     steps:
+      - name: Checkout main
+        uses: actions/checkout@v2
       - name: Set DOCKER_IMAGE_TAG environment variable
         run: echo "DOCKER_IMAGE_TAG=$(cat version)" >> $GITHUB_ENV
       - name: New Relic Application Deployment Marker
