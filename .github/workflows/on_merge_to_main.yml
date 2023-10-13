@@ -66,6 +66,22 @@ jobs:
           build-args: |
             "RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }}"
 
+  tag-deployment-in-new-relic:
+    needs: [changes, build-and-push-docker-image]
+    if: ${{ needs.changes.outputs.version == 'true' }}
+    runs-on: ubuntu-latest
+    name: Tag deployment in New Relic
+    steps:
+      - name: Set DOCKER_IMAGE_TAG environment variable
+        run: echo "DOCKER_IMAGE_TAG=$(cat version)" >> $GITHUB_ENV
+      - name: New Relic Application Deployment Marker
+        uses: newrelic/deployment-marker-action@v2.3.0
+        with:
+          apiKey: ${{ secrets.NEW_RELIC_API_KEY }}
+          guid: ${{ secrets.NEW_RELIC_DEPLOYMENT_ENTITY_GUID }}
+          version: ${{ env.DOCKER_IMAGE_TAG }}
+          user: "${{ github.actor }}"
+
   update-infrastructure:
     needs: [changes, build-and-push-docker-image]
     if: ${{ always() }}
