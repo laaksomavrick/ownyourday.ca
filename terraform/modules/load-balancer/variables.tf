@@ -7,6 +7,11 @@ variable "lb_subnet_ids" {
   type        = list(string)
 }
 
+variable "lb_subnet_id" {
+  description = ""
+  type        = string
+}
+
 variable "lb_security_group_ids" {
   description = ""
   type        = list(string)
@@ -22,5 +27,9 @@ variable "app_vpc_id" {
 }
 
 variable "ssl_certificate_arn" {
+  type = string
+}
+
+variable "key_name" {
   type = string
 }

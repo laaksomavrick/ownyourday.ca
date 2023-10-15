@@ -46,6 +46,14 @@ resource "aws_security_group" "load_balancer_security_group" {
     cidr_blocks = [local.everything_cidr_block]
   }
 
+  ingress {
+    description = ""
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = [local.everything_cidr_block]
+  }
+
   egress {
     description = ""
     from_port   = 80

@@ -18,6 +18,10 @@ output "lb_subnet_ids" {
   value = aws_subnet.load_balancer_subnet.*.id
 }
 
+output "lb_subnet_id" {
+  value = aws_subnet.load_balancer_subnet.0.id
+}
+
 output "lb_security_group_id" {
   value = aws_security_group.load_balancer_security_group.id
 }

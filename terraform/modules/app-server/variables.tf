@@ -20,7 +20,7 @@ variable "app_server_security_group_ids" {
   type        = list(string)
 }
 
-variable "public_ssh_key_file_path" {
+variable "key_name" {
   type = string
 }
 
