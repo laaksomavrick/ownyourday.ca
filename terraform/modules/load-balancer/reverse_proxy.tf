@@ -11,9 +11,9 @@ data "cloudinit_config" "config" {
 
 
 # Start an AWS instance with the cloud-init config as user data
-resource "aws_instance" "nginx" {
-  count                       = 0 # Toggle off to delete
-  ami                         = "ami-0f17d6a8a3d746af6"
+resource "aws_instance" "reverse_proxy" {
+  count                       = 1 # Toggle off to delete
+  ami                         = "ami-0ea18256de20ecdfc" # UBUNTU
   instance_type               = "t2.nano"
   user_data_base64            = data.cloudinit_config.config.rendered
   subnet_id                   = var.reverse_proxy_subnet_id

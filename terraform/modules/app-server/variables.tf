@@ -66,11 +66,6 @@ variable "new_relic_account_id" {
   type = number
 }
 
-variable "backend_security_group_ids" {
-  type = list(string)
-}
-
-variable "backend_subnet_id" {
+variable "cloudmap_service_arn" {
   type = string
 }
-

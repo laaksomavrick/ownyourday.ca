@@ -123,6 +123,15 @@ resource "aws_launch_template" "instance" {
     arn = aws_iam_instance_profile.instance.arn
   }
 
+  tag_specifications {
+    resource_type = "instance"
+
+    tags = {
+      Name = "${var.app_name}-app-server"
+    }
+  }
+
+
   lifecycle {
     create_before_destroy = true
   }

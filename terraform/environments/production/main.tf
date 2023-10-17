@@ -62,8 +62,7 @@ module "app-server" {
   app_server_subnet_ids         = [module.network.app_server_subnet_id]
   key_name                      = aws_key_pair.deployer.key_name
 
-  backend_security_group_ids = [module.network.app_server_security_group_id]
-  backend_subnet_id          = module.network.app_server_subnet_id
+  cloudmap_service_arn = module.network.cloudmap_service_arn
 
   target_group_arn    = module.load-balancer.target_group_arn
   cloudfront_endpoint = module.cdn.cloudfront_endpoint
@@ -102,14 +101,4 @@ module "alarms" {
   app_name          = var.app_name
   error_event_email = var.error_event_email
   log_group_name    = module.app-server.log_group_name
-}
-
-module "metrics" {
-  source = "../../modules/metrics"
-
-  app_name                 = var.app_name
-  cluster_name             = module.app-server.cluster_name
-  target_group_arn_suffix  = module.load-balancer.target_group_arn_suffix
-  load_balancer_arn_suffix = module.load-balancer.load_balancer_arn_suffix
-  db_identifier            = module.database.db_identifier
 }
