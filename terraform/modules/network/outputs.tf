@@ -33,3 +33,7 @@ output "db_subnet_group" {
 output "db_security_group" {
   value = aws_security_group.db_subnet_security_group.id
 }
+
+output "cloudmap_service_arn" {
+  value = aws_service_discovery_service.cloudmap_service.arn
+}

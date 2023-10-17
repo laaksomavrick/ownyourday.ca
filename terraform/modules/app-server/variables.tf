@@ -65,3 +65,7 @@ variable "new_relic_api_key" {
 variable "new_relic_account_id" {
   type = number
 }
+
+variable "cloudmap_service_arn" {
+  type = string
+}

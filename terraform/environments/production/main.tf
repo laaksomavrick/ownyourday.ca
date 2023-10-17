@@ -58,6 +58,8 @@ module "app-server" {
   app_server_subnet_ids         = [module.network.app_server_subnet_id]
   key_name                      = aws_key_pair.deployer.key_name
 
+  cloudmap_service_arn = module.network.cloudmap_service_arn
+
   target_group_arn = module.load-balancer.target_group_arn
 
   cloudfront_endpoint = module.cdn.cloudfront_endpoint

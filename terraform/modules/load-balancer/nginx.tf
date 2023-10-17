@@ -24,7 +24,7 @@ data "cloudinit_config" "config" {
 
 # Start an AWS instance with the cloud-init config as user data
 resource "aws_instance" "nginx" {
-  count                       = 1 # Toggle off to delete
+  count                       = 0 # Toggle off to delete
   ami                         = "ami-0f17d6a8a3d746af6"
   instance_type               = "t2.nano"
   user_data_base64            = data.cloudinit_config.config.rendered
