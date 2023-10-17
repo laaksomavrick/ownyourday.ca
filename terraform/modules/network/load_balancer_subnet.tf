@@ -84,3 +84,37 @@ resource "aws_security_group" "load_balancer_security_group" {
 
 }
 
+resource "aws_security_group" "nginx_security_group" {
+  vpc_id = aws_vpc.app_vpc.id
+
+  ingress {
+    description = ""
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = [local.everything_cidr_block]
+  }
+
+  ingress {
+    description = ""
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = [local.everything_cidr_block]
+  }
+
+  ingress {
+    description = ""
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = [local.everything_cidr_block]
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+}
+
+

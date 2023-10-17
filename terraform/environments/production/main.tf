@@ -41,11 +41,15 @@ module "load-balancer" {
 
   ssl_certificate_arn = module.dns.ssl_certificate_arn
 
+  reverse_proxy_security_group_ids = [module.network.nginx_security_group_id]
+
   app_server_cidr_block = module.network.app_server_cidr_block
   app_vpc_id            = module.network.vpc_id
   lb_security_group_ids = [module.network.lb_security_group_id]
   lb_subnet_ids         = module.network.lb_subnet_ids
   lb_subnet_id          = module.network.lb_subnet_id
+
+  reverse_proxy_subnet_id = module.network.lb_subnet_ids.0
 }
 
 module "app-server" {
@@ -58,10 +62,10 @@ module "app-server" {
   app_server_subnet_ids         = [module.network.app_server_subnet_id]
   key_name                      = aws_key_pair.deployer.key_name
 
-  cloudmap_service_arn = module.network.cloudmap_service_arn
+  backend_security_group_ids = [module.network.app_server_security_group_id]
+  backend_subnet_id          = module.network.app_server_subnet_id
 
-  target_group_arn = module.load-balancer.target_group_arn
-
+  target_group_arn    = module.load-balancer.target_group_arn
   cloudfront_endpoint = module.cdn.cloudfront_endpoint
 
   new_relic_license_key = var.new_relic_license_key

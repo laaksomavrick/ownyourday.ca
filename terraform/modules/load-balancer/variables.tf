@@ -33,3 +33,11 @@ variable "ssl_certificate_arn" {
 variable "key_name" {
   type = string
 }
+
+variable "reverse_proxy_security_group_ids" {
+  type = list(string)
+}
+
+variable "reverse_proxy_subnet_id" {
+  type = string
+}

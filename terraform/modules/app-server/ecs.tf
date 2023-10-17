@@ -43,12 +43,6 @@ resource "aws_ecs_service" "svc" {
     container_port   = var.container_port
   }
 
-  service_registries {
-    registry_arn   = var.cloudmap_service_arn
-    container_name = var.app_name
-    container_port = var.container_port
-  }
-
 }
 
 resource "aws_ecs_task_definition" "service" {
