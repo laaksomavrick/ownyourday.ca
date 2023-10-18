@@ -5,13 +5,12 @@ data "cloudinit_config" "config" {
   part {
     filename     = "init.cfg"
     content_type = "text/cloud-config"
-    content      = templatefile("${path.module}/init.cfg", {})
+    content = templatefile("${path.module}/init.cfg", {
+      new_relic_license_key = var.new_relic_license_key
+    })
   }
 }
 
-
-
-# Start an AWS instance with the cloud-init config as user data
 resource "aws_instance" "reverse_proxy" {
   ami                         = "ami-0ea18256de20ecdfc" # UBUNTU
   instance_type               = "t2.nano"

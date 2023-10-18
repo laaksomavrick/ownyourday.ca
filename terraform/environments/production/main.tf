@@ -38,15 +38,10 @@ module "load-balancer" {
   app_name = var.app_name
   key_name = aws_key_pair.deployer.key_name
 
-  reverse_proxy_security_group_ids = [module.network.nginx_security_group_id]
+  reverse_proxy_security_group_ids = [module.network.reverse_proxy_security_group_id]
+  reverse_proxy_subnet_id          = module.network.reverse_proxy_subnet_id
 
-  app_server_cidr_block = module.network.app_server_cidr_block
-  app_vpc_id            = module.network.vpc_id
-  lb_security_group_ids = [module.network.lb_security_group_id]
-  lb_subnet_ids         = module.network.lb_subnet_ids
-  lb_subnet_id          = module.network.lb_subnet_id
-
-  reverse_proxy_subnet_id = module.network.lb_subnet_ids.0
+  new_relic_license_key = var.new_relic_license_key
 }
 
 module "app-server" {
