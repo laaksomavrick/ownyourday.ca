@@ -39,5 +39,5 @@ output "nginx_security_group_id" {
 }
 
 output "cloudmap_service_arn" {
-  value = aws_service_discovery_service.cloudmap_service.arn
+  value = aws_service_discovery_service.backend.arn
 }

@@ -16,6 +16,7 @@ resource "aws_instance" "reverse_proxy" {
   ami                         = "ami-0ea18256de20ecdfc" # UBUNTU
   instance_type               = "t2.nano"
   user_data_base64            = data.cloudinit_config.config.rendered
+  user_data_replace_on_change = true
   subnet_id                   = var.reverse_proxy_subnet_id
   associate_public_ip_address = true
   key_name                    = var.key_name

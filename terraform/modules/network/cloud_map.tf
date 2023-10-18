@@ -1,13 +1,13 @@
-resource "aws_service_discovery_private_dns_namespace" "cloudmap_namespace" {
-  name = "${var.app_name}-cloudmap-namespace"
+resource "aws_service_discovery_private_dns_namespace" "ownyourday_namespace" {
+  name = "${var.app_name}.ca"
   vpc  = aws_vpc.app_vpc.id
 }
 
-resource "aws_service_discovery_service" "cloudmap_service" {
-  name = "${var.app_name}-cloudmap-service"
+resource "aws_service_discovery_service" "backend" {
+  name = "backend"
 
   dns_config {
-    namespace_id = aws_service_discovery_private_dns_namespace.cloudmap_namespace.id
+    namespace_id = aws_service_discovery_private_dns_namespace.ownyourday_namespace.id
 
     dns_records {
       ttl  = 60

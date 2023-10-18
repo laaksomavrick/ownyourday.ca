@@ -131,7 +131,6 @@ resource "aws_launch_template" "instance" {
     }
   }
 
-
   lifecycle {
     create_before_destroy = true
   }
