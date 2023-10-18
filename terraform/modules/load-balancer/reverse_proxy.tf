@@ -10,9 +10,9 @@ data "cloudinit_config" "config" {
 }
 
 
+
 # Start an AWS instance with the cloud-init config as user data
 resource "aws_instance" "reverse_proxy" {
-  count                       = 1 # Toggle off to delete
   ami                         = "ami-0ea18256de20ecdfc" # UBUNTU
   instance_type               = "t2.nano"
   user_data_base64            = data.cloudinit_config.config.rendered

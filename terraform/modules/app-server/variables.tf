@@ -36,10 +36,6 @@ variable "db_host" {
   type = string
 }
 
-variable "target_group_arn" {
-  type = string
-}
-
 variable "container_port" {
   type    = number
   default = 3000

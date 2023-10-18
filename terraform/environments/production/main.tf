@@ -29,17 +29,14 @@ module "network" {
 module "dns" {
   source = "../../modules/dns"
 
-  alb_dns_name = module.load-balancer.alb_dns_name
-  alb_zone_id  = module.load-balancer.alb_zone_id
-  domain_name  = var.domain_name
+  domain_name             = var.domain_name
+  reverse_proxy_public_ip = module.load-balancer.reverse_proxy_public_ip
 }
 
 module "load-balancer" {
   source   = "../../modules/load-balancer"
   app_name = var.app_name
   key_name = aws_key_pair.deployer.key_name
-
-  ssl_certificate_arn = module.dns.ssl_certificate_arn
 
   reverse_proxy_security_group_ids = [module.network.nginx_security_group_id]
 
@@ -64,7 +61,6 @@ module "app-server" {
 
   cloudmap_service_arn = module.network.cloudmap_service_arn
 
-  target_group_arn    = module.load-balancer.target_group_arn
   cloudfront_endpoint = module.cdn.cloudfront_endpoint
 
   new_relic_license_key = var.new_relic_license_key

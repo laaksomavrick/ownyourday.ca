@@ -26,10 +26,6 @@ variable "app_vpc_id" {
   type = string
 }
 
-variable "ssl_certificate_arn" {
-  type = string
-}
-
 variable "key_name" {
   type = string
 }

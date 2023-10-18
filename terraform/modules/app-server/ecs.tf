@@ -37,12 +37,6 @@ resource "aws_ecs_service" "svc" {
     weight            = 100
   }
 
-  load_balancer {
-    target_group_arn = var.target_group_arn
-    container_name   = var.app_name
-    container_port   = var.container_port
-  }
-
   service_registries {
     registry_arn   = var.cloudmap_service_arn
     container_name = var.app_name
