@@ -117,10 +117,18 @@ resource "aws_launch_template" "instance" {
       new_relic_account_id = var.new_relic_account_id
   }))
   vpc_security_group_ids = var.app_server_security_group_ids
-  key_name               = aws_key_pair.deployer.key_name
+  key_name               = var.key_name
 
   iam_instance_profile {
     arn = aws_iam_instance_profile.instance.arn
+  }
+
+  tag_specifications {
+    resource_type = "instance"
+
+    tags = {
+      Name = "${var.app_name}-app-server"
+    }
   }
 
   lifecycle {

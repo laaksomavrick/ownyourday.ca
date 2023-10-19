@@ -37,10 +37,10 @@ resource "aws_ecs_service" "svc" {
     weight            = 100
   }
 
-  load_balancer {
-    target_group_arn = var.target_group_arn
-    container_name   = var.app_name
-    container_port   = var.container_port
+  service_registries {
+    registry_arn   = var.cloudmap_service_arn
+    container_name = var.app_name
+    container_port = var.container_port
   }
 
 }
@@ -79,7 +79,7 @@ resource "aws_ecs_task_definition" "service" {
       name : var.app_name,
       memory : 1024,
       memoryReservation : 512,
-      cpu : 1024,
+      cpu : 512,
       // TODO: these are being passed in plaintext - refactor to use docker secrets or parameter store
       environment : [
         {

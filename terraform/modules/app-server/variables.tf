@@ -20,7 +20,7 @@ variable "app_server_security_group_ids" {
   type        = list(string)
 }
 
-variable "public_ssh_key_file_path" {
+variable "key_name" {
   type = string
 }
 
@@ -33,10 +33,6 @@ variable "db_password" {
 }
 
 variable "db_host" {
-  type = string
-}
-
-variable "target_group_arn" {
   type = string
 }
 
@@ -64,4 +60,8 @@ variable "new_relic_api_key" {
 
 variable "new_relic_account_id" {
   type = number
+}
+
+variable "cloudmap_service_arn" {
+  type = string
 }
