@@ -14,6 +14,9 @@ Rails.application.routes.draw do
   resources :task_position, only: [:update]
   resources :goal_position, only: [:update]
 
+  get 'me', to: 'me#edit'
+  patch 'me', to: 'me#update'
+
   scope 'api' do
     get 'health_check', to: 'health_check#index'
   end
