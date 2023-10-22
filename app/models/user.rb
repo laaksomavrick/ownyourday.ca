@@ -15,6 +15,7 @@ class User < ApplicationRecord
   has_many :adhoc_tasks, class_name: 'Tasks::AdhocTask', dependent: :destroy
 
   validates :email, format: { with: Devise.email_regexp }, uniqueness: true
+  validates :first_name, :last_name, presence: true
 
   def beginning_of_day(today: DateTime.current.utc)
     user_today = today.in_time_zone(time_zone)

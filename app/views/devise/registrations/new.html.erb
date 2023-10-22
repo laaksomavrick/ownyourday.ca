@@ -14,6 +14,19 @@
         <%= render 'layouts/forms/input_error', model: resource, field: :email %>
       </div>
 
+      <div class="flex w-full space-x-4">
+       <div>
+         <%= f.text_field :first_name, autocomplete: "first_name", class:
+           text_field_class, placeholder: t('global.first_name') %>
+         <%= render 'layouts/forms/input_error', model: resource, field: :first_name %>
+       </div>
+        <div>
+          <%= f.text_field :last_name, autocomplete: "last_name", class:
+            text_field_class, placeholder: t('global.last_name') %>
+          <%= render 'layouts/forms/input_error', model: resource, field: :last_name %>
+        </div>
+      </div>
+
       <div class="w-full">
         <%= f.password_field :password, autocomplete: "new-password", class:
           text_field_class, placeholder: t('global.password') %>
