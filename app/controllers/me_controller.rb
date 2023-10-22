@@ -6,9 +6,14 @@ class MeController < ApplicationController
   end
 
   def update
-    time_zone = params.fetch(:user).require('time_zone')
+    params = update_user_params
+    time_zone = params[:time_zone]
+    first_name = params[:first_name]
+    last_name = params[:last_name]
 
     current_user.time_zone = time_zone
+    current_user.first_name = first_name
+    current_user.last_name = last_name
 
     current_user.save
 
@@ -17,7 +22,17 @@ class MeController < ApplicationController
       return
     end
 
-    flash[:notice] = t('helpers.alert.update_successful', name: 'time zone')
+    flash[:notice] = t('helpers.alert.update_successful', name: 'user information')
     redirect_to me_path
+  end
+
+  private
+
+  def update_user_params
+    params.fetch(:user, {}).permit(
+      :time_zone,
+      :first_name,
+      :last_name
+    )
   end
 end

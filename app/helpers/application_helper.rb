@@ -33,4 +33,14 @@ module ApplicationHelper
   def human_date_string(datetime: DateTime.current.utc)
     datetime.strftime('%b %d, %Y')
   end
+
+  def user_initials(user: nil)
+    user ||= current_user
+    first_name = user.first_name
+    last_name = user.last_name
+
+    return 'NA' if first_name.empty? && last_name.empty?
+
+    "#{first_name.first}#{last_name.first}"
+  end
 end

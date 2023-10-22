@@ -1,6 +1,5 @@
 <nav class="flex items-center w-full space-x-4 pb-2 select-none">
   <%= render Navigation::NavigationItemComponent.new(path: tasks_path, title: t("tasks.navigation")) %>
   <%= render Navigation::NavigationItemComponent.new(path: goals_path, title: t("goals.navigation")) %>
-  <%= link_to me_path, class: "h-8 w-8 rounded bg-indigo-400 !ml-auto" do %>
-  <% end %>
+  <%= render Navigation::NavigationUserItemComponent.new(path: me_path, user: current_user) %>
 </nav>
