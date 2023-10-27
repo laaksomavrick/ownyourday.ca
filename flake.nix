@@ -39,7 +39,8 @@
             pkgs.nodePackages.pnpm
             pkgs.postgresql_11
             pkgs.ruby_3_1
-            pkgs.rubyPackages_3_0.ruby-vips
+            pkgs.rubyPackages_3_1.ffi
+            pkgs.rubyPackages_3_1.glib2
           ];
         };
       });
