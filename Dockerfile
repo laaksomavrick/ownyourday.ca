@@ -9,7 +9,7 @@ ENV RAILS_ENV="${RAILS_ENV}" \
     RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
 
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends libpq-dev libvips
+  && apt-get install -y --no-install-recommends libpq-dev imagemagick
 
 COPY Gemfile Gemfile.lock ./
 RUN bundle install --jobs "$(nproc)"
@@ -38,10 +38,6 @@ USER ruby
 ENV RAILS_ENV="${RAILS_ENV}" \
     USER="ruby" \
     RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
-
-# System dependencies e.g. libvips42
-COPY --chown=ruby:ruby --from=builder /usr/lib /usr/lib
-COPY --chown=ruby:ruby --from=builder /usr/share /usr/share
 
 # Installed gems
 COPY --chown=ruby:ruby --from=builder /usr/local/bundle /usr/local/bundle
