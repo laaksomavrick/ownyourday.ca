@@ -64,7 +64,7 @@ data "aws_iam_policy_document" "instance_policy" {
   }
 
   statement {
-    sid = "S3Access"
+    sid = "S3BucketContentAccess"
 
     actions = [
       "s3:Get*",
@@ -72,6 +72,18 @@ data "aws_iam_policy_document" "instance_policy" {
       "s3:DeleteObject",
       "s3:PutObject",
       "s3:PutObjectAcl"
+    ]
+
+    resources = [
+      "${var.bucket_arn}/*"
+    ]
+  }
+
+  statement {
+    sid = "S3BucketAccess"
+
+    actions = [
+      "s3:ListBucket"
     ]
 
     resources = [
