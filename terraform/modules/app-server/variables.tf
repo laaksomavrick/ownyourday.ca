@@ -65,3 +65,11 @@ variable "new_relic_account_id" {
 variable "cloudmap_service_arn" {
   type = string
 }
+
+variable "bucket_arn" {
+  type = string
+}
+
+variable "bucket_name" {
+  type = string
+}
