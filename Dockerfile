@@ -9,7 +9,7 @@ ENV RAILS_ENV="${RAILS_ENV}" \
     RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
 
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends libpq-dev imagemagick
+  && apt-get install -y --no-install-recommends libpq-dev
 
 COPY Gemfile Gemfile.lock ./
 RUN bundle install --jobs "$(nproc)"
@@ -28,6 +28,9 @@ ARG GID=1000
 
 ARG RAILS_MASTER_KEY
 ARG RAILS_ENV="production"
+
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends imagemagick
 
 RUN groupadd -g "${GID}" ruby \
   && useradd --create-home --no-log-init -u "${UID}" -g "${GID}" ruby \

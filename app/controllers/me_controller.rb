@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 class MeController < ApplicationController
-  def edit
-    @me = current_user
-  end
+  def edit; end
 
   def update
     params = update_user_params
