@@ -38,6 +38,7 @@
             pkgs.nodejs
             pkgs.nodePackages.pnpm
             pkgs.postgresql_11
+            pkgs.vips
             pkgs.ruby_3_1
             pkgs.rubyPackages.ruby-vips
           ];
