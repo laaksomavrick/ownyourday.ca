@@ -41,6 +41,7 @@
             pkgs.vips
             pkgs.ruby_3_1
             pkgs.rubyPackages.ruby-vips
+            pkgs.rubyPackages.ffi
           ];
         };
       });
