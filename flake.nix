@@ -40,6 +40,7 @@
             pkgs.postgresql_11
             pkgs.ruby_3_1
             pkgs.vips
+            pkgs.glib
           ];
         };
       });
