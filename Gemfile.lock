@@ -395,6 +395,7 @@ DEPENDENCIES
   rspec-rails (~> 6.0.0)
   rubocop-rails
   rubocop-rspec
+  ruby-vips
   selenium-webdriver (~> 4.10)
   sprockets-rails
   stackprof

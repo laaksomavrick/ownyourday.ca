@@ -63,6 +63,8 @@ gem 'heroicon'
 
 gem 'rack-cors'
 
+gem 'ruby-vips'
+
 # Use Sass to process CSS
 # gem "sassc-rails"
 
