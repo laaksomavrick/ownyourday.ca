@@ -29,6 +29,9 @@ ARG GID=1000
 ARG RAILS_MASTER_KEY
 ARG RAILS_ENV="production"
 
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends imagemagick
+
 RUN groupadd -g "${GID}" ruby \
   && useradd --create-home --no-log-init -u "${UID}" -g "${GID}" ruby \
   && chown ruby:ruby -R /app
@@ -39,7 +42,10 @@ ENV RAILS_ENV="${RAILS_ENV}" \
     USER="ruby" \
     RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
 
+# Installed gems
 COPY --chown=ruby:ruby --from=builder /usr/local/bundle /usr/local/bundle
+
+# Rails
 COPY --chown=ruby:ruby --from=builder /builder/public /public
 COPY --chown=ruby:ruby --from=builder /builder ./
 

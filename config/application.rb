@@ -23,5 +23,8 @@ module Ownyourday
 
     # Add feature flags to config
     config.feature_flags = config_for(:feature_flags)
+
+    # ImageMagick
+    config.active_storage.variant_processor = :mini_magick
   end
 end

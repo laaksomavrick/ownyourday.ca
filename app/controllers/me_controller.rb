@@ -1,19 +1,20 @@
 # frozen_string_literal: true
 
 class MeController < ApplicationController
-  def edit
-    @me = current_user
-  end
+  def edit; end
 
   def update
     params = update_user_params
     time_zone = params[:time_zone]
     first_name = params[:first_name]
     last_name = params[:last_name]
+    avatar = params[:avatar]
 
     current_user.time_zone = time_zone
     current_user.first_name = first_name
     current_user.last_name = last_name
+
+    current_user.avatar.attach(avatar) if avatar
 
     current_user.save
 
@@ -32,7 +33,8 @@ class MeController < ApplicationController
     params.fetch(:user, {}).permit(
       :time_zone,
       :first_name,
-      :last_name
+      :last_name,
+      :avatar
     )
   end
 end

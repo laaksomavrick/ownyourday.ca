@@ -1,5 +1,24 @@
 <div class="flex flex-col">
-  <%= form_with model: @me, url: me_path, class: "space-y-4" do |f| %>
+  <%= form_with model: current_user, url: me_path, class: "space-y-4" do |f| %>
+
+    <div class="flex flex-col items-center justify-center">
+      <div class="pb-4">
+        <% if current_user.avatar.attached? %>
+          <%= image_tag current_user.avatar.variant(:profile), class: "rounded-full" %>
+        <% else %>
+          <div class="h-40 w-40 rounded-full bg-indigo-500">
+            <p class="text-white text-7xl flex items-center justify-center w-full h-full">
+              <%= user_initials(user: current_user) %>
+            </p>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="max-w-sm">
+        <%= f.file_field :avatar, class: "cursor-pointer shadow hover:shadow-md relative m-0 mt-2 block w-full min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] file:cursor-pointer hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100 dark:focus:border-primary" %>
+      </div>
+    </div>
+
     <div class="flex flex-col">
       <%= f.label :email, t('global.email_address'), class: label_class("text-xl") %>
       <%= f.text_field :email, class: text_field_class("text-xl"), disabled: true %>
@@ -9,12 +28,12 @@
       <div>
         <%= f.label :first_name, t('global.first_name'), class: label_class("text-xl") %>
         <%= f.text_field :first_name, class: text_field_class("text-xl") %>
-        <%= render 'layouts/forms/input_error', model: @me, field: :first_name %>
+        <%= render 'layouts/forms/input_error', model: current_user, field: :first_name %>
       </div>
       <div>
         <%= f.label :last_name, t('global.last_name'), class: label_class("text-xl") %>
         <%= f.text_field :last_name, class: text_field_class("text-xl") %>
-        <%= render 'layouts/forms/input_error', model: @me, field: :last_name %>
+        <%= render 'layouts/forms/input_error', model: current_user, field: :last_name %>
       </div>
     </div>
 

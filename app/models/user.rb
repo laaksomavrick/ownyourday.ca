@@ -8,6 +8,11 @@ class User < ApplicationRecord
          :trackable,
          :omniauthable, omniauth_providers: [:google_oauth2]
 
+  has_one_attached :avatar do |attachable|
+    attachable.variant :profile, resize_to_limit: [160, 160]
+    attachable.variant :thumb, resize_to_limit: [40, 40]
+  end
+
   has_many :goals, -> { order(position: :asc) }, class_name: 'Goals::Goal', dependent: :destroy, inverse_of: :user
   has_many :task_lists, dependent: :destroy
   has_many :tasks, class_name: 'Tasks::Task', dependent: :destroy

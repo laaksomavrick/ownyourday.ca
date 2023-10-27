@@ -117,6 +117,14 @@ resource "aws_ecs_task_definition" "service" {
         {
           name : "NEW_RELIC_LICENSE_KEY",
           value : var.new_relic_license_key
+        },
+        {
+          name : "S3_BUCKET_NAME",
+          value : var.bucket_name
+        },
+        {
+          name : "AWS_REGION",
+          value : "ca-central-1"
         }
       ]
     }

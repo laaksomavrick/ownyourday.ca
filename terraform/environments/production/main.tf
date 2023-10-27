@@ -65,6 +65,9 @@ module "app-server" {
   db_host     = module.database.db_host
   db_username = var.db_username
   db_password = var.db_password
+
+  bucket_arn  = module.storage.bucket_arn
+  bucket_name = module.storage.bucket_name
 }
 
 module "database" {
@@ -77,6 +80,12 @@ module "database" {
   password          = var.db_password
   db_security_group = module.network.db_security_group
   db_subnet_group   = module.network.db_subnet_group
+}
+
+module "storage" {
+  source = "../../modules/storage"
+
+  app_name = var.app_name
 }
 
 module "cdn" {

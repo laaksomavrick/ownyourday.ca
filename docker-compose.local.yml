@@ -15,6 +15,8 @@ services:
 #    ports:
 #      - '3000:3000'
 #    environment:
+#      S3_BUCKET_NAME: ownyourday-app-bucket
+#      AWS_REGION: ca-central-1
 #      OWNYOURDAY_DATABASE_HOST: db
 #      OWNYOURDAY_DATABASE_NAME: ownyourday_production
 #      OWNYOURDAY_DATABASE_USERNAME: docker

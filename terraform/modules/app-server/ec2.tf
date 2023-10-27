@@ -62,6 +62,22 @@ data "aws_iam_policy_document" "instance_policy" {
       aws_cloudwatch_log_group.instance.arn,
     ]
   }
+
+  statement {
+    sid = "S3Access"
+
+    actions = [
+      "s3:Get*",
+      "s3:List*",
+      "s3:DeleteObject",
+      "s3:PutObject",
+      "s3:PutObjectAcl"
+    ]
+
+    resources = [
+      var.bucket_arn
+    ]
+  }
 }
 
 resource "aws_iam_policy" "instance_policy" {
