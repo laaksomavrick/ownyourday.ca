@@ -37,5 +37,18 @@ RSpec.describe 'Me' do
       expect(find_by_id('user_first_name').value).to eq 'firstname'
       expect(find_by_id('user_last_name').value).to eq 'lastname'
     end
+
+    it 'can attach a profile photo' do
+      sign_in user
+      visit me_path
+
+      attach_file('user[avatar]', Rails.root.join('spec/fixtures/files/profile_photo.jpeg').to_s)
+
+      submit_button = find('input[name="commit"]')
+      submit_button.click
+
+      expect(page).to have_content(I18n.t('helpers.alert.update_successful', name: 'user information'))
+      expect(page).to have_css("img[src*='profile_photo.jpeg']")
+    end
   end
 end

@@ -22,5 +22,4 @@ Rails.application.routes.draw do
   end
 
   root to: redirect('/tasks')
-  get '*path' => redirect('/tasks')
 end
