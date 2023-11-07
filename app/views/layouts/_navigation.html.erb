@@ -1,5 +1,5 @@
 <nav class="flex items-center w-full space-x-4 pb-2 select-none">
   <%= render Navigation::NavigationItemComponent.new(path: tasks_path, title: t("tasks.navigation")) %>
   <%= render Navigation::NavigationItemComponent.new(path: goals_path, title: t("goals.navigation")) %>
-  <%= render Navigation::NavigationUserItemComponent.new(path: me_path, user: current_user) %>
+  <%= render Navigation::NavigationDropdownComponent.new(path: me_path, user: current_user) %>
 </nav>

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Navigation
-  class NavigationUserItemComponent < ViewComponent::Base
+  class NavigationDropdownComponent < ViewComponent::Base
     include ApplicationHelper
 
     def initialize(path:, user:)
