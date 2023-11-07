@@ -1,0 +1,26 @@
+<div data-controller="dropdown" class="relative !ml-auto">
+
+  <button class="<%="h-10 w-10 rounded-full bg-#{bg_color} !ml-auto" %>" data-action="dropdown#toggle click@window->dropdown#hide">
+    <% if @user.avatar.attached? %>
+      <%= image_tag @user.avatar.variant(:thumb), class: "rounded-full" %>
+    <% else %>
+      <p class="text-white text-xl flex items-center justify-center w-full h-full">
+        <%= user_initials(user: @user) %>
+      </p>
+    <% end %>
+  </button>
+
+  <div
+    data-dropdown-target="menu"
+    class="hidden transition transform absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg right-0 bg-white border border-gray-300 ring-1 ring-black ring-opacity-5 focus:outline-none"
+    data-transition-enter-from="opacity-0 scale-95"
+    data-transition-enter-to="opacity-100 scale-100"
+    data-transition-leave-from="opacity-100 scale-100"
+    data-transition-leave-to="opacity-0 scale-95"
+  >
+    <div class="py-1" role="none">
+      <%= link_to "Me", me_path, class: "block px-4 py-2 text-lg" %>
+      <%= button_to 'Sign out', destroy_user_session_path, method: :delete,  class: "block px-4 py-2 text-lg" %>
+    </div>
+  </div>
+</div>
