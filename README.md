@@ -8,7 +8,7 @@ add todos for myself on a day-to-day basis.
 
 Moreover, developing and operating this application lets me experiment with new practices and hone what my existing techniques.
 
-A prior version of the application exists at www.ownyourday.ca
+A prior version of the application exists at [www.ownyourday.ca](https://ownyourday.ca/)
 
 ## Project dependencies
 * `ruby` 3.1.2
