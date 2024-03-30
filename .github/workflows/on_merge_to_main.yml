@@ -64,7 +64,8 @@ jobs:
           tags: ${{ env.DOCKER_REPO_URL }}:${{ env.DOCKER_IMAGE_TAG }}
           push: true
           build-args: |
-            "RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }}"
+            RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }}
+            APPLICATION_VERSION=${{ env.DOCKER_IMAGE_TAG }}
 
   tag-deployment-in-new-relic:
     needs: [changes, build-and-push-docker-image]
