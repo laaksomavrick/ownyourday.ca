@@ -1,11 +1,7 @@
 name: On merge to main
 
-# on:
-#   push:
-#     branches: [ main ]
-
 on:
-  pull_request:
+  push:
     branches: [ main ]
 
 env:
@@ -112,11 +108,9 @@ jobs:
           envs: DOCKER_IMAGE_TAG,DOCKER_REPO_URL,DOCKER_REGISTRY_URL
           script: |
             cd /home/ownyourday/ownyourday.ca
-            git pull
+            git checkout main && git pull
             aws ecr get-login-password | docker login --username AWS --password-stdin $DOCKER_REGISTRY_URL
             docker pull $DOCKER_REPO_URL:$DOCKER_IMAGE_TAG
             docker tag $DOCKER_REPO_URL:$DOCKER_IMAGE_TAG ownyourday:latest
             docker-compose up -d --no-deps --build app
             docker image prune -af
-
-# TODO: git checkout main && git pull
