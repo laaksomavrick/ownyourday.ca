@@ -112,5 +112,5 @@ jobs:
             aws ecr get-login-password | docker login --username AWS --password-stdin $DOCKER_REGISTRY_URL
             docker pull $DOCKER_REPO_URL:$DOCKER_IMAGE_TAG
             docker tag $DOCKER_REPO_URL:$DOCKER_IMAGE_TAG ownyourday:latest
-            docker-compose up -d --no-deps --build app
+            docker compose up -d --no-deps --build app
             docker image prune -af
