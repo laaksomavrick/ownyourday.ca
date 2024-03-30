@@ -30,6 +30,8 @@ services:
       - "3000"
     depends_on:
       - db
+    env_file:
+      - app.env
     volumes:
       - ./log:/app/log
     networks:
@@ -40,6 +42,8 @@ services:
     restart: unless-stopped
     expose:
       - "5432"
+    env_file:
+      - db.env
     volumes:
       - ./tmp/db:/var/lib/postgresql/data
     networks:
