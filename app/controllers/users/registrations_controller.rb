@@ -60,7 +60,7 @@ module Users
 
     # If you have extra params to permit, append them to the sanitizer.
     def configure_sign_up_params
-      devise_parameter_sanitizer.permit(:sign_up, keys: [:time_zone])
+      devise_parameter_sanitizer.permit(:sign_up, keys: [:time_zone, :first_name, :last_name])
     end
 
     # If you have extra params to permit, append them to the sanitizer.
