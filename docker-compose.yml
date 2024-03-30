@@ -40,8 +40,6 @@ services:
     restart: unless-stopped
     expose:
       - "5432"
-    env_file:
-      - db.env
     volumes:
       - ./tmp/db:/var/lib/postgresql/data
     networks:
