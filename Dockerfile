@@ -4,9 +4,11 @@ WORKDIR /builder
 
 ARG RAILS_MASTER_KEY
 ARG RAILS_ENV="production"
+ARG APPLICATION_VERSION
 
 ENV RAILS_ENV="${RAILS_ENV}" \
-    RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
+    RAILS_MASTER_KEY=${RAILS_MASTER_KEY} \
+    APPLICATION_VERSION=${APPLICATION_VERSION}
 
 RUN apt-get update \
   && apt-get install -y --no-install-recommends libpq-dev
@@ -28,6 +30,7 @@ ARG GID=1000
 
 ARG RAILS_MASTER_KEY
 ARG RAILS_ENV="production"
+ARG APPLICATION_VERSION
 
 RUN apt-get update \
   && apt-get install -y --no-install-recommends imagemagick
@@ -40,7 +43,8 @@ USER ruby
 
 ENV RAILS_ENV="${RAILS_ENV}" \
     USER="ruby" \
-    RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
+    RAILS_MASTER_KEY=${RAILS_MASTER_KEY} \
+    APPLICATION_VERSION=${APPLICATION_VERSION}
 
 # Installed gems
 COPY --chown=ruby:ruby --from=builder /usr/local/bundle /usr/local/bundle
