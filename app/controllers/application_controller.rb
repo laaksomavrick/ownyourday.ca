@@ -8,11 +8,11 @@ class ApplicationController < ActionController::Base
   helper_method :breadcrumbs
 
   # Here so Rubymine stops complaining
-  def current_user # rubocop:disable Lint/UselessMethodDefinition
+  def current_user
     super
   end
 
-  def authenticate_user! # rubocop:disable Lint/UselessMethodDefinition
+  def authenticate_user!
     super
   end
 

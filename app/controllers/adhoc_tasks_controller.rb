@@ -9,7 +9,7 @@ class AdhocTasksController < ApplicationController
     @adhoc_task = authorize CreateAdhocTaskAction.new.call(adhoc_task_params:)
 
     if @adhoc_task.errors.empty? == false
-      render 'new', status: :unprocessable_entity
+      render 'new', status: :unprocessable_content
       return
     end
 

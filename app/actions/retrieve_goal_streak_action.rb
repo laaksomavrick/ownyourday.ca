@@ -22,94 +22,56 @@ class RetrieveGoalStreakAction
 
   private
 
+  # Completions in the current week plus every earlier consecutive week that met the goal
   def streak_for_times_per_week_goal(goal:, task_list_date:)
-    goal_id = goal.id
-    last_failed_week = find_most_recent_days_per_week_failure(goal:, task_list_date:)
+    tasks = goal_tasks_up_to(goal:, task_list_date:)
+    first_task_list_date = tasks.minimum('task_lists.date')
 
-    if last_failed_week.count.zero?
-      streak_count = Tasks::GoalTask
-                     .joins(:task_list)
-                     .where(goal_id:, completed: true)
-                     .count
-    else
-      week_end = last_failed_week[0]['week_end']
-      streak_count = Tasks::GoalTask
-                     .joins(:task_list)
-                     .where(goal_id:, completed: true)
-                     .where('task_lists.date >= ?', week_end)
-                     .count
+    return 0 if first_task_list_date.nil?
+
+    completions_by_week = tasks.where(completed: true)
+                               .pluck('task_lists.date')
+                               .map { |date| user_week(date) }
+                               .tally
+
+    current_week = user_week(task_list_date)
+    first_week = user_week(first_task_list_date)
+    streak_count = completions_by_week.fetch(current_week, 0)
+
+    week = current_week - 7.days
+    while week >= first_week
+      completions = completions_by_week.fetch(week, 0)
+      break if completions < goal.times_per_week
+
+      streak_count += completions
+      week -= 7.days
     end
 
     streak_count
   end
 
+  # Completed tasks since the most recent uncompleted task. Today's task doesn't break the streak
+  # until the day is over, and future task lists are ignored
   def streak_for_sequential_goal(goal:, task_list_date:)
-    goal_id = goal.id
-    last_uncompleted_task = find_most_recent_uncompleted_task(goal_id:, task_list_date:)
+    tasks = goal_tasks_up_to(goal:, task_list_date:)
+    last_uncompleted_date = tasks.where(completed: false)
+                                 .where(task_lists: { date: ...task_list_date })
+                                 .maximum('task_lists.date')
 
-    if last_uncompleted_task
-      last_uncompleted_task_date = last_uncompleted_task.task_list.date
-      streak_count = Tasks::GoalTask
-                     .joins(:task_list)
-                     .where(goal_id:, completed: true)
-                     .where('task_lists.date > ?', last_uncompleted_task_date)
-                     .count
-    else
-      streak_count = Tasks::GoalTask
-                     .joins(:task_list)
-                     .where(goal_id:, completed: true)
-                     .count
-    end
-
-    streak_count
+    completed_tasks = tasks.where(completed: true)
+    completed_tasks = completed_tasks.where('task_lists.date > ?', last_uncompleted_date) if last_uncompleted_date
+    completed_tasks.count
   end
 
-  def find_most_recent_days_per_week_failure(goal:, task_list_date:)
-    start_date = @user.beginning_of_day(today: @user.created_at).monday - 7.days
-    end_date = @user.beginning_of_day.sunday
-    user_id = @user.id
-    times_per_week = goal.times_per_week
-    goal_id = goal.id
-
-    query = <<-SQL.squish
-      SELECT * FROM (
-        SELECT
-          week_start,
-          week_start + interval '7 days' as week_end,
-          To_char(week_start, 'IYYY-IW') year_week
-        FROM generate_series(:start_date, :end_date, '1 week'::interval)
-          AS week_start
-      ) as year_weeks
-      LEFT OUTER JOIN (
-        SELECT
-          To_char(tl.date, 'IYYY-IW') year_week,
-          COUNT(completed) completed_tasks_that_week
-        FROM  tasks inner join task_lists tl on tasks.task_list_id = tl.id
-        WHERE tl.user_id = :user_id
-        AND completed = true
-        AND goal_id = :goal_id
-        GROUP  BY year_week
-      ) tasks
-      ON year_weeks.year_week = tasks.year_week
-      WHERE completed_tasks_that_week != :times_per_week
-      AND year_weeks.week_end <= :task_list_date::DATE
-      ORDER BY year_weeks.year_week desc
-    SQL
-
-    ActiveRecord::Base.connection.execute(
-      ActiveRecord::Base.sanitize_sql([query,
-                                       { start_date:, end_date:, user_id:, times_per_week:, task_list_date:,
-                                         goal_id: }])
-    )
-  end
-
-  def find_most_recent_uncompleted_task(goal_id:, task_list_date:)
+  def goal_tasks_up_to(goal:, task_list_date:)
     Tasks::GoalTask
       .joins(:task_list)
-      .where(goal_id:, completed: false)
-      .where.not(task_lists: { date: task_list_date })
-      .order({ 'task_lists.date' => :desc })
-      .limit(1)
-      .first
+      .where(goal_id: goal.id)
+      .where(task_lists: { date: ..task_list_date })
+  end
+
+  # Monday of the week the date falls in, in the user's time zone
+  def user_week(date)
+    date.in_time_zone(@user.time_zone).to_date.beginning_of_week
   end
 end

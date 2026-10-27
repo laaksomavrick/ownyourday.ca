@@ -3,40 +3,36 @@
 <% end %>
 
 <div class="flex flex-col space-y-4 h-full" id='task-list'>
-  <div data-controller="date-select-picker" data-date-select-picker-hidden-class="hidden">
-    <div class="flex items-center pb-2">
-      <button
-        id=date-select-picker-button
-        data-action="click->date-select-picker#toggle"
-        class="text-3xl font-semibold cursor-pointer select-none">
-        <%= human_date_string(datetime: @date) %>
-      </button>
-      <div class="ml-auto flex space-x-2 w-auto items-center">
-        <%= link_to tasks_path, class: neutral_button("w-[64.3px] h-[40px]"), 'aria-label': 'Today' do %>
-          <%= heroicon "home",  variant: "solid", options: { class: "w-full h-full"}  %>
-        <% end %>
-        <%= link_to new_adhoc_task_path(task_list_id: @task_list.id), class: '' do %>
-          <button class="<%= primary_button %>"><%= t('tasks.adhoc.new') %></button>
-        <% end %>
-      </div>
-    </div>
-    <div id="date_select_picker" data-date-select-picker-target="dateSelectPicker" class="hidden">
-      <%= form_with path: tasks_path, scope: :task_list do |f| %>
-        <div class="flex flex-col md:flex-row space-x-4 mt-2">
-          <%= f.date_select :date, { default: @date, order: [:month, :day, :year], use_short_month: true },
-                            { class: "border border-gray-300 text-gray-900 text-md rounded focus:ring-blue-500 focus:border-indigo-500 block w-full p-2.5 rounded shadow hover:shadow-md cursor-pointer" } %>
-          <button
-            id="date_select_button"
-            class="<%= neutral_button %>"
-            formmethod="get"
-            formaction="<%= tasks_path %>"
-          >
-            <%= t('tasks.date.button') %>
-          </button>
-        </div>
-        </div>
+  <div class="flex items-center pb-2">
+    <div class="flex items-center min-w-0">
+      <%= link_to tasks_path(task_list: { date: @local_date.yesterday.iso8601 }),
+                  class: "shrink-0 p-2 -ml-2 text-gray-400 hover:text-indigo-500", 'aria-label': t('tasks.date.previous') do %>
+        <%= heroicon "chevron-left", variant: "solid", options: { class: "w-6 h-6" } %>
       <% end %>
-      </div>
+      <%= form_with url: tasks_path, method: :get, scope: :task_list, data: { controller: "date-picker" }, class: "relative min-w-0" do |f| %>
+        <span id="date-select-picker-button" class="block truncate text-xl min-[375px]:text-2xl md:text-3xl font-semibold select-none">
+          <%= human_date_string(datetime: @date) %>
+        </span>
+        <% # Invisible native date input on top of the date: tapping the date opens the device's date picker %>
+        <%= f.date_field :date, value: @local_date,
+                         class: "absolute inset-0 w-full h-full opacity-0 cursor-pointer",
+                         'aria-label': t('tasks.date.label'),
+                         data: { date_picker_target: "input", action: "click->date-picker#open change->date-picker#submit" } %>
+      <% end %>
+      <%= link_to tasks_path(task_list: { date: @local_date.tomorrow.iso8601 }),
+                  class: "shrink-0 p-2 text-gray-400 hover:text-indigo-500", 'aria-label': t('tasks.date.next') do %>
+        <%= heroicon "chevron-right", variant: "solid", options: { class: "w-6 h-6" } %>
+      <% end %>
+    </div>
+    <div class="ml-auto pl-2 flex shrink-0 space-x-2 w-auto items-center">
+      <%= link_to tasks_path, class: neutral_button("w-10 md:w-[64.3px] h-[40px] !px-2 md:!px-4"), 'aria-label': t('global.today') do %>
+        <%= heroicon "home",  variant: "solid", options: { class: "w-full h-full"}  %>
+      <% end %>
+      <%= link_to new_adhoc_task_path(task_list_id: @task_list.id), class: '' do %>
+        <button class="<%= primary_button %>"><%= t('tasks.adhoc.new') %></button>
+      <% end %>
+    </div>
+  </div>
 
   <% if current_user.goals? %>
     <%= render 'tasks/task_list' %>

@@ -24,14 +24,27 @@ RSpec.describe GenerateTodaysTaskListAction do
       expect(task_list.tasks.third.position).to be(2)
       expect(task_list.tasks.third.goal.id).to be(times_per_week_goal.id)
     end
+
+    it 'sets contiguous positions when a goal is not scheduled today' do
+      first_goal = create(:daily_goal, user:, position: 0)
+      today = DateTime.current.utc
+      user_weekday = (today.in_time_zone(user.time_zone).wday + 6) % 7
+      create(:days_of_week_goal, user:, metadata: { 'days_of_week' => [(user_weekday + 1) % 7] }, position: 1)
+      last_goal = create(:daily_goal, user:, position: 2)
+
+      task_list = described_class.new(user:).call(today:)
+
+      expect(task_list.tasks.map(&:position)).to eq([0, 1])
+      expect(task_list.tasks.map(&:goal_id)).to eq([first_goal.id, last_goal.id])
+    end
   end
 
   SpecConstants::TIME_ZONES.each do |time_zone|
     SpecConstants::HOURS.each do |hour|
-      let!(:today) { DateTime.current.utc.end_of_day }
-      let!(:user) { create(:user, time_zone:) }
-
       context "when the user is in time zone #{time_zone} and the time is #{hour}:00" do
+        let!(:today) { DateTime.current.in_time_zone(time_zone).end_of_day }
+        let!(:user) { create(:user, time_zone:) }
+
         it 'creates a task list' do
           task_list = described_class.new(user:).call(today:)
           expect(task_list).to be_present

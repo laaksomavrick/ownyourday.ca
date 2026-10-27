@@ -38,7 +38,8 @@ en:
     all_completed: 'Day completed.'
     date:
       label: 'Select a date'
-      button: "Select"
+      previous: 'Previous day'
+      next: 'Next day'
     adhoc:
       new: 'Add'
     create:
@@ -55,7 +56,7 @@ en:
     new:
       name_label: 'Name'
       completed_label: 'Completed'
-      description_label: 'Description'
+      description_label: 'Description (optional)'
       active_milestone_error: 'Cannot create a milestone when an active milestone already exists'
     destroy:
       confirmation: 'Are you sure you want to delete %{name}?'

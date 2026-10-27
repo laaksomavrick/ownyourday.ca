@@ -31,7 +31,7 @@ module ApplicationHelper
   end
 
   def human_date_string(datetime: DateTime.current.utc)
-    datetime.strftime('%b %d, %Y')
+    datetime.in_time_zone(current_user.time_zone).strftime('%b %d, %Y')
   end
 
   def user_initials(user: nil)

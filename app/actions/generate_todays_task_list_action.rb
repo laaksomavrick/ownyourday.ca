@@ -6,6 +6,9 @@ class GenerateTodaysTaskListAction
   end
 
   def call(today: DateTime.current.utc)
+    # Weekdays and weeks are based on the user's time zone, not UTC
+    today = today.in_time_zone(@user.time_zone)
+
     TaskList.transaction do
       user_date = @user.beginning_of_day(today:)
 
@@ -15,7 +18,10 @@ class GenerateTodaysTaskListAction
       day_of_week_tasks = days_of_week_goals_to_schedule(task_list:, today:)
       times_per_week_tasks = times_per_week_goals_to_schedule(task_list:, today:)
 
-      tasks = daily_tasks + day_of_week_tasks + times_per_week_tasks
+      # Order by goal position, then number from 0 so there are no gaps for goals not scheduled today
+      tasks = (daily_tasks + day_of_week_tasks + times_per_week_tasks)
+              .sort_by { |task| task[:position] }
+              .each_with_index.map { |task, index| task.merge(position: index) }
 
       Tasks::GoalTask.create!(tasks)
 

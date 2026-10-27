@@ -82,15 +82,14 @@ RSpec.describe 'Milestones' do
         expect(page).to have_content("Name can't be blank")
       end
 
-      it 'causes an error when description is not set' do
+      it 'can create a milestone without a description' do
         visit new_goal_milestone_path(goal)
 
         fill_in I18n.t('milestones.new.name_label'), with: 'name'
         submit_button = find('input[name="commit"]')
         submit_button.click
 
-        expect(page).not_to have_content(I18n.t('helpers.alert.create_successful', name: 'name'))
-        expect(page).to have_content("Description can't be blank")
+        expect(page).to have_content(I18n.t('helpers.alert.create_successful', name: 'name'))
       end
 
       it 'causes an error when goal has an active milestone' do
@@ -159,15 +158,15 @@ RSpec.describe 'Milestones' do
         expect(page).to have_content("Name can't be blank")
       end
 
-      it 'causes an error when description is not set' do
+      it 'can remove the description' do
         visit edit_goal_milestone_path(goal, milestone)
 
         fill_in I18n.t('milestones.new.description_label'), with: ''
         submit_button = find('input[name="commit"]')
         submit_button.click
 
-        expect(page).not_to have_content(I18n.t('helpers.alert.update_successful', name: 'name'))
-        expect(page).to have_content("Description can't be blank")
+        expect(page).to have_content(I18n.t('helpers.alert.update_successful', name: milestone.name))
+        expect(milestone.reload.description).to eq('')
       end
     end
   end

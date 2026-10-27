@@ -3,7 +3,7 @@
 module Alerts
   class BaseComponent < ViewComponent::Base
     def initialize(message:)
-      super
+      super()
       @message = message
     end
 

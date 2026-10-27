@@ -23,6 +23,17 @@ class TaskList < ApplicationRecord
     tasks.count == completed
   end
 
+  # Sets task positions to 0, 1, 2... in the given order (by default the current order, oldest first on ties)
+  def renumber_task_positions(ordered_tasks = tasks.reorder(:position, :id).to_a)
+    Tasks::Task.transaction do
+      ordered_tasks.each_with_index do |task, position|
+        # rubocop:disable Rails/SkipsModelValidations
+        task.update_column(:position, position) unless task.position == position
+        # rubocop:enable Rails/SkipsModelValidations
+      end
+    end
+  end
+
   private
 
   def validate_date

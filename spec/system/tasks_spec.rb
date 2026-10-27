@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# rubocop:disable Rspec/NestedGroups
+# rubocop:disable RSpec/NestedGroups
 
 require 'rails_helper'
 
@@ -132,14 +132,9 @@ RSpec.describe 'Tasks' do
 
             visit tasks_path
 
-            click_button user.beginning_of_day.strftime('%b %d, %Y')
+            find_field(I18n.t('tasks.date.label'), visible: :all).set(monday.to_date)
 
-            select monday.year.to_s, from: 'task_list[date(1i)]'
-            select monday.strftime('%b'), from: 'task_list[date(2i)]'
-            select monday.day.to_s, from: 'task_list[date(3i)]'
-            click_button I18n.t('tasks.date.button')
-
-            find_button(text: monday.strftime('%b %d, %Y'))
+            expect(page).to have_css('#date-select-picker-button', text: monday.strftime('%b %d, %Y'))
 
             expect(page).to have_content(monday.year)
             expect(page).to have_content(monday.strftime('%b'))
@@ -147,6 +142,25 @@ RSpec.describe 'Tasks' do
 
             expect(page).to have_content(monday_only_goal.name)
             expect(page).not_to have_content(not_monday_goal.name)
+          end
+
+          it 'can go to the previous and next day' do
+            visit tasks_path
+
+            click_link I18n.t('tasks.date.previous')
+            expect(page).to have_css('#date-select-picker-button', text: (today - 1.day).strftime('%b %d, %Y'))
+
+            click_link I18n.t('tasks.date.next')
+            expect(page).to have_css('#date-select-picker-button', text: today.strftime('%b %d, %Y'))
+
+            click_link I18n.t('tasks.date.next')
+            expect(page).to have_css('#date-select-picker-button', text: (today + 1.day).strftime('%b %d, %Y'))
+          end
+
+          it 'ignores an invalid date' do
+            visit tasks_path(task_list: { date: 'not-a-date' })
+
+            expect(page).to have_css('#date-select-picker-button', text: today.strftime('%b %d, %Y'))
           end
         end
       end
@@ -175,8 +189,7 @@ RSpec.describe 'Tasks' do
             monday_task_list.tasks.find_by(goal_id: goal.id).update(completed: true)
             tuesday_task_list.tasks.find_by(goal_id: goal.id).update(completed: true)
 
-            visit tasks_path(task_list: { 'date(1i)' => wednesday.year, 'date(2i)' => wednesday.month,
-                                          'date(3i)' => wednesday.day })
+            visit tasks_path(task_list: { date: wednesday.to_date.iso8601 })
 
             expect(page).to have_content('2 / 3')
           end
@@ -188,8 +201,7 @@ RSpec.describe 'Tasks' do
                                .call(today: monday)
             monday_task_list.tasks.find_by(goal_id: goal.id).update(completed: true)
 
-            visit tasks_path(task_list: { 'date(1i)' => monday.year, 'date(2i)' => monday.month,
-                                          'date(3i)' => monday.day })
+            visit tasks_path(task_list: { date: monday.to_date.iso8601 })
 
             expect(page).to have_content('1 / 3')
           end
@@ -219,4 +231,4 @@ RSpec.describe 'Tasks' do
   end
 end
 
-# rubocop:enable Rspec/NestedGroups
+# rubocop:enable RSpec/NestedGroups

@@ -23,24 +23,21 @@ class UpdateTodaysTaskListAction
         end
         adhoc_task_ids = task_list.adhoc_tasks.map(&:id)
 
+        list_date = task_list.date
+        # Goal tasks are recreated below; destroying the task list alone would only detach them
+        Tasks::GoalTask.where(task_list:).delete_all
         task_list.destroy
 
-        task_list = GenerateTodaysTaskListAction.new(user:).call
+        task_list = GenerateTodaysTaskListAction.new(user:).call(today: list_date)
 
         add_adhoc_tasks(task_list, adhoc_task_ids)
         complete_goal_tasks(task_list, goal_task_data)
-        normalize_goal_positions(task_list)
+        task_list.renumber_task_positions
       end
     end
   end
 
   private
-
-  def normalize_goal_positions(task_list)
-    task_list.tasks.order(position: :asc).each_with_index do |task, index|
-      task.insert_at(index)
-    end
-  end
 
   def add_adhoc_tasks(task_list, adhoc_task_ids)
     # rubocop:disable Rails/SkipsModelValidations
@@ -60,7 +57,7 @@ class UpdateTodaysTaskListAction
     end
 
     # rubocop:disable Rails/SkipsModelValidations
-    Tasks::GoalTask.where(goal_id: goal_task_ids_to_complete).update_all(completed: true)
+    task_list.goal_tasks.where(goal_id: goal_task_ids_to_complete).update_all(completed: true)
     # rubocop:enable Rails/SkipsModelValidations
   end
 end
