@@ -50,17 +50,28 @@ class RetrieveGoalStreakAction
     streak_count
   end
 
-  # Completed tasks since the most recent uncompleted task. Today's task doesn't break the streak
-  # until the day is over, and future task lists are ignored
+  # Completed days counting back from today. A day the goal was due breaks the streak if its task
+  # wasn't completed, or if there's no task because the app wasn't opened that day. Today's task
+  # doesn't break the streak until the day is over, and future task lists are ignored
   def streak_for_sequential_goal(goal:, task_list_date:)
     tasks = goal_tasks_up_to(goal:, task_list_date:)
-    last_uncompleted_date = tasks.where(completed: false)
-                                 .where(task_lists: { date: ...task_list_date })
-                                 .maximum('task_lists.date')
+    completed_by_day = tasks.pluck('task_lists.date', :completed)
+                            .to_h { |date, completed| [user_day(date), completed] }
 
-    completed_tasks = tasks.where(completed: true)
-    completed_tasks = completed_tasks.where('task_lists.date > ?', last_uncompleted_date) if last_uncompleted_date
-    completed_tasks.count
+    today = user_day(task_list_date)
+    first_day = [user_day(goal.created_at), *completed_by_day.keys].min
+    streak_count = completed_by_day[today] ? 1 : 0
+
+    day = today - 1.day
+    while day >= first_day
+      completed = completed_by_day[day]
+      break if completed == false || (completed.nil? && goal.scheduled_on?(day))
+
+      streak_count += 1 if completed
+      day -= 1.day
+    end
+
+    streak_count
   end
 
   def goal_tasks_up_to(goal:, task_list_date:)
@@ -70,8 +81,12 @@ class RetrieveGoalStreakAction
       .where(task_lists: { date: ..task_list_date })
   end
 
+  def user_day(date)
+    date.in_time_zone(@user.time_zone).to_date
+  end
+
   # Monday of the week the date falls in, in the user's time zone
   def user_week(date)
-    date.in_time_zone(@user.time_zone).to_date.beginning_of_week
+    user_day(date).beginning_of_week
   end
 end

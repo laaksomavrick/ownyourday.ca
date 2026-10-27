@@ -20,6 +20,11 @@ module Goals
       self.metadata = { days_of_week: }
     end
 
+    def scheduled_on?(date)
+      monday_first_wday = (date.wday + 6) % 7 # Monday is our 0 instead of Sunday
+      days_of_week.include?(monday_first_wday)
+    end
+
     private
 
     def validate_metadata
