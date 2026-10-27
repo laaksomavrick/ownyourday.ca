@@ -6,6 +6,10 @@ module Goals
 
     DEFAULT_SCHEDULE = '{}'
 
+    def scheduled_on?(_date)
+      true
+    end
+
     private
 
     def validate_metadata
