@@ -15,6 +15,7 @@ class TasksController < ApplicationController
 
     @task_list = TaskListPresenter.new(user: current_user, task_list:)
     @date = date
+    @local_date = date.in_time_zone(current_user.time_zone).to_date
   end
 
   def update
@@ -30,7 +31,7 @@ class TasksController < ApplicationController
     return unless @task.errors.empty? == false
 
     flash.now[:alert] = t('helpers.alert.update_failed', name: @task.name)
-    render 'index', status: :unprocessable_entity
+    render 'index', status: :unprocessable_content
   end
 
   private
@@ -72,20 +73,16 @@ class TasksController < ApplicationController
   end
 
   def tasks_params
-    params.fetch(:task_list, {}).permit(
-      'date(1i)',
-      'date(2i)',
-      'date(3i)'
-    )
+    params.fetch(:task_list, {}).permit(:date)
   end
 
   def date_from_params
-    year = tasks_params['date(1i)'].to_i
-    month = tasks_params['date(2i)'].to_i
-    date = tasks_params['date(3i)'].to_i
+    date = tasks_params[:date]
 
-    return nil if year.zero? || month.zero? || date.zero?
+    return nil if date.blank?
 
-    Date.new(year, month, date)
+    Date.iso8601(date)
+  rescue Date::Error
+    nil
   end
 end

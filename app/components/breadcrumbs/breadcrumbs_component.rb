@@ -5,7 +5,7 @@ module Breadcrumbs
     attr_reader :breadcrumbs
 
     def initialize(breadcrumbs:)
-      super
+      super()
       @breadcrumbs = breadcrumbs || []
     end
   end

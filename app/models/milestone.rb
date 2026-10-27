@@ -2,7 +2,8 @@
 
 class Milestone < ApplicationRecord
   belongs_to :goal, class_name: 'Goals::Goal'
-  validates :name, :description, presence: true
+  validates :name, presence: true
+  normalizes :description, with: ->(description) { description.to_s }, apply_to_nil: true
   validate :completed_at, :validate_completed_at
 
   def active?

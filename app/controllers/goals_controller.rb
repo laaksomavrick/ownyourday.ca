@@ -32,7 +32,7 @@ class GoalsController < ApplicationController
     @goal = update_goal_action.call(goal_params, { persist: true })
 
     if @goal.errors.empty? == false
-      render 'new', status: :unprocessable_entity
+      render 'new', status: :unprocessable_content
       return
     end
 
@@ -48,7 +48,7 @@ class GoalsController < ApplicationController
     @goal = update_goal_action.call(goal_params, { persist: true })
 
     if @goal.errors.empty? == false
-      render 'edit', status: :unprocessable_entity
+      render 'edit', status: :unprocessable_content
       return
     end
 

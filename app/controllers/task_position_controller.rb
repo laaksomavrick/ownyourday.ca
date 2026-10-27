@@ -4,16 +4,15 @@ class TaskPositionController < ApplicationController
   def update
     id = params[:id]
     position = task_position_update_params[:position].to_i
-    type = task_position_update_params[:type].constantize
+    type = task_position_update_params[:type]
 
-    unless [Tasks::AdhocTask, Tasks::GoalTask].include?(type)
-      flash.now[:alert] = t('helpers.alert.update_failed', name: @task.name)
-      render 'update', status: :unprocessable_entity
+    unless [Tasks::AdhocTask.name, Tasks::GoalTask.name].include?(type)
+      head :unprocessable_content
       return
     end
 
     @task = authorize Tasks::Task.find_by(id:)
-    @task.insert_at(position)
+    @task.move_to(position)
 
     task_list = @task.task_list
     @task_list = TaskListPresenter.new(user: current_user, task_list:)

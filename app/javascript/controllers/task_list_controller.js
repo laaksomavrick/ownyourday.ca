@@ -50,7 +50,11 @@ export default class extends Sortable {
   get defaultOptions() {
     return {
       animation: 125,
+      // Hold-to-drag on touch only, so scrolling still works; allow a little finger movement
+      // during the hold instead of cancelling the drag
       delay: 200,
+      delayOnTouchOnly: true,
+      touchStartThreshold: 5,
       onChoose: this.onChoose,
       onUnchoose: this.onUnchoose,
     };

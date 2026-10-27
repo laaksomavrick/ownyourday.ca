@@ -76,4 +76,16 @@ RSpec.describe UpdateTodaysTaskListAction do
       expect(updated_task.goal.times_per_week).to eq times_per_week
     end
   end
+
+  context "when there is a future day's task list" do
+    let!(:tomorrow_task_list) { GenerateTodaysTaskListAction.new(user:).call(today: 1.day.from_now) }
+
+    it 'regenerates each task list for its own date' do
+      new_goal = create(:daily_goal, user:, position: 3)
+
+      task_list_dates = user.task_lists.reload.order(:date).map(&:date)
+      expect(task_list_dates).to eq [task_list.date, tomorrow_task_list.date]
+      expect(user.task_lists.all? { |list| list.tasks.exists?(goal_id: new_goal.id) }).to be true
+    end
+  end
 end

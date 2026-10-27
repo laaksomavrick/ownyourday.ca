@@ -11,6 +11,16 @@ module Tasks
 
     validates :position, presence: true
 
+    # Moves the task to a zero-based index in its task list. The whole list is renumbered because
+    # older task lists can have gaps in their positions
+    def move_to(index)
+      tasks = task_list.tasks.reorder(:position, :id).to_a
+      tasks.delete(self)
+      tasks.insert(index.clamp(0, tasks.length), self)
+
+      task_list.renumber_task_positions(tasks)
+    end
+
     class << self
       def policy_class
         TaskPolicy

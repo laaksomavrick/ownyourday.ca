@@ -19,7 +19,7 @@ module Goals
 
     acts_as_list scope: :user, top_of_list: 0
 
-    # rubocop:disable Naming/PredicateName
+    # rubocop:disable Naming/PredicatePrefix
     def is_daily?
       type == Goals::Daily.name
     end
@@ -31,7 +31,7 @@ module Goals
     def is_days_of_week?
       type == Goals::DaysOfWeek.name
     end
-    # rubocop:enable Naming/PredicateName
+    # rubocop:enable Naming/PredicatePrefix
 
     def active_milestone
       milestones.where(completed: false).first

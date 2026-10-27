@@ -19,7 +19,7 @@ class MeController < ApplicationController
     current_user.save
 
     if current_user.errors.empty? == false
-      render 'edit', status: :unprocessable_entity
+      render 'edit', status: :unprocessable_content
       return
     end
 

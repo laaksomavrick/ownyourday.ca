@@ -39,7 +39,8 @@
 
     <div class="flex flex-col">
       <%= f.label :time_zone, t('global.time_zone'), class: label_class("text-xl") %>
-      <%= f.time_zone_select :time_zone, nil,{}, {:class => text_field_class("text-xl")} %>
+      <% # Sign up saves the browser's zone (e.g. America/Toronto), which isn't in the default list, so list it first %>
+      <%= f.time_zone_select :time_zone, [ActiveSupport::TimeZone[current_user.time_zone]].compact, {}, {:class => text_field_class("text-xl")} %>
     </div>
 
     <div class="flex w-100">

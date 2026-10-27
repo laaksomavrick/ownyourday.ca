@@ -14,10 +14,9 @@ RSpec.describe Milestone do
     end.to raise_error(ActiveRecord::RecordInvalid, "Validation failed: Name can't be blank")
   end
 
-  it 'requires a description' do
-    expect do
-      create(:milestone, description: '')
-    end.to raise_error(ActiveRecord::RecordInvalid, "Validation failed: Description can't be blank")
+  it 'does not require a description' do
+    expect(create(:milestone, description: '')).to be_persisted
+    expect(create(:milestone, description: nil).description).to eq('')
   end
 
   it 'requires completed_at when completed is true' do

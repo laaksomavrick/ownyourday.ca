@@ -5,7 +5,7 @@ module Navigation
     include ApplicationHelper
 
     def initialize(path:, title:)
-      super
+      super()
       @path = path
       @title = title
     end

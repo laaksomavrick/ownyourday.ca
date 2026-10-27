@@ -8,10 +8,7 @@ RSpec.describe 'TaskPosition' do
   let!(:goal_two) { create(:daily_goal, user:, position: 1) }
 
   describe 'update' do
-    # Need to figure out how to emulate click-and-hold for 500ms
-    # rubocop:disable RSpec/PendingWithoutReason
-    xit 'can update a task position' do
-      # rubocop:enable RSpec/PendingWithoutReason
+    it 'can update a task position' do
       sign_in user
       visit tasks_path
 
@@ -22,6 +19,9 @@ RSpec.describe 'TaskPosition' do
       target = page.find("#task-list-item-#{task_two.id}")
 
       source.drag_to(target)
+
+      # Wait for the turbo stream to re-render the list
+      expect(page).to have_css("#task-list-item-#{task_two.id} + #task-list-item-#{task_one.id}")
 
       task_one = Tasks::GoalTask.where(goal: goal_one).first
       task_two = Tasks::GoalTask.where(goal: goal_two).first

@@ -38,6 +38,20 @@ RSpec.describe 'Me' do
       expect(find_by_id('user_last_name').value).to eq 'lastname'
     end
 
+    it "keeps a time zone that isn't in the default list when saving" do
+      user.update!(time_zone: 'America/Toronto')
+      sign_in user
+      visit me_path
+
+      expect(find_by_id('user_time_zone').value).to eq 'America/Toronto'
+
+      fill_in 'First name', with: 'firstname'
+      find('input[name="commit"]').click
+
+      expect(page).to have_content(I18n.t('helpers.alert.update_successful', name: 'user information'))
+      expect(user.reload.time_zone).to eq 'America/Toronto'
+    end
+
     it 'can attach a profile photo' do
       sign_in user
       visit me_path

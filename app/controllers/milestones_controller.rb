@@ -60,14 +60,14 @@ class MilestonesController < ApplicationController
 
     if active_milestone
       flash.now[:alert] = t('milestones.new.active_milestone_error')
-      render 'new', status: :unprocessable_entity
+      render 'new', status: :unprocessable_content
       return
     end
 
     @milestone.save
 
     if @milestone.errors.empty? == false
-      render 'new', status: :unprocessable_entity
+      render 'new', status: :unprocessable_content
       return
     end
 
@@ -91,7 +91,7 @@ class MilestonesController < ApplicationController
     @milestone.save
 
     if @milestone.errors.empty? == false
-      render 'new', status: :unprocessable_entity
+      render 'new', status: :unprocessable_content
       return
     end
 
