@@ -9,7 +9,7 @@
       rev = "e6d5772f3515b8518d50122471381feae7cbae36";
       type = "github";
     };
-    # nixos-26.05, used for Ruby 3.4 (22.11 only ships up to Ruby 3.1)
+    # nixos-26.05, used for Ruby 4.0 (22.11 only ships up to Ruby 3.1)
     nixpkgs-ruby = {
       owner = "NixOS";
       repo = "nixpkgs";
@@ -47,7 +47,7 @@
             pkgs.nodejs
             pkgs.nodePackages.pnpm
             pkgs.postgresql_11
-            pkgs-ruby.ruby_3_4
+            pkgs-ruby.ruby_4_0
             pkgs.imagemagick
           ];
         };
