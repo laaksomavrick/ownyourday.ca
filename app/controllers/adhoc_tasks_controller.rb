@@ -17,6 +17,14 @@ class AdhocTasksController < ApplicationController
     redirect_to tasks_path(task_list_id: @adhoc_task.task_list_id)
   end
 
+  def destroy
+    @adhoc_task = authorize policy_scope(Tasks::AdhocTask).find(params.expect(:id))
+    @adhoc_task.destroy
+
+    flash[:notice] = t('tasks.adhoc.destroy.success', name: @adhoc_task.name)
+    redirect_to tasks_path(task_list_id: @adhoc_task.task_list_id), status: :see_other
+  end
+
   private
 
   def adhoc_task_params

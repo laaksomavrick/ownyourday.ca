@@ -42,6 +42,10 @@ en:
       next: 'Next day'
     adhoc:
       new: 'Add'
+      destroy:
+        label: 'Delete %{name}'
+        confirmation: 'Are you sure you want to delete %{name}?'
+        success: 'Successfully deleted %{name}'
     create:
       header: 'Adhoc Task'
   milestones:

@@ -27,4 +27,9 @@ class TaskPolicy < ApplicationPolicy
   def update?
     user.id == record.user_id
   end
+
+  # Only ad-hoc tasks can be deleted; goal tasks come from the user's goals
+  def destroy?
+    record.is_a?(Tasks::AdhocTask) && user.id == record.user_id
+  end
 end

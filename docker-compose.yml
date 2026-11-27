@@ -7,7 +7,8 @@ networks:
 
 services:
   reverse-proxy:
-    image: nginx:stable
+    # Pinned so upgrades are deliberate; 1.30.7+ fixes CVE-2026-123633
+    image: nginx:1.30.8
     restart: unless-stopped
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
     depends_on:

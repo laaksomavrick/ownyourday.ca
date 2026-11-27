@@ -35,6 +35,17 @@
             </div>
           </div>
         <% end %>
+        <% if vm.deletable? %>
+          <% # Clicks in here don't toggle completion (see task_controller.js) %>
+          <div class="flex justify-center items-center ml-2" data-task-target="delete">
+            <%= button_to adhoc_task_path(vm.task), method: :delete,
+                          form: { data: { turbo_confirm: t('tasks.adhoc.destroy.confirmation', name: vm.task.name), turbo_frame: '_top' } },
+                          class: "p-2 -mr-2 text-gray-400 hover:text-red-500",
+                          'aria-label': t('tasks.adhoc.destroy.label', name: vm.task.name) do %>
+              <%= heroicon "trash", variant: "solid", options: { class: "w-6 h-6" } %>
+            <% end %>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>

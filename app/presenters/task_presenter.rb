@@ -56,6 +56,10 @@ class TaskViewModel
     @task.try(:goal).present?
   end
 
+  def deletable?
+    @task.is_a?(Tasks::AdhocTask)
+  end
+
   def show_context?
     task_type = @task.try(:goal).try(:type)
 

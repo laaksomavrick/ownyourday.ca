@@ -6,7 +6,7 @@ Rails.application.routes.draw do
                             registrations: 'users/registrations' }
 
   resources :tasks, only: %i[index update]
-  resources :adhoc_tasks, only: %i[new create]
+  resources :adhoc_tasks, only: %i[new create destroy]
   resources :goals, only: %i[index edit new create update destroy] do
     resources :milestones, only: %i[index new edit create update destroy]
   end

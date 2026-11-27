@@ -1,4 +1,4 @@
-FROM ruby:3.4.12 AS builder
+FROM ruby:4.0.10 AS builder
 
 WORKDIR /builder
 
@@ -21,7 +21,7 @@ COPY . .
 RUN if [ "${RAILS_ENV}" != "development" ]; then \
   SECRET_KEY_BASE=dummyvalue rails assets:precompile; fi
 
-FROM ruby:3.4.12 AS app
+FROM ruby:4.0.10 AS app
 
 WORKDIR /app
 
