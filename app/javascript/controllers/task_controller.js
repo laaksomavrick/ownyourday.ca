@@ -1,9 +1,20 @@
 import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
-  static targets = ['toggleGoalCompletion', 'checkbox', 'submit', 'listItem'];
+  static targets = [
+    'toggleGoalCompletion',
+    'checkbox',
+    'submit',
+    'listItem',
+    'delete',
+  ];
 
   toggleGoalCompletion(e) {
+    // The delete button submits its own form; it shouldn't also complete the task
+    if (this.hasDeleteTarget && this.deleteTarget.contains(e.target)) {
+      return;
+    }
+
     const target = e.target.dataset.taskTarget;
 
     if (target === 'submit') {

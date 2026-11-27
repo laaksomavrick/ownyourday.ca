@@ -49,4 +49,43 @@ RSpec.describe 'AdhocTasks' do
       end
     end
   end
+
+  describe 'deleting' do
+    # The task list is only shown to users with goals. Creating a goal rebuilds today's task list
+    let!(:goal) { create(:daily_goal, user:) }
+    let(:todays_task_list) { TaskList.find_by!(user:, date: user.beginning_of_day) }
+    let!(:adhoc_task) { create(:adhoc_task, user:, task_list: todays_task_list, position: 1) }
+
+    before do
+      sign_in user
+      visit tasks_path
+    end
+
+    it 'can delete an ad hoc task' do
+      accept_confirm(I18n.t('tasks.adhoc.destroy.confirmation', name: adhoc_task.name)) do
+        click_on I18n.t('tasks.adhoc.destroy.label', name: adhoc_task.name)
+      end
+
+      expect(page).to have_content(I18n.t('tasks.adhoc.destroy.success', name: adhoc_task.name))
+      expect(page).to have_no_css("#task-list-item-#{adhoc_task.id}")
+      expect(Tasks::AdhocTask.exists?(adhoc_task.id)).to be(false)
+    end
+
+    it 'keeps the task, not completed, when the delete is cancelled' do
+      dismiss_confirm do
+        click_on I18n.t('tasks.adhoc.destroy.label', name: adhoc_task.name)
+      end
+
+      expect(page).to have_css("#task-list-item-#{adhoc_task.id}")
+      expect(find("input[data-task-id='#{adhoc_task.id}']")).not_to be_checked
+      expect(adhoc_task.reload.completed).to be(false)
+    end
+
+    it 'does not show a delete button on goal tasks' do
+      goal_task = todays_task_list.goal_tasks.first
+
+      expect(page).to have_css("#task-list-item-#{goal_task.id}")
+      expect(page).to have_no_button(I18n.t('tasks.adhoc.destroy.label', name: goal.name))
+    end
+  end
 end
